@@ -28,10 +28,13 @@ Using handlebars: https://handlebarsjs.com/
     
 3. Strežnik zaženemo z dvema ukazoma v različnih ukaznih oknih:
     >npm run startDB
-    
+        
+        - pred tem se mora ustvariti še mapa /database, v kateri bodo potem podatki
         - ta zažene mongoDB strežnik, ki mora teči, preden zaženemo dejansko express aplikacijo
         - instanca mongoDB teče na portu 27017
         
     >npm run startServer
      
         - ta zažene express, ki teče na portu 3000 (localhost:3000)
+        
+4. Aplikacija na začetku ustvari admina, z uporabniškim geslom in imenom 'admin'
