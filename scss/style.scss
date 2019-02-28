@@ -1,5 +1,4 @@
-html {
-	margin: 0;
-	
-	background: red;
-}
+@import "materialize/materialize";
+@import "main";
+
+@import "../views/main";
