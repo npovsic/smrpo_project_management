@@ -1,17 +1,25 @@
 const express = require('express');
 const router = express.Router();
 
+const isLoggedIn = require('../middlewares/isLoggedIn');
 const authenticateAdmin = require('../middlewares/authenticateAdmin');
 
 const loginHandler = require('../lib/loginHandler');
 
-router.get('/', authenticateAdmin, function (req, res, next) {
-    res.render('./admin/dashboard/dashboard', { title: 'Express' });
+router.get('/', isLoggedIn, function (req, res, next) {
+    if (req.session.userRole === 'admin') {
+        res.render('./admin/dashboard/dashboard', { title: 'Express' });
+    } else {
+        res.render('./user/dashboard/dashboard', { title: 'Express' });
+    }
 });
 
-
 router.get('/login', function (req, res, next) {
-    res.render('./login/login');
+    if (req.session.user) {
+        res.redirect('/');
+    } else {
+        res.render('./login/login');
+    }
 });
 
 router.post('/login', async function (req, res, next) {
@@ -24,16 +32,18 @@ router.post('/login', async function (req, res, next) {
     if (foundUser) {
         req.session.user = foundUser;
         req.session.userRole = foundUser.role;
-        
-        res.render('loginSuccessful');
+
+        res.redirect('/');
     } else {
-        console.log('Login not successful.');
+        res.render('loginFailed');
     }
 });
 
 router.get('/logout', async function (req, res, next) {
     req.session.user = null;
     req.session.userRole = null;
+    
+    res.redirect('/');
 });
 
 module.exports = router;
