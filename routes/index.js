@@ -27,13 +27,19 @@ router.post('/login', async function (req, res, next) {
 
     const foundUser = await loginHandler(username, password);
 
-    console.log({ foundUser });
-
     if (foundUser) {
         req.session.user = foundUser;
         req.session.userRole = foundUser.role;
+        
+        let redirectUrl = '/';
+        
+        if (req.session.redirectUrl) {
+            redirectUrl = req.session.redirectUrl;
 
-        res.redirect('/');
+            req.session.redirectUrl = null;
+        }
+
+        res.redirect(redirectUrl);
     } else {
         res.render('loginFailed');
     }
