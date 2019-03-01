@@ -1,26 +1,24 @@
-<main class="login-page-container">
-    <div class="valign-wrapper full-height">
-        <div class="row login-page-container__login-container">
-            <div class="row card login-page-container__login-container__login-card">
-                <div class="col s12">
-                    <form method="post" id="login-form">
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input id="username" name="username" type="text" class="validate">
-                                <label for="username">Uporabniško ime</label>
-                            </div>
+<div class="valign-wrapper full-height">
+    <div class="row login-container">
+        <div class="row card login-container__login-card">
+            <div class="col s12">
+                <form method="post" id="login-form">
+                    <div class="row suppress-bottom-margin">
+                        <div class="input-field col s12">
+                            <input id="username" name="username" type="text" class="validate">
+                            <label for="username">Uporabniško ime</label>
                         </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input id="password" name="password" type="password" class="validate">
-                                <label for="password">Geslo</label>
-                            </div>
+                    </div>
+                    <div class="row suppress-bottom-margin">
+                        <div class="input-field col s12">
+                            <input id="password" name="password" type="password" class="validate">
+                            <label for="password">Geslo</label>
                         </div>
+                    </div>
 
-                        <button id="login-button" class="waves-effect waves-light btn red" type="submit">Prijava</button>
-                    </form>
-                </div>
+                    <button id="login-button" class="waves-effect waves-light btn red right" type="submit">Prijava</button>
+                </form>
             </div>
         </div>
     </div>
-</main>
+</div>

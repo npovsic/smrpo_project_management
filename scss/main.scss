@@ -40,5 +40,23 @@ nav .brand-logo {
 }
 
 main > .content {
+	height: 100%;
 	padding: 16px;
+}
+
+.suppress-bottom-margin {
+	margin-bottom: 0
+}
+
+.nav-wrapper {
+	display: flex;
+	justify-content: space-between;
+	
+	& > .breadcrumbs-wrapper {
+		padding-left: 16px;
+	}
+}
+
+.input-field.col label {
+	pointer-events: none;
 }

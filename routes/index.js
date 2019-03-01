@@ -8,7 +8,43 @@ const loginHandler = require('../lib/loginHandler');
 
 router.get('/', isLoggedIn, function (req, res, next) {
     if (req.session.userRole === 'admin') {
-        res.render('./admin/dashboard/dashboard', { title: 'Express' });
+        const pageOptions = {
+            layoutOptions: {
+                pageTitle: 'Pregled',
+                navBar: {
+                    show: true,
+                    breadcrumbs: [
+                        {
+                            title: 'Pregled',
+                            href: '/'
+                        }
+                    ],
+                    buttons: [
+                        {
+                            label: 'Odjava',
+                            href: '/logout'
+                        }
+                    ]
+                },
+                sideMenu: {
+                    show: true,
+                    items: [
+                        {
+                            title: 'Pregled',
+                            href: '/',
+                            active: true
+                        },
+                        {
+                            title: 'Projekti',
+                            href: '/projects'
+                        }
+                    ]
+                }
+            },
+            isAdmin: true
+        };
+        
+        res.render('./admin/dashboard/dashboard', pageOptions);
     } else {
         res.render('./user/dashboard/dashboard', { title: 'Express' });
     }

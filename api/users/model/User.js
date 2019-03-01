@@ -18,7 +18,9 @@ const UserSchema = new Schema({
         required: true
     },
     password: String,
-    role: String
+    role: String,
+    _lastUpdatedAt: Date,
+    _createdAt: Date
 });
 
 const User = mongoose.model('User', UserSchema);

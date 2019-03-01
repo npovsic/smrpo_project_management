@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{title}}</title>
+        <title>{{layoutOptions.pageTitle}}</title>
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -10,8 +10,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
-        {{{body}}}
-        
+        {{#if layoutOptions.navBar.show}}
+            {{> navBar options=layoutOptions.navBar}}
+        {{/if}}
+    
+        <!-- .with-sidenav class is used when a sidenav is present on the page -->
+        <!-- If you don't have the sidenav, just leave the main tag without the class -->
+        <main {{#if layoutOptions.sideMenu.show}}class="with-sidenav"{{/if}}>
+            {{#if layoutOptions.sideMenu.show}}
+                {{> sideMenu options=layoutOptions.sideMenu}}
+            {{/if}}
+    
+            <div class="content">
+                <!-- This is where your content goes -->
+    
+                {{{body}}}
+            </div>
+        </main>
+    
         <script src="/javascripts/materialize.js"></script>
         <script src="/javascripts/main.js"></script>
     </body>
