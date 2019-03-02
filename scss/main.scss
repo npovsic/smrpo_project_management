@@ -60,3 +60,10 @@ main > .content {
 .input-field.col label {
 	pointer-events: none;
 }
+
+.search-input {
+	border-bottom: none !important;
+	padding-left: 8px !important;
+	padding-bottom: 0 !important;
+	margin-bottom: 0 !important;
+}

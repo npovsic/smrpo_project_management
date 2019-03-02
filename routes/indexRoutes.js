@@ -76,7 +76,7 @@ router.post('/login', async function (req, res, next) {
 
         res.redirect(redirectUrl);
     } else {
-        res.render('loginFailed');
+        res.render('./login/loginFailed');
     }
 });
 
