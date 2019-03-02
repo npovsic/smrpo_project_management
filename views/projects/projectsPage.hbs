@@ -1,8 +1,21 @@
-<ul>
-    {{#each projects}}
-        <li>{{this.name}}</li>
-    {{/each}}
-</ul>
+<div class="container">
+    {{#if projects}}
+        {{#each projects}}
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <a href="/projects/{{this._id}}" class="card-title">{{this.name}}</a>
+                            <p>{{this.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    {{else}}
+        <p>Ni dodanih projektov</p>
+    {{/if}}
+</div>
 
 <div class="fixed-action-btn">
     <a href="/projects/create" class="btn-floating btn-large red">

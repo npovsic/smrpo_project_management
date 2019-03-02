@@ -59,9 +59,9 @@ const setupSession = function () {
 };
 
 const setupRoutes = function () {
-    app.use('/', require('./routes/index'));
-    app.use('/users', require('./routes/users'));
-    app.use('/projects', require('./routes/projects'));
+    app.use('/', require('./routes/indexRoutes'));
+    app.use('/users', require('./routes/usersRoutes'));
+    app.use('/projects', require('./routes/projectsRoutes'));
 };
 
 const setupErrorHandler = function () {

@@ -4,7 +4,14 @@ const ObjectId = Schema.ObjectId;
 
 const ProjectSchema = new Schema({
     id: ObjectId,
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
+    description: String,
+    projectLeader: ObjectId,
+    scrumMaster: ObjectId,
+    developers: [ObjectId],
     _lastUpdatedAt: Date,
     _createdAt: Date
 });

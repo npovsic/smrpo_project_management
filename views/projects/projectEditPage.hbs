@@ -1,14 +1,56 @@
-<form method="post">
-    <div class="row suppress-bottom-margin">
-        <div class="input-field col s12">
-            <input id="name" name="name" type="text" class="validate">
-            <label for="username">Ime projekta</label>
+<div class="container">
+    <form method="post">
+        <div class="row suppress-bottom-margin">
+            <div class="input-field col s12">
+                <input id="name" name="name" type="text" class="validate" value="{{projectData.name}}">
+                <label for="username">Ime projekta</label>
+            </div>
         </div>
-    </div>
 
-    <div class="fixed-action-btn">
-        <button class="btn-floating btn-large green" type="submit">
-            <i class="large material-icons">save</i>
-        </button>
-    </div>
-</form>
+        <div class="row suppress-bottom-margin">
+            <div class="input-field col s12">
+                <textarea id="description" name="description" class="materialize-textarea">{{projectData.description}}</textarea>
+                <label for="textarea1">Opis</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <select name="projectLeader">
+                    <option value="" disabled selected>Izberite produktnega vodjo</option>
+                    {{#each users}}
+                        <option value="{{this._id}}">{{this.username}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <select name="scrumMaster">
+                    <option value="" disabled selected>Izberite skrbnika metodologije</option>
+                    {{#each users}}
+                        <option value="{{this._id}}">{{this.username}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <select name="developers" multiple>
+                    <option value="" disabled>Izberite razvijalce</option>
+                    {{#each users}}
+                        <option value="{{this._id}}">{{this.username}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+
+        <div class="fixed-action-btn">
+            <button class="btn-floating btn-large green" type="submit">
+                <i class="large material-icons">save</i>
+            </button>
+        </div>
+    </form>
+</div>

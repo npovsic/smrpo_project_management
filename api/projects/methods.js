@@ -22,7 +22,12 @@ module.exports = {
         return await project.save();
     },
     
-    update: async function (projectData) {
-        const projectInDatabase = await Project.findOne({ _id: projectData._id }).exec();
+    update: async function (projectId, projectData) {
+        let projectInDatabase = await Project.findOne({ _id: projectId }).exec();
+
+        // Object.assign copies all the values from the second argument into the first one, even if they both have the save values
+        projectInDatabase = Object.assign(projectInDatabase, projectData);
+
+        projectInDatabase.save();
     }
 };
