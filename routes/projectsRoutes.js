@@ -1,15 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const isLoggedIn = require('../middlewares/isLoggedIn');
-
 const projectModule = require('../api/projects/methods');
 const usersModule = require('../api/users/methods');
 
 /**
  * Root route to display all the projects
  */
-router.get('/', isLoggedIn, async function (req, res, next) {
+router.get('/', async function (req, res, next) {
     try {
         const projects = await projectModule.findAll();
 
@@ -63,7 +61,7 @@ router.get('/', isLoggedIn, async function (req, res, next) {
 /**
  * Route for creating a new project
  */
-router.get('/create', isLoggedIn, async function (req, res, next) {
+router.get('/create', async function (req, res, next) {
     const users = await usersModule.findAll();
     
     const pageOptions = {
@@ -109,7 +107,7 @@ router.get('/create', isLoggedIn, async function (req, res, next) {
     res.render('./projects/projectEditPage', pageOptions);
 });
 
-router.post('/create', isLoggedIn, function (req, res, next) {
+router.post('/create', function (req, res, next) {
     const postData = req.body;
     
     const projectData = {
@@ -138,7 +136,7 @@ router.post('/create', isLoggedIn, function (req, res, next) {
 /**
  * Route for editing an existing project
  */
-router.get('/:projectId', isLoggedIn, async function (req, res, next) {
+router.get('/:projectId', async function (req, res, next) {
     const projectId = req.params.projectId;
     
     const users = await usersModule.findAll();
@@ -192,7 +190,7 @@ router.get('/:projectId', isLoggedIn, async function (req, res, next) {
 /**
  * Route for updating an existing project
  */
-router.post('/:projectId', isLoggedIn, async function (req, res, next) {
+router.post('/:projectId', async function (req, res, next) {
     const projectId = req.params.projectId;
 
     const postData = req.body;

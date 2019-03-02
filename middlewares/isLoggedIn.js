@@ -1,5 +1,5 @@
 module.exports = function (req, res, next) {
-    if (req.session.user) {
+    if (req.originalUrl === '/login' || req.session.user) {
         next();
     } else {
         req.session.redirectUrl = req.originalUrl;

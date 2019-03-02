@@ -59,16 +59,17 @@ const setupSession = function () {
 };
 
 const setupRoutes = function () {
+    const isLoggedIn = require('./middlewares/isLoggedIn');
+    
+    // Always check if the user is logged in
+    app.use(isLoggedIn);
+    
     app.use('/', require('./routes/indexRoutes'));
     app.use('/users', require('./routes/usersRoutes'));
     app.use('/projects', require('./routes/projectsRoutes'));
 };
 
 const setupErrorHandler = function () {
-    const isLoggedIn = require('./middlewares/isLoggedIn');
-    
-    app.use(isLoggedIn);
-    
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
         next(createError(404));

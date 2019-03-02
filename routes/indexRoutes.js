@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const isLoggedIn = require('../middlewares/isLoggedIn');
 const authenticateAdmin = require('../middlewares/authenticateAdmin');
 
 const loginHandler = require('../lib/loginHandler');
 
-router.get('/', isLoggedIn, function (req, res, next) {
+router.get('/', function (req, res, next) {
     if (req.session.userRole === 'admin') {
         const pageOptions = {
             layoutOptions: {
