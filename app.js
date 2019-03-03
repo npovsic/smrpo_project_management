@@ -17,7 +17,7 @@ const setupDatabaseConnection = function () {
 };
 
 const setupExpress = function () {
-    // view engine setup
+    // View engine setup
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'hbs');
 
@@ -43,6 +43,10 @@ const setupExpress = function () {
     app.use(express.static(path.join(__dirname, 'public')));
 };
 
+const setupHandlebarHelpers = function () {
+    require('./lib/handlebarsHelpers');
+};
+
 const setupSession = function () {
     const uuid = require('uuidv4');
     const session = require('express-session');
@@ -54,8 +58,7 @@ const setupSession = function () {
         secret: '1234567890',
         resave: false,
         saveUninitialized: true
-    }))
-
+    }));
 };
 
 const setupRoutes = function () {
@@ -96,6 +99,8 @@ const createAdminIfNotSet = function () {
 setupDatabaseConnection();
 
 setupExpress();
+
+setupHandlebarHelpers();
 
 setupSession();
 

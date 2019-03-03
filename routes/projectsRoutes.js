@@ -63,7 +63,7 @@ router.get('/', async function (req, res, next) {
  */
 router.get('/create', async function (req, res, next) {
     const users = await usersModule.findAll();
-    
+
     const pageOptions = {
         users,
         layoutOptions: {
@@ -109,7 +109,7 @@ router.get('/create', async function (req, res, next) {
 
 router.post('/create', function (req, res, next) {
     const postData = req.body;
-    
+
     const projectData = {
         name: postData.name,
         description: postData.description,
@@ -138,13 +138,43 @@ router.post('/create', function (req, res, next) {
  */
 router.get('/:projectId', async function (req, res, next) {
     const projectId = req.params.projectId;
-    
+
     const users = await usersModule.findAll();
-    
+
     const projectData = await projectModule.findOne({ _id: projectId });
 
+    const populatedUsers = {
+        usersForProjectLeader: users.map((user) => {
+            const isUserProjectLeader = projectData.projectLeader && projectData.projectLeader.equals(user._id);
+            
+            return {
+                value: user._id,
+                title: user.username,
+                selected: isUserProjectLeader
+            }
+        }),
+        usersForScrumMaster: users.map((user) => {
+            const isUserScrumMaster = projectData.scrumMaster && projectData.scrumMaster.equals(user._id);
+
+            return {
+                value: user._id,
+                title: user.username,
+                selected: isUserScrumMaster
+            }
+        }),
+        usersForDevelopers: users.map((user) => {
+            const isUserADeveloper = projectData.developers && projectData.developers.find((developerId) => developerId.equals(user._id));
+
+            return {
+                value: user._id,
+                title: user.username,
+                selected: isUserADeveloper
+            }
+        })
+    };
+
     const pageOptions = {
-        users,
+        populatedUsers,
         projectData,
         layoutOptions: {
             pageTitle: 'Uredi projekt',
