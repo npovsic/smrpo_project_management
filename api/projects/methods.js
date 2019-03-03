@@ -25,7 +25,10 @@ module.exports = {
     update: async function (projectId, projectData) {
         let projectInDatabase = await Project.findOne({ _id: projectId }).exec();
 
-        // Object.assign copies all the values from the second argument into the first one, even if they both have the save values
+        /*
+            Object.assign copies all the values from the second argument into the first one, even if they both have the save values
+            This means all the new updated values will be written to the object in the database and all the unchanged will be preserved
+         */
         projectInDatabase = Object.assign(projectInDatabase, projectData);
 
         projectInDatabase.save();

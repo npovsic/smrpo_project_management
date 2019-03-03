@@ -1,50 +1,65 @@
 <div class="container">
     <form method="post">
-        <div class="row suppress-bottom-margin">
-            <div class="input-field col s12">
-                <input id="name" name="name" type="text" class="validate" value="{{projectData.name}}">
-                <label for="username">Ime projekta</label>
+        <div class="card">
+            <div class="card-content">
+                <p class="card-title">Osnovni podatki</p>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <input id="name" name="name" type="text" class="validate" value="{{projectData.name}}">
+                        <label for="username">Ime projekta</label>
+                    </div>
+                </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <textarea id="description" name="description" class="materialize-textarea">{{projectData.description}}</textarea>
+                        <label for="textarea1">Opis</label>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="row suppress-bottom-margin">
-            <div class="input-field col s12">
-                <textarea id="description" name="description" class="materialize-textarea">{{projectData.description}}</textarea>
-                <label for="textarea1">Opis</label>
-            </div>
-        </div>
+        <div class="card">
+           <div class="card-content">
+               <p class="card-title">Uporabniki na projektu</p>
+               
+               <div class="row">
+                   <div class="input-field col s12">
+                       <select name="projectLeader">
+                           <option value="" disabled selected>Izberite produktnega vodjo</option>
+                           {{#each usersSelectObjects.projectLeader}}
+                               <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
+                           {{/each}}
+                       </select>
+                       <label for="projectLeader">Projektni vodja</label>
+                   </div>
+               </div>
 
-        <div class="row">
-            <div class="input-field col s12">
-                <select name="projectLeader">
-                    <option value="" disabled selected>Izberite produktnega vodjo</option>
-                    {{#each populatedUsers.usersForProjectLeader}}
-                        <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
-                    {{/each}}
-                </select>
-            </div>
-        </div>
+               <div class="row">
+                   <div class="input-field col s12">
+                       <select name="scrumMaster">
+                           <option value="" disabled selected>Izberite skrbnika metodologije</option>
+                           {{#each usersSelectObjects.scrumMaster}}
+                               <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
+                           {{/each}}
+                       </select>
+                       <label for="scrumMaster">Vodja metodologije</label>
+                   </div>
+               </div>
 
-        <div class="row">
-            <div class="input-field col s12">
-                <select name="scrumMaster">
-                    <option value="" disabled selected>Izberite skrbnika metodologije</option>
-                    {{#each populatedUsers.usersForScrumMaster}}
-                        <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
-                    {{/each}}
-                </select>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="input-field col s12">
-                <select name="developers" multiple>
-                    <option value="" disabled>Izberite razvijalce</option>
-                    {{#each populatedUsers.usersForDevelopers}}
-                        <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
-                    {{/each}}
-                </select>
-            </div>
+               <div class="row">
+                   <div class="input-field col s12">
+                       <select name="developers" multiple>
+                           <option value="" disabled>Izberite razvijalce</option>
+                           {{#each usersSelectObjects.developers}}
+                               <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
+                           {{/each}}
+                       </select>
+                       <label for="developers">Razvijalci</label>
+                   </div>
+               </div>
+           </div>
         </div>
 
         <div class="fixed-action-btn">

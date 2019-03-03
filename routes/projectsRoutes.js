@@ -64,8 +64,30 @@ router.get('/', async function (req, res, next) {
 router.get('/create', async function (req, res, next) {
     const users = await usersModule.findAll();
 
+    const usersSelectObjects = {
+        projectLeader: users.map((user) => {
+            return {
+                value: user._id,
+                title: user.username
+            }
+        }),
+        scrumMaster: users.map((user) => {
+            return {
+                value: user._id,
+                title: user.username
+            }
+        }),
+        developers: users.map((user) => {
+            return {
+                value: user._id,
+                title: user.username
+            }
+        })
+    };
+
+
     const pageOptions = {
-        users,
+        usersSelectObjects,
         layoutOptions: {
             pageTitle: 'Nov projekt',
             navBar: {
@@ -143,8 +165,8 @@ router.get('/:projectId', async function (req, res, next) {
 
     const projectData = await projectModule.findOne({ _id: projectId });
 
-    const populatedUsers = {
-        usersForProjectLeader: users.map((user) => {
+    const usersSelectObjects = {
+        projectLeader: users.map((user) => {
             const isUserProjectLeader = projectData.projectLeader && projectData.projectLeader.equals(user._id);
             
             return {
@@ -153,7 +175,7 @@ router.get('/:projectId', async function (req, res, next) {
                 selected: isUserProjectLeader
             }
         }),
-        usersForScrumMaster: users.map((user) => {
+        scrumMaster: users.map((user) => {
             const isUserScrumMaster = projectData.scrumMaster && projectData.scrumMaster.equals(user._id);
 
             return {
@@ -162,7 +184,7 @@ router.get('/:projectId', async function (req, res, next) {
                 selected: isUserScrumMaster
             }
         }),
-        usersForDevelopers: users.map((user) => {
+        developers: users.map((user) => {
             const isUserADeveloper = projectData.developers && projectData.developers.find((developerId) => developerId.equals(user._id));
 
             return {
@@ -174,7 +196,7 @@ router.get('/:projectId', async function (req, res, next) {
     };
 
     const pageOptions = {
-        populatedUsers,
+        usersSelectObjects,
         projectData,
         layoutOptions: {
             pageTitle: 'Uredi projekt',

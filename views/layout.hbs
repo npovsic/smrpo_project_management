@@ -16,7 +16,7 @@
     
         <!-- .with-sidenav class is used when a sidenav is present on the page -->
         <!-- If you don't have the sidenav, just leave the main tag without the class -->
-        <main {{#if layoutOptions.sideMenu.show}}class="with-sidenav"{{/if}}>
+        <main class="{{#if layoutOptions.sideMenu.show}}with-sidenav{{/if}} {{#if layoutOptions.navBar.show}}with-navbar{{/if}}">
             {{#if layoutOptions.sideMenu.show}}
                 {{> sideMenu options=layoutOptions.sideMenu}}
             {{/if}}

@@ -9,6 +9,8 @@ html, body {
 body {
 	display: flex;
 	flex-direction: column;
+	
+	overflow-y: scroll;
 }
 
 main {
@@ -27,6 +29,10 @@ header, main.with-sidenav, footer {
 	padding-left: $sidenav-width;
 }
 
+header {
+	flex-shrink: 0;
+}
+
 nav {
 	width: calc(100% - 200px);
 }
@@ -37,6 +43,8 @@ nav {
 
 nav .brand-logo {
 	font-size: 1.5rem;
+	
+	border-bottom: 1px solid #ccc;
 }
 
 main > .content {
