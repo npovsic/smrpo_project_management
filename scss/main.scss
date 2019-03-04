@@ -39,12 +39,12 @@ nav {
 
 .sidenav__logo {
 	height: $navbar-height;
+
+	border-bottom: 1px solid #ccc;
 }
 
 nav .brand-logo {
 	font-size: 1.5rem;
-	
-	border-bottom: 1px solid #ccc;
 }
 
 main > .content {
