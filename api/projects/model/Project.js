@@ -12,6 +12,7 @@ const ProjectSchema = new Schema({
     projectLeader: ObjectId,
     scrumMaster: ObjectId,
     developers: [ObjectId],
+    stories: [ObjectId],
     _lastUpdatedAt: Date,
     _createdAt: Date
 });
