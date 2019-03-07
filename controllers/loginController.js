@@ -15,6 +15,8 @@ module.exports = {
         const foundUser = await loginHandler(username, password);
 
         if (foundUser) {
+            delete foundUser.password;
+            
             req.session.user = foundUser;
             req.session.userRole = foundUser.role;
 

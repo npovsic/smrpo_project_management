@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 module.exports = mongoose.model('Story', new Schema({
-    id: ObjectId,
+    _id: ObjectId,
     ordinal: Number,  // Number for users to refer to
     title: {
         type: String,
@@ -16,6 +16,7 @@ module.exports = mongoose.model('Story', new Schema({
         required: true,
     },
     acceptanceTests: String,
+    score: Number,
     priority: {
         type: String,
         enum: [
