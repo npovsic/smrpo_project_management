@@ -39,9 +39,11 @@ module.exports = function (req, res, next) {
         currentUserRole: req.session.userRole
     };
 
-    pageOptions.isSystemAdmin = isCurrentUserSystemAdmin;
+    pageOptions.isUserSystemAdmin = isCurrentUserSystemAdmin;
 
-    pageOptions.layoutOptions.sideMenu.items = userSideMenuItems.map(right => selectActiveRoute(right, req.originalUrl));
+    if (!pageOptions.isUserSystemAdmin) {
+        pageOptions.layoutOptions.sideMenu.items = userSideMenuItems.map(right => selectActiveRoute(right, req.originalUrl));
+    }
 
     req.pageOptions = pageOptions;
 

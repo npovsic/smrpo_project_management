@@ -1,0 +1,57 @@
+<div class="container">
+    <div class="row">
+        <h5>{{projectData.name}}</h5>
+    </div>
+    
+    <div class="card">
+        <div class="card-content">
+            <p class="card-title">Podatki</p>
+
+            <div class="row">
+                
+            </div>
+
+            <div class="divider row"></div>
+            
+            <div class="row suppress-bottom-margin">
+                <a class="waves-effect waves-light btn theme-color right" href="/projects/{{projectData._id}}/edit">Uredi podatke</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <p class="card-title">Uporabniške zgodbe</p>
+
+            <div class="row">
+                <p class="center grey-text">Dodana ni nobena uporabniška zgodba</p>
+            </div>
+
+            {{#if userCanAddUserStories}}
+                <div class="divider row"></div>
+            
+                <div class="row suppress-bottom-margin">
+                    <a class="waves-effect waves-light btn theme-color right" href="/projects/{{projectData._id}}/edit">Dodaj novo zgodbo</a>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <p class="card-title">Sprinti</p>
+
+            <div class="row">
+                <p class="center grey-text">Trenutno ni aktivnega sprinta</p>
+            </div>
+
+            {{#if userCanAddSprint}}
+                <div class="divider row"></div>
+            
+                <div class="row suppress-bottom-margin">
+                    <a class="waves-effect waves-light btn theme-color right" href="/projects/{{projectData._id}}/edit">Dodaj nov sprint</a>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</div>

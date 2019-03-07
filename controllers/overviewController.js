@@ -12,7 +12,7 @@ module.exports = {
             }
         ];
 
-        if (pageOptions.isSystemAdmin) {
+        if (pageOptions.isUserSystemAdmin) {
             pageOptions.layoutOptions.navBar.tabs = [
                 {
                     label: 'Projekti',

@@ -20,9 +20,19 @@ const mapUserToSelectObject = function (user, projectRole) {
 
     if (projectRole) {
         if (Array.isArray(projectRole)) {
-            selected = projectRole.find((developerId) => developerId.equals(user._id));
+            selected = projectRole.find((id) => {
+                if (typeof projectRole === 'string') {
+                    return id === user._id.toString();
+                } else {
+                    return id.equals(user._id);
+                }
+            });
         } else {
-            selected = projectRole.equals(user._id);
+            if (typeof projectRole === 'string') {
+                selected = projectRole === user._id.toString();
+            } else {
+                selected = projectRole.equals(user._id);
+            }
         }
     }
 
@@ -49,7 +59,7 @@ module.exports = {
                 }
             ];
 
-            res.render('./projects/projectsPage', pageOptions);
+            res.render('./projects/projectsListPage', pageOptions);
         } catch (ex) {
             console.log(ex);
         }
@@ -95,8 +105,6 @@ module.exports = {
             _createdAt: new Date()
         };
 
-        console.log(projectData);
-
         projectModule.insert(projectData)
             .then(function (result) {
                 res.redirect('/projects');
@@ -135,6 +143,52 @@ module.exports = {
             });
     },
 
+    projectOverview: async function (req, res, next) {
+        const pageOptions = req.pageOptions;
+
+        const projectId = req.params.projectId;
+
+        const users = await usersModule.findAll();
+
+        const projectData = await projectModule.findOne({ _id: projectId });
+        
+        if (projectData.projectLeader) {
+            projectData.projectLeader = users.find((user) => user._id.equals(projectData.projectLeader));
+        }
+        
+        if (projectData.scrumMaster) {
+            projectData.scrumMaster = users.find((user) => user._id.equals(projectData.scrumMaster));
+        }
+        
+        if (projectData.developers) {
+            projectData.developers = projectData.developers.map((developerId) => {
+                return users.find((user) => user._id.equals(developerId));
+            });
+        }
+        
+        pageOptions.layoutOptions.pageTitle = projectData.name;
+
+        pageOptions.layoutOptions.navBar.breadcrumbs = [
+            {
+                title: 'Projekti',
+                href: '/projects'
+            },
+            {
+                title: projectData.name,
+                href: `/projects/${projectId}`
+            }
+        ];
+
+        const currentUser = pageOptions.currentUser;
+
+        pageOptions.userCanAddUserStories = projectData.projectLeader.equals(currentUser._id) || projectData.scrumMaster.equals(currentUser._id);
+        pageOptions.userCanAddSprint = projectData.scrumMaster.equals(currentUser._id);
+        
+        pageOptions.projectData = projectData;
+
+        res.render('./projects/projectOverviewPage', pageOptions);
+    },
+
     projectEditGet: async function (req, res, next) {
         const pageOptions = req.pageOptions;
 
@@ -150,7 +204,7 @@ module.exports = {
             developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
         };
 
-        pageOptions.layoutOptions.pageTitle = 'Uredi projekt';
+        pageOptions.layoutOptions.pageTitle = `${projectData.name} - Uredi`;
 
         pageOptions.layoutOptions.navBar.breadcrumbs = [
             {
@@ -158,14 +212,18 @@ module.exports = {
                 href: '/projects'
             },
             {
-                title: 'Uredi projekt',
-                href: `/projects${projectId}`
+                title: projectData.name,
+                href: `/projects/${projectId}`
+            },
+            {
+                title: 'Uredi',
+                href: `/projects${projectId}/edit`
             }
         ];
 
         pageOptions.usersSelectObjects = usersSelectObjects;
         pageOptions.projectData = projectData;
-
+        
         res.render('./projects/projectEditPage', pageOptions);
     },
 
@@ -185,7 +243,7 @@ module.exports = {
 
         projectModule.update(projectId, projectData)
             .then(function (result) {
-                res.redirect('/projects');
+                res.redirect(`/projects/${projectId}`);
             })
             .catch(async function (err) {
                 console.log(err);
@@ -200,7 +258,7 @@ module.exports = {
                     developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
                 };
 
-                pageOptions.layoutOptions.pageTitle = 'Uredi projekt';
+                pageOptions.layoutOptions.pageTitle = `${projectData.name} - Uredi`;
 
                 pageOptions.layoutOptions.navBar.breadcrumbs = [
                     {
@@ -208,8 +266,12 @@ module.exports = {
                         href: '/projects'
                     },
                     {
-                        title: 'Uredi projekt',
-                        href: `/projects${projectId}`
+                        title: projectData.name,
+                        href: `/projects/${projectId}`
+                    },
+                    {
+                        title: 'Uredi',
+                        href: `/projects${projectId}/edit`
                     }
                 ];
 

@@ -20,10 +20,15 @@ router.get('/create', buildBasePageOptions, projectsController.projectCreateGet)
 router.post('/create', buildBasePageOptions, projectsController.projectCreatePost);
 
 /**
+ * Route for project overview
+ */
+router.get('/:projectId', buildBasePageOptions, projectsController.projectOverview);
+
+/**
  * Route for editing an existing project
  */
-router.get('/:projectId', buildBasePageOptions, projectsController.projectEditGet);
+router.get('/:projectId/edit', buildBasePageOptions, projectsController.projectEditGet);
 
-router.post('/:projectId', buildBasePageOptions, projectsController.projectEditPost);
+router.post('/:projectId/edit', buildBasePageOptions, projectsController.projectEditPost);
 
 module.exports = router;
