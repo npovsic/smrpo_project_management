@@ -31,7 +31,7 @@ module.exports = function (req, res, next) {
                 buttons: null
             },
             sideMenu: {
-                show: !isCurrentUserSystemAdmin,
+                show: false,
                 items: null
             }
         },
@@ -41,9 +41,9 @@ module.exports = function (req, res, next) {
 
     pageOptions.isUserSystemAdmin = isCurrentUserSystemAdmin;
 
-    if (!pageOptions.isUserSystemAdmin) {
-        pageOptions.layoutOptions.sideMenu.items = userSideMenuItems.map(right => selectActiveRoute(right, req.originalUrl));
-    }
+    // if (!pageOptions.isUserSystemAdmin) {
+    //     pageOptions.layoutOptions.sideMenu.items = userSideMenuItems.map(right => selectActiveRoute(right, req.originalUrl));
+    // }
 
     req.pageOptions = pageOptions;
 

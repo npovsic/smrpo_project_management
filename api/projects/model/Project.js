@@ -9,10 +9,10 @@ const ProjectSchema = new Schema({
         required: true
     },
     description: String,
-    projectLeader: ObjectId,
-    scrumMaster: ObjectId,
-    developers: [ObjectId],
-    stories: [ObjectId],
+    projectLeader: { type: Schema.Types.ObjectId, ref: 'User' },
+    scrumMaster: { type: Schema.Types.ObjectId, ref: 'User' },
+    developers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }],
     _lastUpdatedAt: Date,
     _createdAt: Date
 });

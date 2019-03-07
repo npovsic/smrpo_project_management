@@ -152,7 +152,8 @@ module.exports = {
 
         const projectData = await projectModule.findOne({ _id: projectId });
         
-        if (projectData.projectLeader) {
+
+        if (projectData.projectLeader) {            
             projectData.projectLeader = users.find((user) => user._id.equals(projectData.projectLeader));
         }
         
@@ -181,8 +182,8 @@ module.exports = {
 
         const currentUser = pageOptions.currentUser;
 
-        pageOptions.userCanAddUserStories = projectData.projectLeader.equals(currentUser._id) || projectData.scrumMaster.equals(currentUser._id);
-        pageOptions.userCanAddSprint = projectData.scrumMaster.equals(currentUser._id);
+        pageOptions.userCanAddUserStories = (projectData.projectLeader || projectData.scrumMaster) ? (projectData.projectLeader._id.equals(currentUser._id) || projectData.scrumMaster._id.equals(currentUser._id)) : false;
+        pageOptions.userCanAddSprint = (projectData.scrumMaster) ? projectData.scrumMaster._id.equals(currentUser._id) : false;
         
         pageOptions.projectData = projectData;
 
