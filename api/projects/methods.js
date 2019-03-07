@@ -24,6 +24,8 @@ module.exports = {
     
     update: async function (projectId, projectData) {
         let projectInDatabase = await Project.findOne({ _id: projectId }).exec();
+        
+        console.log(projectInDatabase._lastUpdatedAt.getTime());
 
         /*
             Object.assign copies all the values from the second argument into the first one, even if they both have the save values

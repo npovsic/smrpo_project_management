@@ -1,5 +1,5 @@
-<header class="navbar-fixed">
-    <nav class="red">
+<header class="navbar-fixed {{#if options.tabs}}header-extended{{/if}} {{#if isSideMenuShown}}with-sidenav{{/if}}">
+    <nav class="red {{#if options.tabs}}nav-extended{{/if}} {{#if isSideMenuShown}}with-sidenav{{/if}}">
         <div class="nav-wrapper">
             <div class="col s12 breadcrumbs-wrapper">
                 {{#each options.breadcrumbs}}
@@ -8,10 +8,34 @@
             </div>
 
             <ul id="nav-mobile" class="right hide-on-med-and-down">
+                {{#each options.buttons}}
+                    <li>
+                        <a href="{{this.href}}">{{this.label}}</a>
+                    </li>
+                {{/each}}
+                
                 <li>
-                    <a href="/logout">Odjava</a>
+                    <a class="dropdown-trigger" href="#!" data-target="navbarDropdown">
+                        {{currentUser.username}}
+                        
+                        <i class="material-icons right">arrow_drop_down</i>
+                    </a>
                 </li>
             </ul>
         </div>
+
+        {{#if options.tabs}}
+            <div class="nav-content">
+                <ul class="tabs tabs-transparent tabs-fixed-width">
+                    {{#each options.tabs}}
+                        <li class="tab"><a href="{{this.href}}">{{this.label}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
+        {{/if}}
     </nav>
+
+    <ul id="navbarDropdown" class="dropdown-content">
+        <li><a href="/logout">Odjava</a></li>
+    </ul>
 </header>

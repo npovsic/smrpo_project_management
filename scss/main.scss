@@ -25,15 +25,19 @@ main {
 	width: 100%;
 }
 
-header, main.with-sidenav, footer {
+header.with-sidenav, main.with-sidenav, footer {
 	padding-left: $sidenav-width;
 }
 
 header {
 	flex-shrink: 0;
+	
+	&.header-extended {
+		height: 103px;
+	}
 }
 
-nav {
+nav.with-sidenav {
 	width: calc(100% - 200px);
 }
 
@@ -74,4 +78,8 @@ main > .content {
 	padding-left: 8px !important;
 	padding-bottom: 0 !important;
 	margin-bottom: 0 !important;
+}
+
+.uppercase {
+	text-transform: uppercase;
 }

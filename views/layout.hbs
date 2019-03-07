@@ -11,7 +11,11 @@
     </head>
     <body>
         {{#if layoutOptions.navBar.show}}
-            {{> navBar options=layoutOptions.navBar}}
+            {{> navBar 
+                    options=layoutOptions.navBar 
+                    currentUser=currentUser
+                    isSideMenuShown=layoutOptions.sideMenu.show
+            }}
         {{/if}}
     
         <!-- .with-sidenav class is used when a sidenav is present on the page -->

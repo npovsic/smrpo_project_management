@@ -1,37 +1,34 @@
-const rootRoute = '/';
+const projectModule = require('../api/projects/methods');
+const usersModule = require('../api/users/methods');
 
 module.exports = {
-    overviewGet(req, res, next) {
-        const pageOptions = {
-            layoutOptions: {
-                pageTitle: 'Pregled',
-                navBar: {
-                    show: true,
-                    breadcrumbs: [
-                        {
-                            title: 'Pregled',
-                            href: '/'
-                        }
-                    ],
-                    buttons: [
-                        {
-                            label: 'Odjava',
-                            href: '/logout'
-                        }
-                    ]
+    overviewGet: async function (req, res, next) {
+        const pageOptions = req.pageOptions;
+        
+        pageOptions.layoutOptions.navBar.breadcrumbs = [
+            {
+                title: 'Pregled',
+                href: '/'
+            }
+        ];
+
+        if (pageOptions.isSystemAdmin) {
+            pageOptions.layoutOptions.navBar.tabs = [
+                {
+                    label: 'Projekti',
+                    href: '#projects'
                 },
-                sideMenu: {
-                    show: true
+                {
+                    label: 'Uporabniki',
+                    href: '#users'
                 }
-            },
-            currentUser: req.session.user,
-            currentUserRole: req.session.userRole
-        };
+            ];
+            
+            pageOptions.projects = await projectModule.findAll();
 
-        pageOptions.isAdmin = (pageOptions.currentUserRole === 'admin');
-
-        pageOptions.layoutOptions.sideMenu.items = require('../lib/createSideMenuItems')(rootRoute, pageOptions);
-
-        res.render('./dashboard/dashboard', pageOptions);
+            res.render('./dashboard/adminDashboard', pageOptions);
+        } else {
+            res.render('./dashboard/userDashboard', pageOptions);
+        }
     }
 };
