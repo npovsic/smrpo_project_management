@@ -1,6 +1,8 @@
 const projectModule = require('../api/projects/methods');
 const usersModule = require('../api/users/methods');
 
+const { check, validationResult } = require('express-validator/check');
+
 const mapUserToSelectObject = function (user, projectRole) {
     let name = '';
 
@@ -281,5 +283,9 @@ module.exports = {
 
                 res.render('./projects/projectEditPage', pageOptions);
             });
-    }
+    },
+    
+    validateProject: [
+        
+    ]
 };

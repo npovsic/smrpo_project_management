@@ -3,15 +3,15 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const ProjectSchema = new Schema({
-    id: ObjectId,
+    _id: ObjectId,
     name: {
         type: String,
         required: true
     },
     description: String,
-    projectLeader: { type: Schema.Types.ObjectId, ref: 'User' },
-    scrumMaster: { type: Schema.Types.ObjectId, ref: 'User' },
-    developers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    projectLeader: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    scrumMaster: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    developers: [{ type: Schema.Types.ObjectId, ref: 'User', required: true }],
     stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }],
     _lastUpdatedAt: Date,
     _createdAt: Date
