@@ -24,7 +24,7 @@ module.exports = function (req, res, next) {
 
     const pageOptions = {
         layoutOptions: {
-            pageTitle: '',
+            headTitle: '',
             navBar: {
                 show: true,
                 breadcrumbs: null,

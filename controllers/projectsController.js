@@ -23,7 +23,7 @@ const mapUserToSelectObject = function (user, projectRole) {
     if (projectRole) {
         if (Array.isArray(projectRole)) {
             selected = projectRole.find((id) => {
-                if (typeof projectRole === 'string') {
+                if (typeof id === 'string') {
                     return id === user._id.toString();
                 } else {
                     return id.equals(user._id);
@@ -52,7 +52,7 @@ module.exports = {
 
             pageOptions.projects = await projectModule.findAll();
 
-            pageOptions.layoutOptions.pageTitle = 'Projekti';
+            pageOptions.layoutOptions.headTitle = 'Projekti';
 
             pageOptions.layoutOptions.navBar.breadcrumbs = [
                 {
@@ -69,6 +69,8 @@ module.exports = {
 
     projectCreateGet: async function (req, res, next) {
         const pageOptions = req.pageOptions;
+
+        pageOptions.layoutOptions.headTitle = 'Nov projekt';
 
         pageOptions.layoutOptions.pageTitle = 'Nov projekt';
 
@@ -111,10 +113,10 @@ module.exports = {
             .then(function (result) {
                 res.redirect('/projects');
             })
-            .catch(async function (err) {
-                console.log(err);
-
+            .catch(async function (err) {                
                 const pageOptions = req.pageOptions;
+
+                pageOptions.layoutOptions.headTitle = 'Nov projekt';
 
                 pageOptions.layoutOptions.pageTitle = 'Nov projekt';
 
@@ -137,11 +139,24 @@ module.exports = {
                     developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
                 };
 
-                pageOptions.error = {
-                    message: 'Napaka pri ustvarjanju novega projekta'
-                };
+                pageOptions.projectData = projectData;
 
-                res.redirect('/projects/create');
+                if (err && err.errors) {
+                    pageOptions.errors = {};
+
+                    for (const property in err.errors) {
+                        if (err.errors.hasOwnProperty(property)) {
+                            const error = err.errors[property];
+
+                            pageOptions.errors[property] = {
+                                propertyName: error.path,
+                                errorType: error.kind
+                            };
+                        }
+                    }
+                }
+                
+                res.render('./projects/projectEditPage', pageOptions);
             });
     },
 
@@ -169,7 +184,7 @@ module.exports = {
             });
         }
         
-        pageOptions.layoutOptions.pageTitle = projectData.name;
+        pageOptions.layoutOptions.headTitle = projectData.name;
 
         pageOptions.layoutOptions.navBar.breadcrumbs = [
             {
@@ -207,7 +222,9 @@ module.exports = {
             developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
         };
 
-        pageOptions.layoutOptions.pageTitle = `${projectData.name} - Uredi`;
+        pageOptions.layoutOptions.headTitle = `${projectData.name} - Uredi`;
+        
+        pageOptions.layoutOptions.pageTitle = 'Urejanje projekta';
 
         pageOptions.layoutOptions.navBar.breadcrumbs = [
             {
@@ -248,9 +265,7 @@ module.exports = {
             .then(function (result) {
                 res.redirect(`/projects/${projectId}`);
             })
-            .catch(async function (err) {
-                console.log(err);
-
+            .catch(async function (err) {     
                 const pageOptions = req.pageOptions;
 
                 const users = await usersModule.findAll();
@@ -261,7 +276,9 @@ module.exports = {
                     developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
                 };
 
-                pageOptions.layoutOptions.pageTitle = `${projectData.name} - Uredi`;
+                pageOptions.layoutOptions.headTitle = `${projectData.name} - Uredi`;
+
+                pageOptions.layoutOptions.pageTitle = 'Urejanje projekta';
 
                 pageOptions.layoutOptions.navBar.breadcrumbs = [
                     {
@@ -279,13 +296,26 @@ module.exports = {
                 ];
 
                 pageOptions.usersSelectObjects = usersSelectObjects;
+
+                projectData._id = projectId;
                 pageOptions.projectData = projectData;
+
+                if (err && err.errors) {
+                    pageOptions.errors = {};
+
+                    for (const property in err.errors) {
+                        if (err.errors.hasOwnProperty(property)) {
+                            const error = err.errors[property];
+
+                            pageOptions.errors[property] = {
+                                propertyName: error.path,
+                                errorType: error.kind
+                            };
+                        }
+                    }
+                }
 
                 res.render('./projects/projectEditPage', pageOptions);
             });
-    },
-    
-    validateProject: [
-        
-    ]
+    }
 };

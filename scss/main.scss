@@ -66,9 +66,6 @@ main > .content {
 }
 
 .nav-wrapper {
-	display: flex;
-	justify-content: space-between;
-	
 	& > .breadcrumbs-wrapper {
 		padding-left: 16px;
 	}
@@ -131,4 +128,16 @@ main > .content {
 	@extend .z-depth-0;
 
 	border-radius: 5px;
+}
+
+.navbar-title {
+	font-size: 1.5rem;
+	color: #fff;
+	display: inline-block;
+	padding: 0 16px;
+}
+
+.input-field .helper-text {
+	position: absolute;
+	top: 90%;
 }
