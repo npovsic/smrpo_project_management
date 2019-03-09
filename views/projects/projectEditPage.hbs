@@ -20,7 +20,7 @@
                 <div class="row suppress-bottom-margin">
                     <div class="input-field col s12">
                         <input id="name" name="name" type="text" class="validate" value="{{projectData.name}}" autofocus>
-                        <label for="username">Ime projekta</label>
+                        <label for="username">Ime projekta <abbr title="Obvezno polje">*</abbr></label>
                         {{#if errors.name}}
                             <span class="helper-text red-text">Ime projekta je obvezno.</span>
                         {{/if}}
@@ -48,7 +48,7 @@
                                <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
                            {{/each}}
                        </select>
-                       <label for="projectLeader">Projektni vodja</label>
+                       <label for="projectLeader">Projektni vodja <abbr title="Obvezno polje">*</abbr></label>
                        
                        {{#if errors.projectLeader}}
                            <span class="helper-text red-text">Nastavite projektnega vodjo.</span>
@@ -64,7 +64,7 @@
                                <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
                            {{/each}}
                        </select>
-                       <label for="scrumMaster">Vodja metodologije</label>
+                       <label for="scrumMaster">Vodja metodologije <abbr title="Obvezno polje">*</abbr></label>
 
                        {{#if errors.scrumMaster}}
                            <span class="helper-text red-text">Nastavite vodjo metodologije.</span>
@@ -80,7 +80,7 @@
                                <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
                            {{/each}}
                        </select>
-                       <label for="developers">Razvijalci</label>
+                       <label for="developers">Razvijalci <abbr title="Obvezno polje">*</abbr></label>
 
                        {{#if errors.developers}}
                            <span class="helper-text red-text">Dodajte razvijalce.</span>

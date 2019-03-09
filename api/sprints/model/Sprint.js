@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 module.exports = mongoose.model('Sprint', new Schema({
-    _id: ObjectId,
+    id: ObjectId,
     startDate: Date,
     endDate: Date,
     velocity: Number,

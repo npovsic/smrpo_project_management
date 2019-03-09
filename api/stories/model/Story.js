@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 module.exports = mongoose.model('Story', new Schema({
-    _id: ObjectId,
+    id: ObjectId,
     ordinal: Number,  // Number for users to refer to
     title: {
         type: String,

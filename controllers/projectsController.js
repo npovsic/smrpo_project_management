@@ -141,6 +141,8 @@ module.exports = {
 
                 pageOptions.projectData = projectData;
 
+                console.log(err);
+                
                 if (err && err.errors) {
                     pageOptions.errors = {};
 

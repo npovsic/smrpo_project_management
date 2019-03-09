@@ -141,3 +141,15 @@ main > .content {
 	position: absolute;
 	top: 90%;
 }
+
+.valign-wrapper {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+}
+
+abbr[title] {
+	border-bottom: none;
+	text-decoration: none !important;
+}
