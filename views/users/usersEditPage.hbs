@@ -1,0 +1,71 @@
+<div class="container">
+    <form method="post">
+        <div class="card">
+            <div class="card-content">
+                <p class="card-title">Podatki uporabnika</p>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s6">
+                        <input id="firstName" name="firstName" type="text" class="validate" value="{{userData.firstName}}" pattern=".{1,128}" required>
+                        <label for="firstName">Ime <abbr title="Obvezno polje">*</abbr></label>
+                        {{#if options.errors.firstName}}
+                            <span class="helper-text red-text">Ime ne sme biti prazno in mora biti manjše od 64 znakov</span>
+                        {{/if}}
+                    </div>
+
+                    <div class="input-field col s6">
+                        <input id="lastName" name="lastName" type="text" class="validate" value="{{userData.lastName}}" pattern=".{0,128}" required>
+                        <label for="lastName">Priimek</label>
+                    </div>
+                </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <input id="email" name="email" type="email" class="validate" value="{{userData.email}}" pattern=".{1,128}" required>
+                        <label for="email">E-poštni naslov <abbr title="Obvezno polje">*</abbr></label>
+                        {{#if options.errors.email}}
+                            <span class="helper-text red-text">Email naslov ni regularen, uporabite drug email naslov</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <input id="username" name="username" type="text" class="validate" value="{{userData.username}}" pattern=".{4,128}" required>
+                        <label for="username">Uporabniško ime <abbr title="Obvezno polje">*</abbr></label>
+                        {{#if options.errors.username}}
+                            <span class="helper-text red-text">Uporabniško ne sme biti prazno in mora biti manjše od 64 znakov</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <input id="password" name="password" type="password" class="validate" value="{{userData.password}}"pattern=".{4,64}" required>
+                        <label for="password">Geslo <abbr title="Obvezno polje">*</abbr></label>
+                        {{#if options.errors.password}}
+                            <span class="helper-text red-text">Geslo mora biti med 4 in 64 znaki</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select name="role" required>
+                            <option value="" disabled selected>Sistemske pravice</option>
+                            {{#each userRoles}}
+                                <option value="{{this}}" {{#if this.selected}}selected{{/if}}>{{this}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    {{#if options.errors.role}}
+                        <span class="helper-text red-text">Sistemska pravica se ne ujema z možnimi izbirami</span>
+                    {{/if}}
+                </div>        
+            </div>
+        </div>
+        <div class="row right">
+            <button class="btn-large theme-color" type="submit">Shrani uporabnika</button>
+        </div>
+    </form>
+</div>
