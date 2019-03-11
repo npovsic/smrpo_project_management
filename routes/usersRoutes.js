@@ -17,6 +17,6 @@ router.get('/', redirectAdmin, buildBasePageOptions, usersController.usersList);
  */
 router.get('/create', buildBasePageOptions, usersController.userCreateGet);
 
-router.post('/create', buildBasePageOptions, usersController.userCreatePost);
+router.post('/create', buildBasePageOptions, usersController.validate('createUser'), usersController.userCreatePost);
 
 module.exports = router;
