@@ -1,7 +1,7 @@
-<div class="container {{#unless projects}}full-height valign-wrapper{{/unless}}">
+<div class="container{{#unless projects}} full-height valign-wrapper{{/unless}}">
     {{#if projects}}
         {{#each projects}}
-            <div class="row">
+            <div class="row suppress-bottom-margin">
                 <div class="col s12">
                     <div class="card">
                         <div class="card-content">
@@ -15,10 +15,4 @@
     {{else}}
         <h4 class="center full-width grey-text">Ni dodanih projektov</h4>
     {{/if}}
-</div>
-
-<div class="fixed-action-btn">
-    <a href="/projects/create" class="btn-floating btn-large red">
-        <i class="large material-icons">add</i>
-    </a>
 </div>

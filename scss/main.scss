@@ -9,8 +9,13 @@ html, body {
 body {
 	display: flex;
 	flex-direction: column;
-	
+
+	overflow-x: hidden;
 	overflow-y: scroll;
+}
+
+body {
+	background-color: #eef5f9;
 }
 
 main {
@@ -25,15 +30,19 @@ main {
 	width: 100%;
 }
 
-header, main.with-sidenav, footer {
+header.with-sidenav, main.with-sidenav, footer {
 	padding-left: $sidenav-width;
 }
 
 header {
 	flex-shrink: 0;
+	
+	&.header-extended {
+		height: 103px;
+	}
 }
 
-nav {
+nav.with-sidenav {
 	width: calc(100% - 200px);
 }
 
@@ -57,9 +66,6 @@ main > .content {
 }
 
 .nav-wrapper {
-	display: flex;
-	justify-content: space-between;
-	
 	& > .breadcrumbs-wrapper {
 		padding-left: 16px;
 	}
@@ -74,4 +80,76 @@ main > .content {
 	padding-left: 8px !important;
 	padding-bottom: 0 !important;
 	margin-bottom: 0 !important;
+}
+
+.uppercase {
+	text-transform: uppercase;
+}
+
+.theme-color {
+	background-color: $primary-color !important;
+}
+
+.card {
+	@extend .z-depth-0;
+	
+	border: 1px solid #ccc;
+	
+	border-radius: 5px;
+}
+
+.users-label {
+	margin-bottom: 6px !important;
+}
+
+.page-title-wrapper {
+	margin: 8px 0 20px;
+	
+	.page-title {
+		line-height: 32px;
+		margin: 0;
+	}
+
+	& > .back-button {
+		margin-right: 4px;
+		
+		& > .back-icon {
+			margin: 0;
+			font-size: 24px;
+		}
+	}
+}
+
+.card .card-content .card-title {
+	margin-bottom: 16px;
+}
+
+.btn:not(.btn-floating) {
+	@extend .z-depth-0;
+
+	border-radius: 5px;
+}
+
+.navbar-title {
+	font-size: 1.5rem;
+	color: #fff;
+	display: inline-block;
+	padding: 0 16px;
+}
+
+.input-field .helper-text {
+	position: absolute;
+	top: 90%;
+}
+
+.valign-wrapper {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+}
+
+abbr[title] {
+	border-bottom: none;
+	text-decoration: none !important;
 }

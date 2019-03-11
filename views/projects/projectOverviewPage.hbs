@@ -1,0 +1,113 @@
+<div class="container">
+    <div class="row page-title-wrapper">
+        <a href="/projects" class="btn-flat back-button left">
+            <i class="material-icons left back-icon">arrow_back</i>
+        </a>
+
+        <h5 class="page-title left">{{projectData.name}}</h5>
+    </div>
+    
+    <div class="card">
+        <div class="card-content">
+            <p class="card-title">Podatki</p>
+
+            <div class="row">
+                <div class="col s12">
+                    <p><span class="grey-text">Ime: </span>{{projectData.name}}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <p><span class="grey-text">Opis: </span>{{projectData.description}}</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col s12">
+                    <p><span class="grey-text">Ustvarjeno: </span>{{formatDate projectData._createdAt}}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <p><span class="grey-text">Nazadnje posodobljeno: </span>{{formatDate projectData._lastUpdatedAt}}</p>
+                </div>
+            </div>
+
+            <div class="row suppress-bottom-margin">
+                <div class="col s12">
+                    <p class="users-label grey-text">Projektni vodja:</p>
+
+                    <div class="chip">
+                        {{projectData.projectLeader.firstName}}{{#if projectData.projectLeader.lastName}} {{projectData.projectLeader.lastName}}{{/if}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row suppress-bottom-margin">
+                <div class="col s12">
+                    <p class="users-label grey-text">Vodja metodologije:</p>
+
+                    <div class="chip">
+                        {{projectData.scrumMaster.firstName}}{{#if projectData.scrumMaster.lastName}} {{projectData.scrumMaster.lastName}}{{/if}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <p class="users-label grey-text">Razvijalci:</p>
+
+                    {{#each projectData.developers}}
+                        <div class="chip">
+                            {{this.firstName}}{{#if this.lastName}} {{this.lastName}}{{/if}}
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <div class="divider row"></div>
+            
+            <div class="row suppress-bottom-margin">
+                <a class="waves-effect waves-light btn theme-color right" href="/projects/{{projectData._id}}/edit">Uredi podatke</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <p class="card-title">Uporabniške zgodbe</p>
+
+            <div class="row">
+                <p class="center grey-text">Dodana ni nobena uporabniška zgodba</p>
+            </div>
+
+            {{#if userCanAddUserStories}}
+                <div class="divider row"></div>
+            
+                <div class="row suppress-bottom-margin">
+                    <a class="waves-effect waves-light btn theme-color right" href="/projects/{{projectData._id}}/stories/create">Dodaj novo zgodbo</a>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <p class="card-title">Sprinti</p>
+
+            <div class="row">
+                <p class="center grey-text">Trenutno ni aktivnega Sprinta</p>
+            </div>
+
+            {{#if userCanAddSprint}}
+                <div class="divider row"></div>
+            
+                <div class="row suppress-bottom-margin">
+                    <a class="waves-effect waves-light btn theme-color right" href="/projects/{{projectData._id}}/sprints/create">Dodaj nov Sprint</a>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</div>

@@ -5,7 +5,10 @@ const overviewController = require('../controllers/overviewController');
 
 const loginController = require('../controllers/loginController');
 
-router.get('/', overviewController.overviewGet);
+const buildBasePageOptions = require('../middlewares/buildBasePageOptions');
+
+
+router.get('/', buildBasePageOptions, overviewController.overviewGet);
 
 router.get('/login', loginController.loginGet);
 

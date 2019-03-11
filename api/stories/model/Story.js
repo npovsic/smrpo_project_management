@@ -16,6 +16,7 @@ module.exports = mongoose.model('Story', new Schema({
         required: true,
     },
     acceptanceTests: String,
+    score: Number,
     priority: {
         type: String,
         enum: [
@@ -29,7 +30,7 @@ module.exports = mongoose.model('Story', new Schema({
     },
     businessValue: Number,
     tasks: [ObjectId],
-    sprintId: ObjectId,  // The sprint it belongs to, if at all
+    sprintId: { type: Schema.Types.ObjectId, ref: 'Sprint' },  // The sprint it belongs to, if at all
     rejectionReason: String,  // Empty if not rejected at end of sprint
     _lastUpdatedAt: Date,
     _createdAt: Date,

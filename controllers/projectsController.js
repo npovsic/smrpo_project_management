@@ -1,114 +1,102 @@
 const projectModule = require('../api/projects/methods');
 const usersModule = require('../api/users/methods');
 
-const rootRoute = '/projects';
+const { check, validationResult } = require('express-validator/check');
+
+const mapUserToSelectObject = function (user, projectRole) {
+    let name = '';
+
+    if (user.firstName) {
+        name = user.firstName;
+
+        if (user.lastName) {
+            name = `${name} ${user.lastName}`;
+        }
+
+        name = `${name} (${user.username})`;
+    } else {
+        name = user.username;
+    }
+
+    let selected = false;
+
+    if (projectRole) {
+        if (Array.isArray(projectRole)) {
+            selected = projectRole.find((id) => {
+                if (typeof id === 'string') {
+                    return id === user._id.toString();
+                } else {
+                    return id.equals(user._id);
+                }
+            });
+        } else {
+            if (typeof projectRole === 'string') {
+                selected = projectRole === user._id.toString();
+            } else {
+                selected = projectRole.equals(user._id);
+            }
+        }
+    }
+
+    return {
+        selected,
+        value: user._id,
+        title: name
+    }
+};
 
 module.exports = {
     projectsList: async function (req, res, next) {
         try {
-            const projects = await projectModule.findAll();
+            const pageOptions = req.pageOptions;
 
-            const pageOptions = {
-                projects,
-                layoutOptions: {
-                    pageTitle: 'Pregled',
-                    navBar: {
-                        show: true,
-                        breadcrumbs: [
-                            {
-                                title: 'Projekti',
-                                href: '/projects'
-                            }
-                        ],
-                        buttons: [
-                            {
-                                label: 'Odjava',
-                                href: '/logout'
-                            }
-                        ]
-                    },
-                    sideMenu: {
-                        show: true
-                    }
-                },
-                currentUser: req.session.user,
-                currentUserRole: req.session.userRole
-            };
+            pageOptions.projects = await projectModule.findAll();
 
-            pageOptions.isAdmin = (pageOptions.currentUserRole === 'admin');
+            pageOptions.layoutOptions.headTitle = 'Projekti';
 
-            pageOptions.layoutOptions.sideMenu.items = require('../lib/createSideMenuItems')(rootRoute, pageOptions);
+            pageOptions.layoutOptions.navBar.breadcrumbs = [
+                {
+                    title: 'Projekti',
+                    href: '/projects'
+                }
+            ];
 
-            res.render('./projects/projectsPage', pageOptions);
+            res.render('./projects/projectsListPage', pageOptions);
         } catch (ex) {
             console.log(ex);
         }
     },
 
     projectCreateGet: async function (req, res, next) {
+        const pageOptions = req.pageOptions;
+
+        pageOptions.layoutOptions.headTitle = 'Nov projekt';
+
+        pageOptions.layoutOptions.pageTitle = 'Nov projekt';
+
+        pageOptions.layoutOptions.navBar.breadcrumbs = [
+            {
+                title: 'Projekti',
+                href: '/projects'
+            },
+            {
+                title: 'Nov projekt',
+                href: '/projects/create'
+            }
+        ];
+
         const users = await usersModule.findAll();
 
-        const usersSelectObjects = {
-            projectLeader: users.map((user) => {
-                return {
-                    value: user._id,
-                    title: user.username
-                }
-            }),
-            scrumMaster: users.map((user) => {
-                return {
-                    value: user._id,
-                    title: user.username
-                }
-            }),
-            developers: users.map((user) => {
-                return {
-                    value: user._id,
-                    title: user.username
-                }
-            })
+        pageOptions.usersSelectObjects = {
+            projectLeader: users.map(user => mapUserToSelectObject(user)),
+            scrumMaster: users.map(user => mapUserToSelectObject(user)),
+            developers: users.map(user => mapUserToSelectObject(user))
         };
-
-
-        const pageOptions = {
-            usersSelectObjects,
-            layoutOptions: {
-                pageTitle: 'Nov projekt',
-                navBar: {
-                    show: true,
-                    breadcrumbs: [
-                        {
-                            title: 'Projekti',
-                            href: '/projects'
-                        },
-                        {
-                            title: 'Nov projekt',
-                            href: '/projects/create'
-                        }
-                    ],
-                    buttons: [
-                        {
-                            label: 'Odjava',
-                            href: '/logout'
-                        }
-                    ]
-                },
-                sideMenu: {
-                    show: true
-                }
-            },
-            currentUser: req.session.user,
-            currentUserRole: req.session.userRole
-        };
-
-        pageOptions.isAdmin = (pageOptions.currentUserRole === 'admin');
-
-        pageOptions.layoutOptions.sideMenu.items = require('../lib/createSideMenuItems')(rootRoute, pageOptions);
 
         res.render('./projects/projectEditPage', pageOptions);
     },
 
-    projectCreatePost(req, res, next) {
+    projectCreatePost: async function (req, res, next) {
         const postData = req.body;
 
         const projectData = {
@@ -121,20 +109,109 @@ module.exports = {
             _createdAt: new Date()
         };
 
-        console.log(projectData);
-
         projectModule.insert(projectData)
             .then(function (result) {
                 res.redirect('/projects');
             })
-            .catch(function (err) {
-                console.log(err);
+            .catch(async function (err) {                
+                const pageOptions = req.pageOptions;
 
-                res.redirect('/projects/create');
+                pageOptions.layoutOptions.headTitle = 'Nov projekt';
+
+                pageOptions.layoutOptions.pageTitle = 'Nov projekt';
+
+                pageOptions.layoutOptions.navBar.breadcrumbs = [
+                    {
+                        title: 'Projekti',
+                        href: '/projects'
+                    },
+                    {
+                        title: 'Nov projekt',
+                        href: '/projects/create'
+                    }
+                ];
+
+                const users = await usersModule.findAll();
+
+                pageOptions.usersSelectObjects = {
+                    projectLeader: users.map(user => mapUserToSelectObject(user, projectData.projectLeader)),
+                    scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
+                    developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
+                };
+
+                pageOptions.projectData = projectData;
+
+                console.log(err);
+                
+                if (err && err.errors) {
+                    pageOptions.errors = {};
+
+                    for (const property in err.errors) {
+                        if (err.errors.hasOwnProperty(property)) {
+                            const error = err.errors[property];
+
+                            pageOptions.errors[property] = {
+                                propertyName: error.path,
+                                errorType: error.kind
+                            };
+                        }
+                    }
+                }
+                
+                res.render('./projects/projectEditPage', pageOptions);
             });
     },
 
+    projectOverview: async function (req, res, next) {
+        const pageOptions = req.pageOptions;
+
+        const projectId = req.params.projectId;
+
+        const users = await usersModule.findAll();
+
+        const projectData = await projectModule.findOne({ _id: projectId });
+        
+
+        if (projectData.projectLeader) {            
+            projectData.projectLeader = users.find((user) => user._id.equals(projectData.projectLeader));
+        }
+        
+        if (projectData.scrumMaster) {
+            projectData.scrumMaster = users.find((user) => user._id.equals(projectData.scrumMaster));
+        }
+        
+        if (projectData.developers) {
+            projectData.developers = projectData.developers.map((developerId) => {
+                return users.find((user) => user._id.equals(developerId));
+            });
+        }
+        
+        pageOptions.layoutOptions.headTitle = projectData.name;
+
+        pageOptions.layoutOptions.navBar.breadcrumbs = [
+            {
+                title: 'Projekti',
+                href: '/projects'
+            },
+            {
+                title: projectData.name,
+                href: `/projects/${projectId}`
+            }
+        ];
+
+        const currentUser = pageOptions.currentUser;
+
+        pageOptions.userCanAddUserStories = (projectData.projectLeader || projectData.scrumMaster) ? (projectData.projectLeader._id.equals(currentUser._id) || projectData.scrumMaster._id.equals(currentUser._id)) : false;
+        pageOptions.userCanAddSprint = (projectData.scrumMaster) ? projectData.scrumMaster._id.equals(currentUser._id) : false;
+        
+        pageOptions.projectData = projectData;
+
+        res.render('./projects/projectOverviewPage', pageOptions);
+    },
+
     projectEditGet: async function (req, res, next) {
+        const pageOptions = req.pageOptions;
+
         const projectId = req.params.projectId;
 
         const users = await usersModule.findAll();
@@ -142,71 +219,33 @@ module.exports = {
         const projectData = await projectModule.findOne({ _id: projectId });
 
         const usersSelectObjects = {
-            projectLeader: users.map((user) => {
-                const isUserProjectLeader = projectData.projectLeader && projectData.projectLeader.equals(user._id);
-
-                return {
-                    value: user._id,
-                    title: user.username,
-                    selected: isUserProjectLeader
-                }
-            }),
-            scrumMaster: users.map((user) => {
-                const isUserScrumMaster = projectData.scrumMaster && projectData.scrumMaster.equals(user._id);
-
-                return {
-                    value: user._id,
-                    title: user.username,
-                    selected: isUserScrumMaster
-                }
-            }),
-            developers: users.map((user) => {
-                const isUserADeveloper = projectData.developers && projectData.developers.find((developerId) => developerId.equals(user._id));
-
-                return {
-                    value: user._id,
-                    title: user.username,
-                    selected: isUserADeveloper
-                }
-            })
+            projectLeader: users.map(user => mapUserToSelectObject(user, projectData.projectLeader)),
+            scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
+            developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
         };
 
-        const pageOptions = {
-            usersSelectObjects,
-            projectData,
-            layoutOptions: {
-                pageTitle: 'Uredi projekt',
-                navBar: {
-                    show: true,
-                    breadcrumbs: [
-                        {
-                            title: 'Projekti',
-                            href: '/projects'
-                        },
-                        {
-                            title: 'Uredi projekt',
-                            href: `/projects${projectId}`
-                        }
-                    ],
-                    buttons: [
-                        {
-                            label: 'Odjava',
-                            href: '/logout'
-                        }
-                    ]
-                },
-                sideMenu: {
-                    show: true
-                }
+        pageOptions.layoutOptions.headTitle = `${projectData.name} - Uredi`;
+        
+        pageOptions.layoutOptions.pageTitle = 'Urejanje projekta';
+
+        pageOptions.layoutOptions.navBar.breadcrumbs = [
+            {
+                title: 'Projekti',
+                href: '/projects'
             },
-            currentUser: req.session.user,
-            currentUserRole: req.session.userRole
-        };
+            {
+                title: projectData.name,
+                href: `/projects/${projectId}`
+            },
+            {
+                title: 'Uredi',
+                href: `/projects${projectId}/edit`
+            }
+        ];
 
-        pageOptions.isAdmin = (pageOptions.currentUserRole === 'admin');
-
-        pageOptions.layoutOptions.sideMenu.items = require('../lib/createSideMenuItems')(rootRoute, pageOptions);
-
+        pageOptions.usersSelectObjects = usersSelectObjects;
+        pageOptions.projectData = projectData;
+        
         res.render('./projects/projectEditPage', pageOptions);
     },
 
@@ -226,12 +265,59 @@ module.exports = {
 
         projectModule.update(projectId, projectData)
             .then(function (result) {
-                res.redirect('/projects');
-            })
-            .catch(function (err) {
-                console.log(err);
-
                 res.redirect(`/projects/${projectId}`);
+            })
+            .catch(async function (err) {     
+                const pageOptions = req.pageOptions;
+
+                const users = await usersModule.findAll();
+
+                const usersSelectObjects = {
+                    projectLeader: users.map(user => mapUserToSelectObject(user, projectData.projectLeader)),
+                    scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
+                    developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
+                };
+
+                pageOptions.layoutOptions.headTitle = `${projectData.name} - Uredi`;
+
+                pageOptions.layoutOptions.pageTitle = 'Urejanje projekta';
+
+                pageOptions.layoutOptions.navBar.breadcrumbs = [
+                    {
+                        title: 'Projekti',
+                        href: '/projects'
+                    },
+                    {
+                        title: projectData.name,
+                        href: `/projects/${projectId}`
+                    },
+                    {
+                        title: 'Uredi',
+                        href: `/projects${projectId}/edit`
+                    }
+                ];
+
+                pageOptions.usersSelectObjects = usersSelectObjects;
+
+                projectData._id = projectId;
+                pageOptions.projectData = projectData;
+
+                if (err && err.errors) {
+                    pageOptions.errors = {};
+
+                    for (const property in err.errors) {
+                        if (err.errors.hasOwnProperty(property)) {
+                            const error = err.errors[property];
+
+                            pageOptions.errors[property] = {
+                                propertyName: error.path,
+                                errorType: error.kind
+                            };
+                        }
+                    }
+                }
+
+                res.render('./projects/projectEditPage', pageOptions);
             });
     }
 };

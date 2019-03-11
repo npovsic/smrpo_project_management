@@ -1,0 +1,58 @@
+<div id="projects" class="{{#unless users}}full-height{{/unless}}">
+    <div class="container{{#unless projects}} full-height valign-wrapper{{/unless}}">
+        {{#if projects}}
+            {{#each projects}}
+                <div class="row suppress-bottom-margin">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <a href="/projects/{{this._id}}" class="card-title">{{this.name}}</a>
+                                <p>{{this.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        {{else}}
+            <div class="row suppress-bottom-margin">
+                <i class="material-icons center full-width grey-text large">folder</i>
+            </div>
+            <div class="row">
+                <h5 class="center full-width grey-text">Ni dodanih projektov</h5>
+            </div>
+        {{/if}}
+    </div>
+
+    <div class="fixed-action-btn">
+        <a href="/projects/create" class="btn-floating btn-large theme-color">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+</div>
+
+<div id="users" class="{{#unless users}}full-height{{/unless}}">
+    <div class="container{{#unless users}} full-height valign-wrapper{{/unless}}">
+        {{#if users}}
+            {{#each users}}
+                <div class="row suppress-bottom-margin">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <a href="/projects/{{this._id}}" class="card-title">{{this.name}}</a>
+                                <p>{{this.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        {{else}}
+            <div class="row suppress-bottom-margin">
+                <i class="material-icons center full-width grey-text large">people</i>
+            </div>
+            <div class="row">
+                <h5 class="center full-width grey-text">Ni dodanih uporabnikov</h5>
+            </div>
+        {{/if}}
+    </div>
+</div>
+
