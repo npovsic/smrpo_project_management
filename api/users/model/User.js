@@ -21,11 +21,9 @@ const UserSchema = new Schema({
         unique: true,
         required: true
     },
-    password: {
+    password: {  // Salted and hashed
         type: String,
         required: true,
-        minlength: 4,
-        maxlength: 128
     },
     role: {
         type: String,

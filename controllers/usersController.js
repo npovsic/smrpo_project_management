@@ -49,19 +49,18 @@ module.exports = {
     userCreatePost: async function (req, res, next) {
         const postData = req.body;
     
-        const userData = {
+        let userData = {
             firstName: postData.firstName,
             lastName: postData.lastName,
             email: postData.email,
             username: postData.username,
-            password: postData.password,
             role: postData.role.toLowerCase(),
             _lastUpdatedAt: new Date(),
             _createdAt: new Date()
         };
 
         //create a hash password for the user
-        hashSalt(userData.password).hash(function (err, hashedPassword) {
+        hashSalt(postData.password).hash(function (err, hashedPassword) {
             if (err) {
                console.log(err);
                
@@ -69,20 +68,19 @@ module.exports = {
             }
 
             userData.password = hashedPassword;
+
+            const pageOptions = req.pageOptions;
+            pageOptions.userData = userData;
+
+            userModule.insert(userData)
+                .then(function (result) {
+                    console.log(result);
+                    res.redirect('/users');
+                })
+                .catch(function (err) {
+                    console.log(err);
+                    res.redirect('/users/create');
+                });
         });
-
-        const pageOptions = req.pageOptions;
-        pageOptions.userData = userData;
-
-       
-        userModule.insert(userData)
-            .then(function (result) {
-                console.log(result);
-                res.redirect('/users');
-            })
-            .catch(function (err) {
-                console.log(err);
-                res.redirect('/users/create');
-            }); 
     },
 };
