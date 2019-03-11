@@ -69,48 +69,44 @@ module.exports = {
                
                return;
             }
+            const pageOptions = req.pageOptions;
+            pageOptions.userData = userData;
+            pageOptions.userRoles = userRoles;
+            pageOptions.layoutOptions.headTitle = 'Dodajanje uporabnikov';
+            pageOptions.layoutOptions.pageTitle = 'Dodajanje novega uporabnika';
+            pageOptions.layoutOptions.navBar.breadcrumbs = [
+                {
+                    title: 'Uporabniki',
+                    href: '/users'
+                },
+                {
+                    title: 'Nov uporabnik',
+                    href: '/users/create'
+                }
+            ];
 
-            userData.password = hashedPassword;
-        });
+            //form validation using express-validate
+            pageOptions.errors = {};
+            var errorValidation = validationResult(req);
+            if(!errorValidation.isEmpty()){
+                errorValidation.array().forEach(function(ele){
+                    pageOptions.errors[ele.param] = ele.msg;
+                });
 
-        const pageOptions = req.pageOptions;
-        pageOptions.layoutOptions.headTitle = 'Dodajanje uporabnikov';
-        pageOptions.layoutOptions.pageTitle = 'Dodajanje novega uporabnika';
-        pageOptions.layoutOptions.navBar.breadcrumbs = [
-            {
-                title: 'Uporabniki',
-                href: '/users'
-            },
-            {
-                title: 'Nov uporabnik',
-                href: '/users/create'
+                res.render('./users/usersEditPage', pageOptions);
+            } else {
+                userData.password = hashedPassword;
+                userModule.insert(userData)
+                    .then(function (result) {
+                        console.log(result);
+                        res.redirect('/users');
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                        res.render('./users/usersEditPage', pageOptions);
+                    }); 
             }
-        ];
-
-        pageOptions.userData = userData;
-        pageOptions.userRoles = userRoles;
-
-        //form validation using express-validate
-        pageOptions.errors = {};
-        var errorValidation = validationResult(req);
-        console.log(errorValidation.array());
-        if(!errorValidation.isEmpty()){
-            errorValidation.array().forEach(function(ele){
-                pageOptions.errors[ele.param] = ele.msg;
-            });
-
-            res.render('./users/usersEditPage', pageOptions);
-        } else {
-            userModule.insert(userData)
-                .then(function (result) {
-                    console.log(result);
-                    res.redirect('/users');
-                })
-                .catch(function (err) {
-                    console.log(err);
-                    res.render('./users/usersEditPage', pageOptions);
-                }); 
-        }
+        });
     },
 
     validate: function (method) {
