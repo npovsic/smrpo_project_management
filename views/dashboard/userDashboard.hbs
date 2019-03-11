@@ -1,25 +1,26 @@
 <div class="container">
     <div class="row">
-        <h3 class="row">Pozdravljeni {{currentUser.firstName}} {{currentUser.lastName}}</h3>
+        <h3 class="row">Pozdravljeni, {{currentUser.firstName}} {{currentUser.lastName}}</h3>
     </div>
 
-    <div class="card">
-        <div class="card-content">
-            <p class="card-title">Aktivni sprinti</p>
+    <div class="container{{#unless projects}} full-height valign-wrapper{{/unless}}">
+        <p class="card-title">Vaši projekti</p>
 
-            <div class="row">
-                <p class="center grey-text">Trenutno nimate aktivnega Sprinta</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-content">
-            <p class="card-title">Vaši projekti</p>
-
-            <div class="row">
-                <p class="center grey-text">Niste dodani na noben projekt</p>
-            </div>
-        </div>
+        {{#if projects}}
+            {{#each projects}}
+                <div class="row suppress-bottom-margin">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <a href="/projects/{{this._id}}" class="card-title">{{this.name}}</a>
+                                <p>{{this.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        {{else}}
+            <h4 class="center full-width grey-text">Trenutno ne sodelujete na nobenem projektu.</h4>
+        {{/if}}
     </div>
 </div>

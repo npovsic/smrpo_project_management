@@ -4,6 +4,11 @@ const ObjectId = Schema.ObjectId;
 
 module.exports = mongoose.model('Story', new Schema({
     id: ObjectId,
+    projectId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Project',
+        required: true,
+    },
     ordinal: Number,  // Number for users to refer to
     title: {
         type: String,
@@ -32,6 +37,7 @@ module.exports = mongoose.model('Story', new Schema({
     tasks: [ObjectId],
     sprintId: { type: Schema.Types.ObjectId, ref: 'Sprint' },  // The sprint it belongs to, if at all
     rejectionReason: String,  // Empty if not rejected at end of sprint
+    finished: Boolean,  // Whether it is finished (if true, sprintId must be null)
     _lastUpdatedAt: Date,
     _createdAt: Date,
 }));

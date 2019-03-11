@@ -21,7 +21,6 @@ const ProjectSchema = new Schema({
             }
         }
     },
-    stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }],
     _lastUpdatedAt: Date,
     _createdAt: Date
 });

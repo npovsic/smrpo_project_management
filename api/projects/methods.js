@@ -9,6 +9,10 @@ module.exports = {
         
         return projects;
     },
+
+    findAllForUser: async function (user) {
+        return await Project.find({developers: user._id}).exec();
+    },
     
     findOne: async function () {
         const project = await Project.findOne(...arguments).exec();

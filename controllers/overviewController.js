@@ -1,6 +1,8 @@
 const projectModule = require('../api/projects/methods');
 const usersModule = require('../api/users/methods');
 
+const getUserFromSession = require('../lib/getUserFromSession');
+
 module.exports = {
     overviewGet: async function (req, res, next) {
         const pageOptions = req.pageOptions;
@@ -29,6 +31,10 @@ module.exports = {
 
             res.render('./dashboard/adminDashboard', pageOptions);
         } else {
+            pageOptions.projects = await projectModule.findAllForUser(
+                await getUserFromSession(req.session)
+            );
+
             res.render('./dashboard/userDashboard', pageOptions);
         }
     }

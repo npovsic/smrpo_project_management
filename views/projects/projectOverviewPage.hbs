@@ -77,11 +77,32 @@
 
     <div class="card">
         <div class="card-content">
-            <p class="card-title">Uporabniške zgodbe</p>
+            <p class="card-title">Seznam zahtev</p>
 
-            <div class="row">
-                <p class="center grey-text">Dodana ni nobena uporabniška zgodba</p>
-            </div>
+            {{#if hasStories}}
+                <h4>Zgodbe v trenutnem sprintu</h4>
+                <p class="center grey-text">Trenutno ne poteka noben sprint.</p>
+                <h4>Nedodeljene zgodbe</h4>
+                {{#if storiesWaiting}}
+                    {{#each storiesWaiting}}
+                        {{> storyCard story=this}}
+                    {{/each}}
+                {{else}}
+                    <p class="center grey-text">Ni nobene zgodbe, ki ne bi bila dodeljena v sprint.</p>
+                {{/if}}
+                <h4>Končane zgodbe</h4>
+                {{#if storiesFinished}}
+                    {{#each storiesFinished}}
+                        {{> storyCard story=this}}
+                    {{/each}}
+                {{else}}
+                    <p class="center grey-text">Nobena zgodba še ni končana.</p>
+                {{/if}}
+            {{else}}
+                <div class="row">
+                    <p class="center grey-text">Seznam zahtev nima še nobene uporabniške zgodbe.</p>
+                </div>
+            {{/if}}
 
             {{#if userCanAddUserStories}}
                 <div class="divider row"></div>
