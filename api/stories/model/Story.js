@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
+const priorities = require('../../../lib/priorities');
+
 module.exports = mongoose.model('Story', new Schema({
     id: ObjectId,
     projectId: {
@@ -24,12 +26,7 @@ module.exports = mongoose.model('Story', new Schema({
     score: Number,
     priority: {
         type: String,
-        enum: [
-            'M',  // Must have
-            'S',  // Should have
-            'C',  // Could have
-            'W'   // Won't have
-        ],
+        enum: priorities.values,
         default: 'M',
         required: true,
     },
