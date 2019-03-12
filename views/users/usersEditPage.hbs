@@ -37,7 +37,7 @@
 
                 <div class="row suppress-bottom-margin">
                     <div class="input-field col s12">
-                        <input id="email" name="email" type="email" class="validate" value="{{userData.email}}" pattern=".{1,128}" required>
+                        <input id="email" name="email" type="email" class="validate" value="{{userData.email}}" pattern=".{1,64}" required>
                         <label for="email">E-poštni naslov <abbr title="Obvezno polje">*</abbr></label>
                         {{#if errors.email}}
                             <span class="helper-text red-text">{{ errors.email }}</span>
