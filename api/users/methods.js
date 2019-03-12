@@ -27,7 +27,7 @@ module.exports = {
     },
     
     doesAdminExist: async function () {
-        const admin = await User.findOne({ role: 'admin' }).exec();
+        const admin = await User.findOne({ role: 'system_admin' }).exec();
         
         return admin; 
     }

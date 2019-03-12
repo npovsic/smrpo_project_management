@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-const userRoles = [ 'admin', 'razvijalec' ];
+const userRoles = ['system_admin', 'system_user'];
 
 const UserSchema = new Schema({
     id: ObjectId,

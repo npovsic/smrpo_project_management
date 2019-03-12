@@ -1,7 +1,7 @@
 const userModule = require('../api/users/methods');
 const hashSalt = require('password-hash-and-salt');
 const { body, validationResult } = require('express-validator/check');
-const userRoles = [ 'Admin', 'Razvijalec' ];
+const userRoles = ['system_admin', 'system_user'];
 
 
 module.exports = {
@@ -50,7 +50,7 @@ module.exports = {
 
     userCreatePost: async function (req, res, next) {
         const postData = req.body;
-    
+
         const userData = {
             firstName: postData.firstName,
             lastName: postData.lastName,
@@ -65,9 +65,9 @@ module.exports = {
         //create a hash password for the user
         hashSalt(userData.password).hash(function (err, hashedPassword) {
             if (err) {
-               console.log(err);
-               
-               return;
+                console.log(err);
+
+                return;
             }
             const pageOptions = req.pageOptions;
             pageOptions.userData = userData;
@@ -87,9 +87,11 @@ module.exports = {
 
             //form validation using express-validate
             pageOptions.errors = {};
-            var errorValidation = validationResult(req);
-            if(!errorValidation.isEmpty()){
-                errorValidation.array().forEach(function(ele){
+            
+            const errorValidation = validationResult(req);
+            
+            if (!errorValidation.isEmpty()) {
+                errorValidation.array().forEach(function (ele) {
                     pageOptions.errors[ele.param] = ele.msg;
                 });
 
@@ -104,7 +106,7 @@ module.exports = {
                     .catch(function (err) {
                         console.log(err);
                         res.render('./users/usersEditPage', pageOptions);
-                    }); 
+                    });
             }
         });
     },
@@ -112,30 +114,40 @@ module.exports = {
     validate: function (method) {
         switch (method) {
             case 'createUser': {
-                return [ 
-                    body('firstName').trim().isLength({ min: 1, max: 64 }).not().isEmpty().withMessage('Ime ne sme biti prazno in mora biti manjše od 64 znakov'),
-                    body('lastName').trim().isLength({ min: 0, max: 64 }).withMessage('Priimek je lahko prazen oziroma mora vsebovati manj kot 64 znakov'),
+                return [
+                    body('firstName').trim().isLength({
+                        min: 1,
+                        max: 64
+                    }).not().isEmpty().withMessage('Ime ne sme biti prazno in mora biti manjše od 64 znakov'),
+                    body('lastName').trim().isLength({
+                        min: 0,
+                        max: 64
+                    }).withMessage('Priimek je lahko prazen oziroma mora vsebovati manj kot 64 znakov'),
                     body('email').exists().isEmail().withMessage('Email naslov ni regularen, uporabite drug email naslov'),
                     body('email').custom(value => {
                         return userModule.findOne({ 'email': value }).then(user => {
                             if (user) {
-                              return Promise.reject('Email naslov je že v uporabi, prosimo uporabite drugega');
+                                return Promise.reject('Email naslov je že v uporabi, prosimo uporabite drugega');
                             }
                         });
                     }),
-                    body('username').trim().isLength({ min: 1, max: 64 }).not().isEmpty().withMessage('Uporabniško ne sme biti prazno in mora biti manjše od 64 znakov'),
+                    body('username').trim().isLength({
+                        min: 1,
+                        max: 64
+                    }).not().isEmpty().withMessage('Uporabniško ne sme biti prazno in mora biti manjše od 64 znakov'),
                     body('username').custom(value => {
                         return userModule.findOne({ 'username': value }).then(user => {
-                            console.log(value);
-                            console.log(user);
-                            if(user) {
+                            if (user) {
                                 return Promise.reject('Uporabniško ime je že v uporabi, prosimo izberite drugega');
                             }
                         })
                     }),
-                    body('password').isLength({ min: 4, max: 64 }).withMessage('Geslo mora vsebovati med 4 in 64 znaki'),
+                    body('password').isLength({
+                        min: 4,
+                        max: 64
+                    }).withMessage('Geslo mora vsebovati med 4 in 64 znaki'),
                     body('role').isIn(userRoles).withMessage('Sistemska pravica se ne ujema z možnimi izbirami')
-               ];  
+                ];
             }
         }
     }
