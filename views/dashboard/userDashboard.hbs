@@ -6,10 +6,24 @@
     <div class="card">
         <div class="card-content">
             <p class="card-title">Aktivni sprinti</p>
-
+            {{#if projects}}
+            {{#each projects}}
+                <div class="row suppress-bottom-margin">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <a href="/projects/{{this._id}}" class="card-title">{{this.name}}</a>
+                                <p>{{this.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        {{else}}
             <div class="row">
                 <p class="center grey-text">Trenutno nimate aktivnega Sprinta</p>
             </div>
+        {{/if}}
         </div>
     </div>
 

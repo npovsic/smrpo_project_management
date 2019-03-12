@@ -32,6 +32,7 @@ module.exports = {
 
             res.render('./dashboard/adminDashboard', pageOptions);
         } else {
+            pageOptions.projects = await projectModule.findAllForUser(req.session.user._id);
 
 
             res.render('./dashboard/userDashboard', pageOptions);

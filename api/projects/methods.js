@@ -15,6 +15,20 @@ module.exports = {
         
         return project;
     },
+
+    findAllForUser: async function (userId) {
+        //find all the projects where this userId is in developers
+        const projects = await Project.find({
+            $or: [
+                { productLeader : userId },
+                { scrumMaster : userId }
+            ]
+            
+        }).exec();
+
+        console.log(projects);
+        return projects;
+    },
     
     insert: async function (projectData) {
         const project = new Project(projectData);
