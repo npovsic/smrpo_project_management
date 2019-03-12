@@ -13,10 +13,15 @@ router.get('/', function (res, req, next) {
 });
 
 /**
- * Route for creating a new project
+ * Route for creating a new user
  */
 router.get('/create', buildBasePageOptions, usersController.userCreateGet);
 
 router.post('/create', buildBasePageOptions, usersController.validate('createUser'), usersController.userCreatePost);
+
+/**
+ * Route for user overview
+ */
+router.get('/:userId', buildBasePageOptions, usersController.userOverview);
 
 module.exports = router;

@@ -12,6 +12,9 @@ module.exports = {
             }
         ];
 
+        pageOptions.layoutOptions.headTitle = 'Pregled';
+        pageOptions.layoutOptions.pageTitle = 'Pregled';
+
         if (pageOptions.isUserSystemAdmin) {
             pageOptions.layoutOptions.navBar.tabs = [
                 {
@@ -29,6 +32,8 @@ module.exports = {
 
             res.render('./dashboard/adminDashboard', pageOptions);
         } else {
+
+
             res.render('./dashboard/userDashboard', pageOptions);
         }
     }

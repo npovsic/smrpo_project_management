@@ -103,6 +103,37 @@ module.exports = {
         });
     },
 
+    userOverview: async function (req, res, next) {
+        //parse the data from request 
+        const userId = req.params.userId;
+        const postData = req.body;
+
+        //set the pageOptions
+        const pageOptions = req.pageOptions;
+        pageOptions.layoutOptions.headTitle = 'Pregled uporabnika';
+        pageOptions.layoutOptions.pageTitle = 'Pregled uporabnika';
+        
+        pageOptions.layoutOptions.navBar.breadcrumbs = [
+            {
+                title: 'Uporabniki',
+                href: '/#users'
+            },
+            {
+                title: 'Pregled uporabnika',
+                href: '/users/' + userId
+            }
+        ];
+        
+        //find the user in DB
+        const userData = await usersModule.findOne({ _id: userId });
+        pageOptions.userData = userData;
+        console.log(userData.role);
+        console.log(createUserRoleSelectObjects(userData.role));
+        pageOptions.userRole = createUserRoleSelectObjects(userData.role);
+
+        res.render('./users/userOverviewPage', pageOptions);
+    },
+
     validate: function (method) {
         switch (method) {
             case 'createUser': {
