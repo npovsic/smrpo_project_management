@@ -1,4 +1,4 @@
-<div id="projects" class="{{#unless users}}full-height{{/unless}}">
+<div id="projects" class="{{#unless projects}}full-height{{/unless}}">
     <div class="container{{#unless projects}} full-height valign-wrapper{{/unless}}">
         {{#if projects}}
             {{#each projects}}
@@ -38,13 +38,13 @@
                     <div class="col s12">
                         <div class="card">
                             <div class="card-content">
-                                <a href="" class="card-title">{{this.username}}</a>
+                                <a href="" class="card-title">{{this.firstName}} {{this.lastName}}</a>
                                 <div class="row suppress-bottom-margin">
                                     <div class="col s9">
-                                        <p>{{this.firstName}} {{this.lastName}}</p>
+                                        <p>{{this.username}}</p>
                                     </div>
                                     <div class="col s3">
-                                        <p class="userRole right">{{this.role}}</p>
+                                        <p class="userRole right">{{getUserRoleName this.role}}</p>
                                     </div>
                                 </div>
                             </div>

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-const userRoles = ['system_admin', 'system_user'];
+const userRoles = require('../../../lib/userRoles');
 
 const UserSchema = new Schema({
     id: ObjectId,
@@ -28,7 +28,7 @@ const UserSchema = new Schema({
     role: {
         type: String,
         required: true,
-        enum: userRoles
+        enum: userRoles.values
     },
     _lastUpdatedAt: Date,
     _createdAt: Date

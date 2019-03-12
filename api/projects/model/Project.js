@@ -9,7 +9,7 @@ const ProjectSchema = new Schema({
         required: true
     },
     description: String,
-    projectLeader: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    productLeader: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     scrumMaster: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     developers: {
         type: Array,

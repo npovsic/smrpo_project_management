@@ -1,38 +1,26 @@
-const userModule = require('../api/users/methods');
+const usersModule = require('../api/users/methods');
 const hashSalt = require('password-hash-and-salt');
 const { body, validationResult } = require('express-validator/check');
-const userRoles = ['system_admin', 'system_user'];
 
+const userRoles = require('../lib/userRoles');
+
+const createUserRoleSelectObjects = function (userRole, selecteduserRole) {
+    return {
+        selected: userRole === selecteduserRole,
+        name: userRoles.translations[userRole],
+        value: userRole
+    }
+};
 
 module.exports = {
-    usersList: async function (req, res, next) {
-        try {
-            const pageOptions = req.pageOptions;
-
-            pageOptions.users = await userModule.findAll();
-
-            pageOptions.layoutOptions.headTitle = 'Uporabniki';
-
-            pageOptions.layoutOptions.navBar.breadcrumbs = [
-                {
-                    title: 'Uporabniki',
-                    href: '/users'
-                }
-            ];
-
-            res.render('./users/usersPage', pageOptions);
-        } catch (ex) {
-            console.log(ex);
-        }
-    },
-
     userCreateGet: async function (req, res, next) {
         const pageOptions = req.pageOptions;
 
         pageOptions.layoutOptions.headTitle = 'Dodajanje uporabnikov';
         pageOptions.layoutOptions.pageTitle = 'Dodajanje novega uporabnika';
 
-        pageOptions.userRoles = userRoles;
+        pageOptions.userRolesSelectObjects = userRoles.values.map(createUserRoleSelectObjects);
+        
         pageOptions.layoutOptions.navBar.breadcrumbs = [
             {
                 title: 'Uporabniki',
@@ -57,7 +45,7 @@ module.exports = {
             email: postData.email,
             username: postData.username,
             password: postData.password,
-            role: postData.role.toLowerCase(),
+            role: (postData.role) ? postData.role.toLowerCase() : '',
             _lastUpdatedAt: new Date(),
             _createdAt: new Date()
         };
@@ -69,9 +57,13 @@ module.exports = {
 
                 return;
             }
+            
             const pageOptions = req.pageOptions;
             pageOptions.userData = userData;
-            pageOptions.userRoles = userRoles;
+            pageOptions.userRolesSelectObjects = userRoles.values.map((userRole) => {
+                return createUserRoleSelectObjects(userRole, userData.role);
+            });
+            
             pageOptions.layoutOptions.headTitle = 'Dodajanje uporabnikov';
             pageOptions.layoutOptions.pageTitle = 'Dodajanje novega uporabnika';
             pageOptions.layoutOptions.navBar.breadcrumbs = [
@@ -98,10 +90,10 @@ module.exports = {
                 res.render('./users/usersEditPage', pageOptions);
             } else {
                 userData.password = hashedPassword;
-                userModule.insert(userData)
+                usersModule.insert(userData)
                     .then(function (result) {
                         console.log(result);
-                        res.redirect('/users');
+                        res.redirect('/#users');
                     })
                     .catch(function (err) {
                         console.log(err);
@@ -125,7 +117,7 @@ module.exports = {
                     }).withMessage('Priimek je lahko prazen oziroma mora vsebovati manj kot 64 znakov'),
                     body('email').exists().isEmail().withMessage('Email naslov ni regularen, uporabite drug email naslov'),
                     body('email').custom(value => {
-                        return userModule.findOne({ 'email': value }).then(user => {
+                        return usersModule.findOne({ 'email': value }).then(user => {
                             if (user) {
                                 return Promise.reject('Email naslov je že v uporabi, prosimo uporabite drugega');
                             }
@@ -136,7 +128,7 @@ module.exports = {
                         max: 64
                     }).not().isEmpty().withMessage('Uporabniško ne sme biti prazno in mora biti manjše od 64 znakov'),
                     body('username').custom(value => {
-                        return userModule.findOne({ 'username': value }).then(user => {
+                        return usersModule.findOne({ 'username': value }).then(user => {
                             if (user) {
                                 return Promise.reject('Uporabniško ime je že v uporabi, prosimo izberite drugega');
                             }
@@ -146,7 +138,7 @@ module.exports = {
                         min: 4,
                         max: 64
                     }).withMessage('Geslo mora vsebovati med 4 in 64 znaki'),
-                    body('role').isIn(userRoles).withMessage('Sistemska pravica se ne ujema z možnimi izbirami')
+                    body('role').isIn(userRoles.values).withMessage('Sistemska pravica se ne ujema z možnimi izbirami')
                 ];
             }
         }

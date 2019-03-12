@@ -10,6 +10,12 @@ module.exports = {
         return users;
     },
     
+    findAllUsers: async function ()  {
+        const users = await User.find({ role: { $ne: 'system_admin' } }).exec();
+        
+        return users;
+    },
+    
     findOne: async function () {
         const user = await User.findOne(...arguments).exec();
         

@@ -3,14 +3,14 @@ const router = express.Router();
 
 const usersController = require('../controllers/usersController');
 
-const redirectAdmin = require('../middlewares/redirectAdmin');
 const buildBasePageOptions = require('../middlewares/buildBasePageOptions');
-
 
 /**
  * Root route to display all the users
  */
-router.get('/', redirectAdmin, buildBasePageOptions, usersController.usersList);
+router.get('/', function (res, req, next) {
+    res.redirect('/');
+});
 
 /**
  * Route for creating a new project

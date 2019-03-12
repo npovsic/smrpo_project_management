@@ -42,15 +42,15 @@
                
                <div class="row">
                    <div class="input-field col s12">
-                       <select name="projectLeader">
+                       <select name="productLeader">
                            <option value="" disabled selected>Izberite produktnega vodjo</option>
-                           {{#each usersSelectObjects.projectLeader}}
+                           {{#each usersSelectObjects.productLeader}}
                                <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
                            {{/each}}
                        </select>
-                       <label for="projectLeader">Projektni vodja <abbr title="Obvezno polje">*</abbr></label>
+                       <label for="productLeader">Produktni vodja <abbr title="Obvezno polje">*</abbr></label>
                        
-                       {{#if errors.projectLeader}}
+                       {{#if errors.productLeader}}
                            <span class="helper-text red-text">Nastavite projektnega vodjo.</span>
                        {{/if}}
                    </div>
