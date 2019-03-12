@@ -25,6 +25,7 @@ module.exports = {
             ];
             
             pageOptions.projects = await projectModule.findAll();
+            pageOptions.users = await usersModule.findAll();
 
             res.render('./dashboard/adminDashboard', pageOptions);
         } else {

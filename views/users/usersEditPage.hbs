@@ -1,0 +1,84 @@
+<div class="container">
+    <form method="post">
+        <div class="row page-title-wrapper">
+            <a href="/#users" class="btn-flat back-button left">
+                <i class="material-icons left back-icon">arrow_back</i>
+            </a>
+            
+            <h5 class="page-title left">{{layoutOptions.pageTitle}}</h5>
+
+            <button class="waves-effect waves-light btn theme-color right" type="submit">
+                <i class="material-icons left">save</i>
+                Shrani
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <p class="card-title">Podatki uporabnika</p>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s6">
+                        <input id="firstName" name="firstName" type="text" class="validate" value="{{userData.firstName}}" pattern=".{1,64}" required>
+                        <label for="firstName">Ime <abbr title="Obvezno polje">*</abbr></label>
+                        {{#if errors.firstName}}
+                            <span class="helper-text red-text">{{ errors.firstName }}</span>
+                        {{/if}}
+                    </div>
+
+                    <div class="input-field col s6">
+                        <input id="lastName" name="lastName" type="text" class="validate" value="{{userData.lastName}}" pattern=".{0,64}">
+                        <label for="lastName">Priimek</label>
+                        {{#if errors.firstName}}
+                            <span class="helper-text red-text">{{ errors.lastName }}</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <input id="email" name="email" type="email" class="validate" value="{{userData.email}}" pattern=".{1,128}" required>
+                        <label for="email">E-poštni naslov <abbr title="Obvezno polje">*</abbr></label>
+                        {{#if errors.email}}
+                            <span class="helper-text red-text">{{ errors.email }}</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <input id="username" name="username" type="text" class="validate" value="{{userData.username}}" pattern=".{4,64}" required>
+                        <label for="username">Uporabniško ime <abbr title="Obvezno polje">*</abbr></label>
+                        {{#if errors.username}}
+                            <span class="helper-text red-text">{{ errors.username }}</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <input id="password" name="password" type="password" class="validate" value="{{userData.password}}"pattern=".{4,64}" required>
+                        <label for="password">Geslo <abbr title="Obvezno polje">*</abbr></label>
+                        {{#if errors.password}}
+                            <span class="helper-text red-text">Geslo mora biti med 4 in 64 znaki</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select name="role">
+                            <option value="" disabled selected>Sistemske pravice</option>
+                            {{#each userRolesSelectObjects}}
+                                <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>
+                            {{/each}}
+                        </select>
+                        {{#if errors.role}}
+                            <span class="helper-text red-text">{{ errors.role }}</span>
+                        {{/if}}
+                    </div>
+                </div>        
+            </div>
+        </div>
+    </form>
+</div>

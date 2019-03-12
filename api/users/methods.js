@@ -10,6 +10,12 @@ module.exports = {
         return users;
     },
     
+    findAllUsers: async function ()  {
+        const users = await User.find({ role: { $ne: 'system_admin' } }).exec();
+        
+        return users;
+    },
+    
     findOne: async function () {
         const user = await User.findOne(...arguments).exec();
         
@@ -27,7 +33,7 @@ module.exports = {
     },
     
     doesAdminExist: async function () {
-        const admin = await User.findOne({ role: 'admin' }).exec();
+        const admin = await User.findOne({ role: 'system_admin' }).exec();
         
         return admin; 
     }

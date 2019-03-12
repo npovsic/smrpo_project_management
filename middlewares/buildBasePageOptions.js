@@ -20,7 +20,7 @@ const selectActiveRoute = function (right, requestUrl) {
 };
 
 module.exports = function (req, res, next) {
-    const isCurrentUserSystemAdmin = (req.session.userRole === 'admin');
+    const isCurrentUserSystemAdmin = (req.session.userRole === 'system_admin');
 
     const pageOptions = {
         layoutOptions: {

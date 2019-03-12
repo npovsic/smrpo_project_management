@@ -85,10 +85,10 @@ module.exports = {
             }
         ];
 
-        const users = await usersModule.findAll();
+        const users = await usersModule.findAllUsers();
 
         pageOptions.usersSelectObjects = {
-            projectLeader: users.map(user => mapUserToSelectObject(user)),
+            productLeader: users.map(user => mapUserToSelectObject(user)),
             scrumMaster: users.map(user => mapUserToSelectObject(user)),
             developers: users.map(user => mapUserToSelectObject(user))
         };
@@ -102,7 +102,7 @@ module.exports = {
         const projectData = {
             name: postData.name,
             description: postData.description,
-            projectLeader: postData.projectLeader,
+            productLeader: postData.productLeader,
             scrumMaster: postData.scrumMaster,
             developers: postData.developers,
             _lastUpdatedAt: new Date(),
@@ -131,10 +131,10 @@ module.exports = {
                     }
                 ];
 
-                const users = await usersModule.findAll();
+                const users = await usersModule.findAllUsers();
 
                 pageOptions.usersSelectObjects = {
-                    projectLeader: users.map(user => mapUserToSelectObject(user, projectData.projectLeader)),
+                    productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
                     scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
                     developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
                 };
@@ -167,13 +167,13 @@ module.exports = {
 
         const projectId = req.params.projectId;
 
-        const users = await usersModule.findAll();
+        const users = await usersModule.findAllUsers();
 
         const projectData = await projectModule.findOne({ _id: projectId });
         
 
-        if (projectData.projectLeader) {            
-            projectData.projectLeader = users.find((user) => user._id.equals(projectData.projectLeader));
+        if (projectData.productLeader) {            
+            projectData.productLeader = users.find((user) => user._id.equals(projectData.productLeader));
         }
         
         if (projectData.scrumMaster) {
@@ -201,7 +201,7 @@ module.exports = {
 
         const currentUser = pageOptions.currentUser;
 
-        pageOptions.userCanAddUserStories = (projectData.projectLeader || projectData.scrumMaster) ? (projectData.projectLeader._id.equals(currentUser._id) || projectData.scrumMaster._id.equals(currentUser._id)) : false;
+        pageOptions.userCanAddUserStories = (projectData.productLeader || projectData.scrumMaster) ? (projectData.productLeader._id.equals(currentUser._id) || projectData.scrumMaster._id.equals(currentUser._id)) : false;
         pageOptions.userCanAddSprint = (projectData.scrumMaster) ? projectData.scrumMaster._id.equals(currentUser._id) : false;
         
         pageOptions.projectData = projectData;
@@ -214,12 +214,12 @@ module.exports = {
 
         const projectId = req.params.projectId;
 
-        const users = await usersModule.findAll();
+        const users = await usersModule.findAllUsers();
 
         const projectData = await projectModule.findOne({ _id: projectId });
 
         const usersSelectObjects = {
-            projectLeader: users.map(user => mapUserToSelectObject(user, projectData.projectLeader)),
+            productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
             scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
             developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
         };
@@ -257,7 +257,7 @@ module.exports = {
         const projectData = {
             name: postData.name,
             description: postData.description,
-            projectLeader: postData.projectLeader,
+            productLeader: postData.productLeader,
             scrumMaster: postData.scrumMaster,
             developers: postData.developers,
             _lastUpdatedAt: new Date()
@@ -270,10 +270,10 @@ module.exports = {
             .catch(async function (err) {     
                 const pageOptions = req.pageOptions;
 
-                const users = await usersModule.findAll();
+                const users = await usersModule.findAllUsers();
 
                 const usersSelectObjects = {
-                    projectLeader: users.map(user => mapUserToSelectObject(user, projectData.projectLeader)),
+                    productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
                     scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
                     developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
                 };
