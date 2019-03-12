@@ -1,0 +1,39 @@
+<div class="card">
+    <div class="card-content">
+        <div class="row">
+            <h5>#{{story.ordinal}}: {{story.title}}</h5>
+        </div>
+        
+        <div class="row">
+            <p><span class="grey-text">Prioriteta: </span>{{getPriorityName story.priority}}</p>
+        </div>
+        
+        <div class="row">
+            <p><span class="grey-text">Poslovna vrednost: </span>{{story.businessValue}}</p>
+        </div>
+        
+        <div class="row">
+            <p><span class="grey-text">Opis: </span>{{convertLineBreaks story.description}}</p>
+        </div>
+        
+        <div class="row">
+            <p><span class="grey-text">Sprejemni testi: </span>
+                {{#if story.acceptanceTests}}
+                    <i>{{convertLineBreaks story.acceptanceTests}}</i>
+                {{else}}
+                    /
+                {{/if}}
+            </p>
+        </div>
+        
+        {{#if story.rejectionReason}}
+            <div class="row suppress-bottom-margin">
+                <p>
+                    <span class="grey-text">Zgodba je bila zavrnjena zaradi: </span>
+
+                    <i>{{convertLineBreaks story.rejectionReason}}</i>
+                </p>
+            </div>
+        {{/if}}
+    </div>
+</div>

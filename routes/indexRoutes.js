@@ -10,10 +10,10 @@ const buildBasePageOptions = require('../middlewares/buildBasePageOptions');
 
 router.get('/', buildBasePageOptions, overviewController.overviewGet);
 
-router.get('/login', loginController.loginGet);
+router.get('/login', buildBasePageOptions, loginController.loginGet);
 
-router.post('/login', loginController.loginPost);
+router.post('/login', buildBasePageOptions, loginController.loginPost);
 
-router.get('/logout', loginController.logoutGet);
+router.get('/logout', buildBasePageOptions, loginController.logoutGet);
 
 module.exports = router;

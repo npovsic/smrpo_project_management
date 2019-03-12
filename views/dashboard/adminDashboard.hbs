@@ -1,4 +1,4 @@
-<div id="projects" class="{{#unless users}}full-height{{/unless}}">
+<div id="projects" class="{{#unless projects}}full-height{{/unless}}">
     <div class="container{{#unless projects}} full-height valign-wrapper{{/unless}}">
         {{#if projects}}
             {{#each projects}}
@@ -7,7 +7,7 @@
                         <div class="card">
                             <div class="card-content">
                                 <a href="/projects/{{this._id}}" class="card-title">{{this.name}}</a>
-                                <p>{{this.description}}</p>
+                                <p><span class="grey-text">Opis: </span>{{#if this.description}}{{this.description}}{{else}}/{{/if}}</p>
                             </div>
                         </div>
                     </div>
@@ -34,12 +34,19 @@
     <div class="container{{#unless users}} full-height valign-wrapper{{/unless}}">
         {{#if users}}
             {{#each users}}
-                <div class="row suppress-bottom-margin">
+                <div class="row">
                     <div class="col s12">
                         <div class="card">
                             <div class="card-content">
-                                <a href="/projects/{{this._id}}" class="card-title">{{this.name}}</a>
-                                <p>{{this.description}}</p>
+                                <a href="/users/{{this._id}}" class="card-title">{{this.firstName}} {{this.lastName}}</a>
+                                <div class="row suppress-bottom-margin">
+                                    <div class="col s9">
+                                        <p>{{this.username}}</p>
+                                    </div>
+                                    <div class="col s3">
+                                        <p class="userRole right">{{getUserRoleName this.role}}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -53,6 +60,12 @@
                 <h5 class="center full-width grey-text">Ni dodanih uporabnikov</h5>
             </div>
         {{/if}}
+    </div>
+
+    <div class="fixed-action-btn">
+        <a href="/users/create" class="btn-floating btn-large theme-color">
+            <i class="large material-icons">add</i>
+        </a>
     </div>
 </div>
 

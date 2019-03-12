@@ -13,16 +13,16 @@
             </button>
         </div>
         
-        <div class="card">
+        <div id="project-edit-basic-information" class="card scrollspy">
             <div class="card-content">
                 <p class="card-title">Osnovni podatki</p>
 
                 <div class="row suppress-bottom-margin">
                     <div class="input-field col s12">
-                        <input id="name" name="name" type="text" class="validate" value="{{projectData.name}}" autofocus>
-                        <label for="username">Ime projekta <abbr title="Obvezno polje">*</abbr></label>
+                        <input id="name" name="name" type="text" class="validate" value="{{projectData.name}}" autofocus required>
+                        <label for="name">Ime projekta <abbr title="Obvezno polje">*</abbr></label>
                         {{#if errors.name}}
-                            <span class="helper-text red-text">Ime projekta je obvezno.</span>
+                            <span class="helper-text red-text">{{errors.name}}</span>
                         {{/if}}
                     </div>
                 </div>
@@ -30,35 +30,35 @@
                 <div class="row suppress-bottom-margin">
                     <div class="input-field col s12">
                         <textarea id="description" name="description" class="materialize-textarea">{{projectData.description}}</textarea>
-                        <label for="textarea1">Opis</label>
+                        <label for="description">Opis</label>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card">
+        <div id="project-edit-users" class="card scrollspy">
            <div class="card-content">
                <p class="card-title">Uporabniki na projektu</p>
                
                <div class="row">
                    <div class="input-field col s12">
-                       <select name="projectLeader">
+                       <select name="productLeader" id="productLeader">
                            <option value="" disabled selected>Izberite produktnega vodjo</option>
-                           {{#each usersSelectObjects.projectLeader}}
+                           {{#each usersSelectObjects.productLeader}}
                                <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
                            {{/each}}
                        </select>
-                       <label for="projectLeader">Projektni vodja <abbr title="Obvezno polje">*</abbr></label>
+                       <label for="productLeader">Produktni vodja <abbr title="Obvezno polje">*</abbr></label>
                        
-                       {{#if errors.projectLeader}}
-                           <span class="helper-text red-text">Nastavite projektnega vodjo.</span>
+                       {{#if errors.productLeader}}
+                           <span class="helper-text red-text">{{errors.productLeader}}</span>
                        {{/if}}
                    </div>
                </div>
 
                <div class="row">
                    <div class="input-field col s12">
-                       <select name="scrumMaster">
+                       <select name="scrumMaster" id="scrumMaster">
                            <option value="" disabled selected>Izberite skrbnika metodologije</option>
                            {{#each usersSelectObjects.scrumMaster}}
                                <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
@@ -67,14 +67,14 @@
                        <label for="scrumMaster">Vodja metodologije <abbr title="Obvezno polje">*</abbr></label>
 
                        {{#if errors.scrumMaster}}
-                           <span class="helper-text red-text">Nastavite vodjo metodologije.</span>
+                           <span class="helper-text red-text">{{errors.scrumMaster}}</span>
                        {{/if}}
                    </div>
                </div>
 
                <div class="row">
                    <div class="input-field col s12">
-                       <select name="developers" multiple>
+                       <select name="developers" id="developers" multiple>
                            <option value="" disabled>Izberite razvijalce</option>
                            {{#each usersSelectObjects.developers}}
                                <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
@@ -83,11 +83,20 @@
                        <label for="developers">Razvijalci <abbr title="Obvezno polje">*</abbr></label>
 
                        {{#if errors.developers}}
-                           <span class="helper-text red-text">Dodajte razvijalce.</span>
+                           <span class="helper-text red-text">{{errors.developers}}</span>
                        {{/if}}
                    </div>
                </div>
            </div>
         </div>
+        
+        <input class="hide" name="_lastUpdatedAt" value="{{_lastUpdatedAt}}">
     </form>
+</div>
+
+<div class="table-of-contents-wrapper hide-on-med-and-down">
+    <ul class="section table-of-contents">
+        <li><a href="#project-edit-basic-information">Osnovni podatki</a></li>
+        <li><a href="#project-edit-users">Uporabniki na projektu</a></li>
+    </ul>
 </div>

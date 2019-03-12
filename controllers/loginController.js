@@ -5,7 +5,15 @@ module.exports = {
         if (req.session.user) {
             res.redirect('/');
         } else {
-            res.render('./login/login');
+            const pageOptions = req.pageOptions;
+            
+            pageOptions.layoutOptions.navBar.show = false;
+            
+            pageOptions.layoutOptions.headTitle = 'Prijava';
+            
+            pageOptions.layoutOptions.backgroundClass = 'background';
+            
+            res.render('./login/login', pageOptions);
         }
     },
 
@@ -30,7 +38,15 @@ module.exports = {
 
             res.redirect(redirectUrl);
         } else {
-            res.render('./login/loginFailed');
+            const pageOptions = req.pageOptions;
+
+            pageOptions.layoutOptions.navBar.show = false;
+
+            pageOptions.layoutOptions.headTitle = 'Prijava ni uspela';
+
+            pageOptions.layoutOptions.backgroundClass = 'background';
+            
+            res.render('./login/loginFailed', pageOptions);
         }
     },
     

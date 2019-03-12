@@ -1,7 +1,5 @@
 module.exports = function (req, res, next) {
     if (req.session.userRole === 'system_admin') {
-        next();
-    } else {
         const pageOptions = {
             layoutOptions: {
                 headTitle: 'Nimate pravic za ogled strani',
@@ -19,5 +17,7 @@ module.exports = function (req, res, next) {
         };
 
         res.render('unauthorized', pageOptions);
+    } else {
+        next();
     }
 };

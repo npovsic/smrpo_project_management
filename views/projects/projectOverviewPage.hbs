@@ -7,7 +7,7 @@
         <h5 class="page-title left">{{projectData.name}}</h5>
     </div>
     
-    <div class="card">
+    <div id="project-details" class="card scrollspy">
         <div class="card-content">
             <p class="card-title">Podatki</p>
 
@@ -37,10 +37,10 @@
 
             <div class="row suppress-bottom-margin">
                 <div class="col s12">
-                    <p class="users-label grey-text">Projektni vodja:</p>
+                    <p class="users-label grey-text">Produktni vodja:</p>
 
                     <div class="chip">
-                        {{projectData.projectLeader.firstName}}{{#if projectData.projectLeader.lastName}} {{projectData.projectLeader.lastName}}{{/if}}
+                        {{projectData.productLeader.firstName}}{{#if projectData.productLeader.lastName}} {{projectData.productLeader.lastName}}{{/if}}
                     </div>
                 </div>
             </div>
@@ -66,22 +66,71 @@
                     {{/each}}
                 </div>
             </div>
-
-            <div class="divider row"></div>
             
-            <div class="row suppress-bottom-margin">
-                <a class="waves-effect waves-light btn theme-color right" href="/projects/{{projectData._id}}/edit">Uredi podatke</a>
-            </div>
+            {{#if userCanEditProject}}
+                <div class="divider row"></div>
+
+                <div class="row suppress-bottom-margin">
+                    <a class="waves-effect waves-light btn theme-color right" href="/projects/{{projectData._id}}/edit">Uredi podatke</a>
+                </div>
+            {{/if}}
         </div>
     </div>
 
-    <div class="card">
+    <div id="project-stories" class="card scrollspy">
         <div class="card-content">
-            <p class="card-title">Uporabniške zgodbe</p>
+            <p class="card-title">Seznam zahtev</p>
 
-            <div class="row">
-                <p class="center grey-text">Dodana ni nobena uporabniška zgodba</p>
-            </div>
+            {{#if hasStories}}
+                <div class="row span-full-card-width">
+                    <ul class="tabs tabs-fixed-width tabs-with-border">
+                        <li class="tab"><a href="#unrealizedStories">Nerealizirane</a></li>
+                        <li class="tab"><a href="#realizedStories">Realizirane</a></li>
+                    </ul>
+                </div>
+            
+                <div id="unrealizedStories">
+                    <p class="card-subtitle">Dodeljene v aktivni Sprint:</p>
+
+                    {{#if activeSprint}}
+                        {{#each productBacklog.storiesInActiveSprint}}
+                            {{> storyCard story=this}}
+                        {{else}}
+                            <div class="row">
+                                <p class="center grey-text">Aktivni sprint nima nobene dodeljene zgodbe.</p>
+                            </div>
+                        {{/each}}
+                    {{else}}
+                        <div class="row">
+                            <p class="center grey-text">Trenutno ni aktivnega Sprinta.</p>
+                        </div>
+                    {{/if}}
+                    
+                    <p class="card-subtitle">Nedodeljene:</p>
+
+                    {{#each productBacklog.storiesWithoutSprint}}
+                        {{> storyCard story=this}}
+                    {{else}}
+                        <div class="row">
+                            <p class="center grey-text">Ni nedodeljenih zgodb.</p>
+                        </div>
+                    {{/each}}
+                </div>
+            
+                <div id="realizedStories">
+                    {{#each productBacklog.storiesFinished}}
+                        {{> storyCard story=this}}
+                    {{else}}
+                        <div class="row">
+                            <p class="center grey-text">Nobena zgodba še ni bila zaključena.</p>
+                        </div>
+                    {{/each}}
+                </div>
+            {{else}}
+                <div class="row">
+                    <p class="center grey-text">Seznam zahtev nima še nobene uporabniške zgodbe.</p>
+                </div>
+            {{/if}}
 
             {{#if userCanAddUserStories}}
                 <div class="divider row"></div>
@@ -93,12 +142,87 @@
         </div>
     </div>
 
-    <div class="card">
+    <div id="project-sprints" class="card scrollspy">
         <div class="card-content">
             <p class="card-title">Sprinti</p>
 
-            <div class="row">
-                <p class="center grey-text">Trenutno ni aktivnega Sprinta</p>
+            <div class="row span-full-card-width">
+                <ul class="tabs tabs-fixed-width tabs-with-border">
+                    <li class="tab"><a href="#activeSprint">Aktiven Sprint</a></li>
+                    <li class="tab"><a href="#inactiveSprints">Neaktivni sprinti</a></li>
+                </ul>
+            </div>
+
+            <div id="activeSprint">
+                {{#each activeSprint}}
+                    <div class="row suppress-bottom-margin">
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <a href="" class="card-title">Aktiven sprint na projektu</a>
+
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p><span class="grey-text">Začetek sprinta: </span>{{formatDate this.startDate "D. MMMM YYYY"}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p><span class="grey-text">Konec sprinta: </span>{{formatDate this.endDate "D. MMMM YYYY"}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p><span class="grey-text">Hitrost sprinta: </span>{{this.velocity}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="row">
+                        <p class="center grey-text">Trenutno ni aktivnega Sprinta.</p>
+                    </div>
+                {{/each}}
+            </div>
+
+            <div id="inactiveSprints">
+                {{#each inactiveSprints}}
+                    <div class="row suppress-bottom-margin">
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <a href="" class="card-title">Neaktiven sprint</a>
+
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p><span class="grey-text">Začetek sprinta: </span>{{formatDate this.startDate "D. MMMM YYYY"}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p><span class="grey-text">Konec sprinta: </span>{{formatDate this.endDate "D. MMMM YYYY"}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p><span class="grey-text">Hitrost sprinta: </span>{{this.velocity}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="row">
+                        <p class="center grey-text">Ni neaktivnih Sprintov.</p>
+                    </div>
+                {{/each}}
             </div>
 
             {{#if userCanAddSprint}}
@@ -110,4 +234,12 @@
             {{/if}}
         </div>
     </div>
+</div>
+
+<div class="table-of-contents-wrapper hide-on-med-and-down">
+    <ul class="section table-of-contents">
+        <li><a href="#project-details">Podatki</a></li>
+        <li><a href="#project-stories">Seznam zahtev</a></li>
+        <li><a href="#project-sprints">Sprinti</a></li>
+    </ul>
 </div>

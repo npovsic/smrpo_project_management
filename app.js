@@ -24,7 +24,7 @@ const setupExpress = function () {
     hbs.registerPartials(__dirname + '/views/partials');
 
     app.use(logger('dev'));
-    
+
     app.use(express.json());
     
     app.use(express.urlencoded({ extended: false }));
@@ -86,7 +86,24 @@ const setupErrorHandler = function () {
 
         // render the error page
         res.status(err.status || 500);
-        res.render('error');
+
+        const pageOptions = {
+            layoutOptions: {
+                headTitle: 'Stran ni bila najdena',
+                backgroundClass: 'background',
+                navBar: {
+                    show: false,
+                    breadcrumbs: null,
+                    buttons: null
+                },
+                sideMenu: {
+                    show: false,
+                    items: null
+                }
+            }
+        };
+
+        res.render('error', pageOptions);
         
         console.log(err);
     });

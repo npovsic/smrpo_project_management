@@ -9,19 +9,9 @@ const ProjectSchema = new Schema({
         required: true
     },
     description: String,
-    projectLeader: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    productLeader: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     scrumMaster: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    developers: {
-        type: Array,
-        ref: 'User',
-        required: true,
-        validate: {
-            validator(array) {
-                return array.length !== 0;
-            }
-        }
-    },
-    stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }],
+    developers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     _lastUpdatedAt: Date,
     _createdAt: Date
 });

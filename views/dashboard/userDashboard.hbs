@@ -1,15 +1,51 @@
 <div class="container">
     <div class="row">
-        <h3 class="row">Pozdravljeni {{currentUser.firstName}} {{currentUser.lastName}}</h3>
+        <h3 class="row">Pozdravljeni, {{currentUser.firstName}}{{#if currentUser.lastName}} {{currentUser.lastName}}{{/if}}.</h3>
     </div>
 
     <div class="card">
         <div class="card-content">
             <p class="card-title">Aktivni sprinti</p>
+            
+            {{#each sprints}}
+                <div class="row suppress-bottom-margin">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <a href="" class="card-title">Aktiven sprint</a>
 
-            <div class="row">
-                <p class="center grey-text">Trenutno nimate aktivnega Sprinta</p>
-            </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p><span class="grey-text">Projekt: </span>{{this.project.name}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p><span class="grey-text">Začetek sprinta: </span>{{formatDate this.sprint.startDate "D. MMMM YYYY"}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p><span class="grey-text">Konec sprinta: </span>{{formatDate this.sprint.endDate "D. MMMM YYYY"}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p><span class="grey-text">Hitrost sprinta: </span>{{this.sprint.velocity}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="row">
+                    <p class="center grey-text">Trenutno nimate aktivnega Sprinta</p>
+                </div>
+            {{/each}}
         </div>
     </div>
 
@@ -17,9 +53,35 @@
         <div class="card-content">
             <p class="card-title">Vaši projekti</p>
 
-            <div class="row">
-                <p class="center grey-text">Niste dodani na noben projekt</p>
-            </div>
+            {{#each projects}}
+                <div class="row suppress-bottom-margin">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <a href="/projects/{{this._id}}" class="card-title">{{this.name}}</a>
+
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p><span class="grey-text">Opis: </span>{{#if this.description}}{{this.description}}{{else}}/{{/if}}</p>
+                                    </div>
+                                </div>
+
+                                <p class="users-label grey-text">Vaše vloge v projektu:</p>
+
+                                {{#each this.roles}}
+                                    <div class="chip">
+                                        {{this}}
+                                    </div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="row">
+                    <p class="center grey-text">Dodani niste na noben projekt</p>
+                </div>
+            {{/each}}
         </div>
     </div>
 </div>
