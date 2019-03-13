@@ -1,10 +1,8 @@
 const Story = require('./model/Story');
 
 module.exports = {
-    findAllForProject: async function (projectId) {
-        const project = await Project.find({_id: projectId}).exec();
-
-        return project.stories;
+    find: async function () {
+        return await Story.find(...arguments).exec();
     },
 
     findOne: async function () {

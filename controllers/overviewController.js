@@ -1,6 +1,8 @@
 const projectModule = require('../api/projects/methods');
 const usersModule = require('../api/users/methods');
 
+const getUserFromSession = require('../lib/getUserFromSession');
+
 module.exports = {
     overviewGet: async function (req, res, next) {
         const pageOptions = req.pageOptions;

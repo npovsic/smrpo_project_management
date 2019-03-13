@@ -1,5 +1,8 @@
 const projectModule = require('../api/projects/methods');
 const usersModule = require('../api/users/methods');
+const storyModule = require('../api/stories/methods');
+
+const idFromString = require('../lib/idFromString');
 
 const { body, validationResult } = require('express-validator/check');
 
@@ -203,6 +206,25 @@ module.exports = {
         pageOptions.userCanAddSprint = (projectData.scrumMaster) ? projectData.scrumMaster._id.equals(currentUser._id) : false;
 
         pageOptions.projectData = projectData;
+
+        pageOptions.storiesInProgress = await storyModule.find({
+            projectId: idFromString(projectData._id),
+            sprintId: {$ne: null},
+            finished: false,
+        });
+        pageOptions.storiesWaiting = await storyModule.find({
+            projectId: idFromString(projectData._id),
+            sprintId: null,
+            finished: false,
+        });
+        pageOptions.storiesFinished = await storyModule.find({
+            projectId: idFromString(projectData._id),
+            finished: true,
+        });
+        pageOptions.hasStories =
+            pageOptions.storiesInProgress.length ||
+            pageOptions.storiesWaiting.length ||
+            pageOptions.storiesFinished.length;
 
         res.render('./projects/projectOverviewPage', pageOptions);
     },

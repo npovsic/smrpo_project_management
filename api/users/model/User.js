@@ -21,7 +21,7 @@ const UserSchema = new Schema({
         unique: true,
         required: true
     },
-    password: {
+    password: {  // Salted and hashed
         type: String,
         required: true
     },

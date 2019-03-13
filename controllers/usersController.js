@@ -51,7 +51,7 @@ module.exports = {
         };
 
         //create a hash password for the user
-        hashSalt(userData.password).hash(function (err, hashedPassword) {
+        hashSalt(postData.password).hash(function (err, hashedPassword) {
             if (err) {
                 console.log(err);
 

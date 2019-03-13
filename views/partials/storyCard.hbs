@@ -1,0 +1,12 @@
+<div class="card">
+    <div class="card-content">
+        <h5>#{{story.ordinal}}: {{story.title}}</h5>
+        <p><b>Prioriteta:</b> {{getPriorityName story.priority}}</p>
+        <p><b>Poslovna vrednost:</b> {{story.businessValue}}</p>
+        <p>{{convertLineBreaks story.description}}</p>
+        <p><i>{{convertLineBreaks story.acceptanceTests}}</i></p>
+        {{#unless story.finished}}
+            <p><b><i>{{convertLineBreaks story.rejectionReason}}</i></b></p>
+        {{/unless}}
+    </div>
+</div>
