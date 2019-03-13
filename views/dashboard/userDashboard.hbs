@@ -6,7 +6,29 @@
     <div class="card">
         <div class="card-content">
             <p class="card-title">Aktivni sprinti</p>
-            {{#if projects}}
+            
+            {{#each sprints}}
+                <div class="row suppress-bottom-margin">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="row">
+                    <p class="center grey-text">Trenutno nimate aktivnega Sprinta</p>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <p class="card-title">Vaši projekti</p>
+
             {{#each projects}}
                 <div class="row suppress-bottom-margin">
                     <div class="col s12">
@@ -18,22 +40,11 @@
                         </div>
                     </div>
                 </div>
+            {{else}}
+                <div class="row">
+                    <p class="center grey-text">Dodani niste na noben projekt</p>
+                </div>
             {{/each}}
-        {{else}}
-            <div class="row">
-                <p class="center grey-text">Trenutno nimate aktivnega Sprinta</p>
-            </div>
-        {{/if}}
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-content">
-            <p class="card-title">Vaši projekti</p>
-
-            <div class="row">
-                <p class="center grey-text">Niste dodani na noben projekt</p>
-            </div>
         </div>
     </div>
 </div>
