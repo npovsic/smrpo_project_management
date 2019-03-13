@@ -158,3 +158,18 @@ abbr[title] {
 	text-transform: capitalize;
 	font-weight: bold;
 }
+
+.tabs-with-border {
+	border-bottom: 1px solid #ccc;
+}
+
+.card-subtitle {
+	@extend .card-title;
+	
+	font-size: 18px !important;
+}
+
+.span-full-card-width {
+	margin-left: -24px !important;
+	margin-right: -24px !important;
+}

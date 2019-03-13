@@ -2,8 +2,6 @@ const projectModule = require('../api/projects/methods');
 const usersModule = require('../api/users/methods');
 const storyModule = require('../api/stories/methods');
 
-const idFromString = require('../lib/idFromString');
-
 const { body, validationResult } = require('express-validator/check');
 
 const mapUserToSelectObject = function (user, projectRole) {
@@ -172,7 +170,6 @@ module.exports = {
 
         const projectData = await projectModule.findOne({ _id: projectId });
 
-
         if (projectData.productLeader) {
             projectData.productLeader = users.find((user) => user._id.equals(projectData.productLeader));
         }
@@ -202,29 +199,33 @@ module.exports = {
 
         const currentUser = pageOptions.currentUser;
 
+        pageOptions.userCanEditProject = pageOptions.isUserSystemAdmin;
         pageOptions.userCanAddUserStories = (projectData.productLeader || projectData.scrumMaster) ? (projectData.productLeader._id.equals(currentUser._id) || projectData.scrumMaster._id.equals(currentUser._id)) : false;
         pageOptions.userCanAddSprint = (projectData.scrumMaster) ? projectData.scrumMaster._id.equals(currentUser._id) : false;
 
         pageOptions.projectData = projectData;
 
-        pageOptions.storiesInProgress = await storyModule.find({
-            projectId: idFromString(projectData._id),
-            sprintId: {$ne: null},
-            finished: false,
-        });
-        pageOptions.storiesWaiting = await storyModule.find({
-            projectId: idFromString(projectData._id),
-            sprintId: null,
-            finished: false,
-        });
-        pageOptions.storiesFinished = await storyModule.find({
-            projectId: idFromString(projectData._id),
-            finished: true,
-        });
+        pageOptions.productBacklog = {
+            storiesInActiveSprint: await storyModule.find({
+                projectId: projectData._id,
+                sprintId: { $ne: null },
+                finished: false
+            }),
+            storiesWithoutSprint: await storyModule.find({
+                projectId: projectData._id,
+                sprintId: null,
+                finished: false
+            }),
+            storiesFinished: await storyModule.find({
+                projectId: projectData._id,
+                finished: true
+            })
+        };
+
         pageOptions.hasStories =
-            pageOptions.storiesInProgress.length ||
-            pageOptions.storiesWaiting.length ||
-            pageOptions.storiesFinished.length;
+            pageOptions.productBacklog.storiesInActiveSprint.length ||
+            pageOptions.productBacklog.storiesWithoutSprint.length ||
+            pageOptions.productBacklog.storiesFinished.length;
 
         res.render('./projects/projectOverviewPage', pageOptions);
     },
@@ -316,7 +317,7 @@ module.exports = {
 
         projectData._id = projectId;
         pageOptions.projectData = projectData;
-        
+
         // Form validation using express-validate
         pageOptions.errors = {};
 
@@ -335,7 +336,7 @@ module.exports = {
                 })
                 .catch(async function (err) {
                     console.log(err);
-                    
+
                     res.render('./projects/projectEditPage', pageOptions);
                 });
         }

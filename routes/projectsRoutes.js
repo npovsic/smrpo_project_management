@@ -5,6 +5,8 @@ const projectsController = require('../controllers/projectsController');
 
 const buildBasePageOptions = require('../middlewares/buildBasePageOptions');
 
+const systemUserNotAuthorized = require('../middlewares/systemUserNotAuthorized');
+
 /**
  * Root route to display all the projects
  */
@@ -15,9 +17,9 @@ router.get('/', function (req, res, next) {
 /**
  * Route for creating a new project
  */
-router.get('/create', buildBasePageOptions, projectsController.projectCreateGet);
+router.get('/create', systemUserNotAuthorized, buildBasePageOptions, projectsController.projectCreateGet);
 
-router.post('/create', buildBasePageOptions, projectsController.validate('createProject'), projectsController.projectCreatePost);
+router.post('/create', systemUserNotAuthorized, buildBasePageOptions, projectsController.validate('createProject'), projectsController.projectCreatePost);
 
 /**
  * Route for project overview
@@ -27,8 +29,8 @@ router.get('/:projectId', buildBasePageOptions, projectsController.projectOvervi
 /**
  * Route for editing an existing project
  */
-router.get('/:projectId/edit', buildBasePageOptions, projectsController.projectEditGet);
+router.get('/:projectId/edit', systemUserNotAuthorized, buildBasePageOptions, projectsController.projectEditGet);
 
-router.post('/:projectId/edit', buildBasePageOptions, projectsController.validate('updateProject'), projectsController.projectEditPost);
+router.post('/:projectId/edit', systemUserNotAuthorized, buildBasePageOptions, projectsController.validate('updateProject'), projectsController.projectEditPost);
 
 module.exports = router;
