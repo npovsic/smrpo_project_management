@@ -9,13 +9,43 @@
 
             <button class="waves-effect waves-light btn theme-color right" type="submit">
                 <i class="material-icons left">save</i>
-                Shrani
+                Ustvari
             </button>
         </div>
 
         <div class="card">
             <div class="card-content">
-            
+                <p class="card-title">Podatki sprinta</p>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <input id="startDate" name="startDate" type="date" class="validate" value="{{sprintData.startDate}}" required>
+                        <label for="startDate">Začetek sprinta <abbr title="Obvezno polje">*</abbr></label>
+                        {{#if errors.startDate}}
+                            <span class="helper-text red-text">{{ errors.startDate }}</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <input id="endDate" name="endDate" type="date" class="validate" value="{{sprintData.endDate}}" required>
+                        <label for="endDate">Konec sprinta <abbr title="Obvezno polje">*</abbr></label>
+                        {{#if errors.endDate}}
+                            <span class="helper-text red-text">{{ errors.endDate }}</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <input id="velocity" name="velocity" type="number" class="validate" value="{{sprintData.velocity}}" required>
+                        <label for="velocity">Konec sprinta <abbr title="Obvezno polje">*</abbr></label>
+                        {{#if errors.velocity}}
+                            <span class="helper-text red-text">{{ errors.velocity }}</span>
+                        {{/if}}
+                    </div>
+                </div>
             </div>
         </div>
     </form>

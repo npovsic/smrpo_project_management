@@ -7,6 +7,7 @@ module.exports = mongoose.model('Sprint', new Schema({
     startDate: Date,
     endDate: Date,
     velocity: Number,
+    projectId: { type: Schema.Types.ObjectId, ref: 'Project', required: true },
     _lastUpdatedAt: Date,
     _createdAt: Date
 }));
