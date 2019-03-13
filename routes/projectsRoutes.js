@@ -31,4 +31,11 @@ router.get('/:projectId/edit', buildBasePageOptions, projectsController.projectE
 
 router.post('/:projectId/edit', buildBasePageOptions, projectsController.projectEditPost);
 
+/**
+ * Route for creating new user story
+ */
+
+router.get('/:projectId/stories/create', buildBasePageOptions, projectsController.addStoryGet);
+//router.get('/:projectId/stories/create', buildBasePageOptions, projectsController.addStoryPost);
+
 module.exports = router;

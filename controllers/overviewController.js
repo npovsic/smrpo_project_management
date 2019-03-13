@@ -29,6 +29,8 @@ module.exports = {
 
             res.render('./dashboard/adminDashboard', pageOptions);
         } else {
+
+            pageOptions.userProjects = await projectModule.findUserInAllProjects(req.session.user._id);
             res.render('./dashboard/userDashboard', pageOptions);
         }
     }

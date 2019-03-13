@@ -15,7 +15,16 @@ module.exports = {
         
         return project;
     },
-    
+
+    findUserInAllProjects: async function (userId) {
+        // Find all projects where userId is in developers.
+
+        const projects = await Project.find({
+            developers: { $in: userId }
+        }).exec();
+        return projects;
+    },
+
     insert: async function (projectData) {
         const project = new Project(projectData);
 

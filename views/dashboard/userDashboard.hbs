@@ -17,9 +17,36 @@
         <div class="card-content">
             <p class="card-title">Vaši projekti</p>
 
+
+            <!--
             <div class="row">
                 <p class="center grey-text">Niste dodani na noben projekt</p>
             </div>
+            -->
+            
+
+            {{#if userProjects}}
+                {{#each userProjects}}
+                    <div class="row suppress-bottom-margin">
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <a href="/projects/{{this._id}}" class="card-title">{{this.name}}</a>
+                                    <p>{{this.description}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
+            {{else}}
+                <div class="row">
+                    <p class="center grey-text">Niste dodani na noben projekt.</p>
+                </div>
+            {{/if}}
+
+
+
+
         </div>
     </div>
 </div>

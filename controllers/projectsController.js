@@ -319,5 +319,119 @@ module.exports = {
 
                 res.render('./projects/projectEditPage', pageOptions);
             });
-    }
+    },
+
+    //================================000
+
+    addStoryGet: async function (req, res, next) {
+        const pageOptions = req.pageOptions;
+
+        const projectId = req.params.projectId;
+
+        //const users = await usersModule.findAllUsers();
+
+        const projectData = await projectModule.findOne({ _id: projectId });
+
+        //const usersSelectObjects = {
+        //    productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
+        //    scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
+        //    developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
+        //};
+
+        pageOptions.layoutOptions.headTitle = `Dodajanje uporabniske zgodbe`;
+
+        pageOptions.layoutOptions.pageTitle = 'Dodajanje uporabniške zgodbe';
+
+        pageOptions.layoutOptions.navBar.breadcrumbs = [
+            {
+                title: 'Projekti',
+                href: '/projects'
+            },
+            {
+                title: projectData.name,
+                href: `/projects/${projectId}`
+            },
+            {
+                title: 'Dodaj uporabnisko zgodbo',
+                href: `/projects${projectId}/addUserStory`
+            }
+        ];
+
+        //pageOptions.usersSelectObjects = usersSelectObjects;
+        pageOptions.projectData = projectData;
+
+        res.render('./projects/projectAddUserStory', pageOptions);
+    },
+
+    //projectEditPost: async function (req, res, next) {
+    //    const projectId = req.params.projectId;
+
+    //    const postData = req.body;
+
+    //    const projectData = {
+    //        name: postData.name,
+    //        description: postData.description,
+    //        productLeader: postData.productLeader,
+    //        scrumMaster: postData.scrumMaster,
+    //        developers: postData.developers,
+    //        _lastUpdatedAt: new Date()
+    //    };
+
+    //    projectModule.update(projectId, projectData)
+    //        .then(function (result) {
+    //            res.redirect(`/projects/${projectId}`);
+    //        })
+    //        .catch(async function (err) {
+    //            const pageOptions = req.pageOptions;
+
+    //            const users = await usersModule.findAllUsers();
+
+    //            const usersSelectObjects = {
+    //                productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
+    //                scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
+    //                developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
+    //            };
+
+    //            pageOptions.layoutOptions.headTitle = `${projectData.name} - Uredi`;
+
+    //            pageOptions.layoutOptions.pageTitle = 'Urejanje projekta';
+
+    //            pageOptions.layoutOptions.navBar.breadcrumbs = [
+    //                {
+    //                    title: 'Projekti',
+    //                    href: '/projects'
+    //                },
+    //                {
+    //                    title: projectData.name,
+    //                    href: `/projects/${projectId}`
+    //                },
+    //                {
+    //                    title: 'Uredi',
+    //                    href: `/projects${projectId}/edit`
+    //                }
+    //            ];
+
+    //            pageOptions.usersSelectObjects = usersSelectObjects;
+
+    //            projectData._id = projectId;
+    //            pageOptions.projectData = projectData;
+
+    //            if (err && err.errors) {
+    //                pageOptions.errors = {};
+
+    //                for (const property in err.errors) {
+    //                    if (err.errors.hasOwnProperty(property)) {
+    //                        const error = err.errors[property];
+
+    //                        pageOptions.errors[property] = {
+    //                            propertyName: error.path,
+    //                            errorType: error.kind
+    //                        };
+    //                    }
+    //                }
+    //            }
+
+    //            res.render('./projects/projectEditPage', pageOptions);
+    //        });
+    //}
 };
