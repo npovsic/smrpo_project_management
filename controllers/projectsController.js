@@ -294,7 +294,7 @@ module.exports = {
 
         projectData._id = projectId;
         pageOptions.projectData = projectData;
-
+        
         // Form validation using express-validate
         pageOptions.errors = {};
 
