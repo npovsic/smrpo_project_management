@@ -50,7 +50,7 @@ module.exports = {
                 }
                 
                 if (project.developers.find((developerId) => developerId.equals(currentUserId))) {
-                    project.roles.push('Produktni vodja');
+                    project.roles.push('Razvijalec');
                 }
                 
                 return project;
