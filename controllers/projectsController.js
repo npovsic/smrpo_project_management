@@ -1,7 +1,7 @@
 const projectModule = require('../api/projects/methods');
 const usersModule = require('../api/users/methods');
 
-const { check, validationResult } = require('express-validator/check');
+const { body, validationResult } = require('express-validator/check');
 
 const mapUserToSelectObject = function (user, projectRole) {
     let name = '';
@@ -109,57 +109,55 @@ module.exports = {
             _createdAt: new Date()
         };
 
-        projectModule.insert(projectData)
-            .then(function (result) {
-                res.redirect('/projects');
-            })
-            .catch(async function (err) {                
-                const pageOptions = req.pageOptions;
+        const pageOptions = req.pageOptions;
 
-                pageOptions.layoutOptions.headTitle = 'Nov projekt';
+        pageOptions.layoutOptions.headTitle = 'Nov projekt';
 
-                pageOptions.layoutOptions.pageTitle = 'Nov projekt';
+        pageOptions.layoutOptions.pageTitle = 'Nov projekt';
 
-                pageOptions.layoutOptions.navBar.breadcrumbs = [
-                    {
-                        title: 'Projekti',
-                        href: '/projects'
-                    },
-                    {
-                        title: 'Nov projekt',
-                        href: '/projects/create'
-                    }
-                ];
+        pageOptions.layoutOptions.navBar.breadcrumbs = [
+            {
+                title: 'Projekti',
+                href: '/projects'
+            },
+            {
+                title: 'Nov projekt',
+                href: '/projects/create'
+            }
+        ];
 
-                const users = await usersModule.findAllUsers();
+        const users = await usersModule.findAllUsers();
 
-                pageOptions.usersSelectObjects = {
-                    productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
-                    scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
-                    developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
-                };
+        pageOptions.usersSelectObjects = {
+            productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
+            scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
+            developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
+        };
 
-                pageOptions.projectData = projectData;
+        pageOptions.projectData = projectData;
 
-                console.log(err);
-                
-                if (err && err.errors) {
-                    pageOptions.errors = {};
+        // Form validation using express-validate
+        pageOptions.errors = {};
 
-                    for (const property in err.errors) {
-                        if (err.errors.hasOwnProperty(property)) {
-                            const error = err.errors[property];
+        const errorValidation = validationResult(req);
 
-                            pageOptions.errors[property] = {
-                                propertyName: error.path,
-                                errorType: error.kind
-                            };
-                        }
-                    }
-                }
-                
-                res.render('./projects/projectEditPage', pageOptions);
+        if (!errorValidation.isEmpty()) {
+            errorValidation.array().forEach(function (error) {
+                pageOptions.errors[error.param] = error.msg;
             });
+
+            res.render('./projects/projectEditPage', pageOptions);
+        } else {
+            projectModule.insert(projectData)
+                .then(function (result) {
+                    res.redirect('/projects');
+                })
+                .catch(async function (err) {
+                    console.log(err);
+
+                    res.render('./projects/projectEditPage', pageOptions);
+                });
+        }
     },
 
     projectOverview: async function (req, res, next) {
@@ -170,22 +168,22 @@ module.exports = {
         const users = await usersModule.findAllUsers();
 
         const projectData = await projectModule.findOne({ _id: projectId });
-        
 
-        if (projectData.productLeader) {            
+
+        if (projectData.productLeader) {
             projectData.productLeader = users.find((user) => user._id.equals(projectData.productLeader));
         }
-        
+
         if (projectData.scrumMaster) {
             projectData.scrumMaster = users.find((user) => user._id.equals(projectData.scrumMaster));
         }
-        
+
         if (projectData.developers) {
             projectData.developers = projectData.developers.map((developerId) => {
                 return users.find((user) => user._id.equals(developerId));
             });
         }
-        
+
         pageOptions.layoutOptions.headTitle = projectData.name;
 
         pageOptions.layoutOptions.navBar.breadcrumbs = [
@@ -203,7 +201,7 @@ module.exports = {
 
         pageOptions.userCanAddUserStories = (projectData.productLeader || projectData.scrumMaster) ? (projectData.productLeader._id.equals(currentUser._id) || projectData.scrumMaster._id.equals(currentUser._id)) : false;
         pageOptions.userCanAddSprint = (projectData.scrumMaster) ? projectData.scrumMaster._id.equals(currentUser._id) : false;
-        
+
         pageOptions.projectData = projectData;
 
         res.render('./projects/projectOverviewPage', pageOptions);
@@ -225,7 +223,7 @@ module.exports = {
         };
 
         pageOptions.layoutOptions.headTitle = `${projectData.name} - Uredi`;
-        
+
         pageOptions.layoutOptions.pageTitle = 'Urejanje projekta';
 
         pageOptions.layoutOptions.navBar.breadcrumbs = [
@@ -245,7 +243,7 @@ module.exports = {
 
         pageOptions.usersSelectObjects = usersSelectObjects;
         pageOptions.projectData = projectData;
-        
+
         res.render('./projects/projectEditPage', pageOptions);
     },
 
@@ -263,61 +261,89 @@ module.exports = {
             _lastUpdatedAt: new Date()
         };
 
-        projectModule.update(projectId, projectData)
-            .then(function (result) {
-                res.redirect(`/projects/${projectId}`);
-            })
-            .catch(async function (err) {     
-                const pageOptions = req.pageOptions;
+        const pageOptions = req.pageOptions;
 
-                const users = await usersModule.findAllUsers();
+        const users = await usersModule.findAllUsers();
 
-                const usersSelectObjects = {
-                    productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
-                    scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
-                    developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
-                };
+        const usersSelectObjects = {
+            productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
+            scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
+            developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
+        };
 
-                pageOptions.layoutOptions.headTitle = `${projectData.name} - Uredi`;
+        pageOptions.layoutOptions.headTitle = `${projectData.name} - Uredi`;
 
-                pageOptions.layoutOptions.pageTitle = 'Urejanje projekta';
+        pageOptions.layoutOptions.pageTitle = 'Urejanje projekta';
 
-                pageOptions.layoutOptions.navBar.breadcrumbs = [
-                    {
-                        title: 'Projekti',
-                        href: '/projects'
-                    },
-                    {
-                        title: projectData.name,
-                        href: `/projects/${projectId}`
-                    },
-                    {
-                        title: 'Uredi',
-                        href: `/projects${projectId}/edit`
-                    }
-                ];
+        pageOptions.layoutOptions.navBar.breadcrumbs = [
+            {
+                title: 'Projekti',
+                href: '/projects'
+            },
+            {
+                title: projectData.name,
+                href: `/projects/${projectId}`
+            },
+            {
+                title: 'Uredi',
+                href: `/projects${projectId}/edit`
+            }
+        ];
 
-                pageOptions.usersSelectObjects = usersSelectObjects;
+        pageOptions.usersSelectObjects = usersSelectObjects;
 
-                projectData._id = projectId;
-                pageOptions.projectData = projectData;
+        projectData._id = projectId;
+        pageOptions.projectData = projectData;
 
-                if (err && err.errors) {
-                    pageOptions.errors = {};
+        // Form validation using express-validate
+        pageOptions.errors = {};
 
-                    for (const property in err.errors) {
-                        if (err.errors.hasOwnProperty(property)) {
-                            const error = err.errors[property];
+        const errorValidation = validationResult(req);
 
-                            pageOptions.errors[property] = {
-                                propertyName: error.path,
-                                errorType: error.kind
-                            };
-                        }
-                    }
-                }
-
-                res.render('./projects/projectEditPage', pageOptions);
+        if (!errorValidation.isEmpty()) {
+            errorValidation.array().forEach(function (error) {
+                pageOptions.errors[error.param] = error.msg;
             });
+
+            res.render('./projects/projectEditPage', pageOptions);
+        } else {
+            projectModule.update(projectId, projectData)
+                .then(function (result) {
+                    res.redirect(`/projects/${projectId}`);
+                })
+                .catch(async function (err) {
+                    console.log(err);
+                    
+                    res.render('./projects/projectEditPage', pageOptions);
+                });
+        }
+    },
+
+    validate(method) {
+        switch (method) {
+            case 'createProject': {
+                return [
+                    body('name').trim().isLength({
+                        min: 1,
+                        max: 64
+                    }).not().isEmpty().withMessage('Ime projekta ne sme biti prazno in mora biti manjše od 64 znakov'),
+                    body('productLeader').not().isEmpty().withMessage('Nastavite produktnega vodjo'),
+                    body('scrumMaster').not().isEmpty().withMessage('Nastavite vodjo metodologije'),
+                    body('developers').not().isEmpty().withMessage('Nastavite razvijalce')
+                ];
+            }
+
+            case 'updateProject': {
+                return [
+                    body('name').trim().isLength({
+                        min: 1,
+                        max: 64
+                    }).not().isEmpty().withMessage('Ime projekta ne sme biti prazno in mora biti manjše od 64 znakov'),
+                    body('productLeader').not().isEmpty().withMessage('Nastavite produktnega vodjo'),
+                    body('scrumMaster').not().isEmpty().withMessage('Nastavite vodjo metodologije'),
+                    body('developers').not().isEmpty().withMessage('Nastavite razvijalce')
+                ];
+            }
+        }
     }
 };

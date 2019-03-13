@@ -32,7 +32,27 @@ module.exports = {
 
             res.render('./dashboard/adminDashboard', pageOptions);
         } else {
-            pageOptions.projects = await projectModule.findAllForUser(req.session.user._id);
+            const currentUserId = req.session.user._id;
+            
+            const projects = await projectModule.findAllForUser(currentUserId);
+            
+            pageOptions.projects = projects.map((project) => {
+                project.roles = [];
+                
+                if (project.productLeader.equals(currentUserId)) {
+                    project.roles.push('Produktni vodja');
+                }
+                
+                if (project.scrumMaster.equals(currentUserId)) {
+                    project.roles.push('Vodja metodologije');
+                }
+                
+                if (project.developers.find((developerId) => developerId.equals(currentUserId))) {
+                    project.roles.push('Produktni vodja');
+                }
+                
+                return project;
+            });
 
 
             res.render('./dashboard/userDashboard', pageOptions);

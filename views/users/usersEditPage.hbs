@@ -22,7 +22,7 @@
                         <input id="firstName" name="firstName" type="text" class="validate" value="{{userData.firstName}}" pattern=".{1,64}" required>
                         <label for="firstName">Ime <abbr title="Obvezno polje">*</abbr></label>
                         {{#if errors.firstName}}
-                            <span class="helper-text red-text">{{ errors.firstName }}</span>
+                            <span class="helper-text red-text">{{errors.firstName}}</span>
                         {{/if}}
                     </div>
 
@@ -30,7 +30,7 @@
                         <input id="lastName" name="lastName" type="text" class="validate" value="{{userData.lastName}}" pattern=".{0,64}">
                         <label for="lastName">Priimek</label>
                         {{#if errors.firstName}}
-                            <span class="helper-text red-text">{{ errors.lastName }}</span>
+                            <span class="helper-text red-text">{{errors.lastName}}</span>
                         {{/if}}
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                         <input id="email" name="email" type="email" class="validate" value="{{userData.email}}" pattern=".{1,128}" required>
                         <label for="email">E-poštni naslov <abbr title="Obvezno polje">*</abbr></label>
                         {{#if errors.email}}
-                            <span class="helper-text red-text">{{ errors.email }}</span>
+                            <span class="helper-text red-text">{{errors.email}}</span>
                         {{/if}}
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                         <input id="username" name="username" type="text" class="validate" value="{{userData.username}}" pattern=".{4,64}" required>
                         <label for="username">Uporabniško ime <abbr title="Obvezno polje">*</abbr></label>
                         {{#if errors.username}}
-                            <span class="helper-text red-text">{{ errors.username }}</span>
+                            <span class="helper-text red-text">{{errors.username}}</span>
                         {{/if}}
                     </div>
                 </div>

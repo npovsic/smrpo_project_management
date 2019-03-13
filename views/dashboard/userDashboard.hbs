@@ -35,7 +35,20 @@
                         <div class="card">
                             <div class="card-content">
                                 <a href="/projects/{{this._id}}" class="card-title">{{this.name}}</a>
-                                <p>{{this.description}}</p>
+
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p><span class="grey-text">Opis: </span>{{this.description}}</p>
+                                    </div>
+                                </div>
+
+                                <p class="users-label grey-text">Vaše vloge v projektu:</p>
+
+                                {{#each this.roles}}
+                                    <div class="chip">
+                                        {{this}}
+                                    </div>
+                                {{/each}}
                             </div>
                         </div>
                     </div>

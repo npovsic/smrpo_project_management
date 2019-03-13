@@ -77,14 +77,14 @@ module.exports = {
                 }
             ];
 
-            //form validation using express-validate
+            // Form validation using express-validate
             pageOptions.errors = {};
             
             const errorValidation = validationResult(req);
             
             if (!errorValidation.isEmpty()) {
-                errorValidation.array().forEach(function (ele) {
-                    pageOptions.errors[ele.param] = ele.msg;
+                errorValidation.array().forEach(function (error) {
+                    pageOptions.errors[error.param] = error.msg;
                 });
 
                 res.render('./users/usersEditPage', pageOptions);
@@ -134,7 +134,7 @@ module.exports = {
         res.render('./users/userOverviewPage', pageOptions);
     },
 
-    validate: function (method) {
+    validate(method) {
         switch (method) {
             case 'createUser': {
                 return [

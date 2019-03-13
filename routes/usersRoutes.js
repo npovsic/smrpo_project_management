@@ -8,7 +8,7 @@ const buildBasePageOptions = require('../middlewares/buildBasePageOptions');
 /**
  * Root route to display all the users
  */
-router.get('/', function (res, req, next) {
+router.get('/', function (req, res, next) {
     res.redirect('/');
 });
 
