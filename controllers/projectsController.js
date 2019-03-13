@@ -348,6 +348,46 @@ module.exports = {
         }
     },
 
+    addStoryGet: async function (req, res, next) {
+        const pageOptions = req.pageOptions;
+
+        const projectId = req.params.projectId;
+
+        //const users = await usersModule.findAllUsers();
+
+        const projectData = await projectModule.findOne({ _id: projectId });
+
+        //const usersSelectObjects = {
+        //    productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
+        //    scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
+        //    developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
+        //};
+
+        pageOptions.layoutOptions.headTitle = `Dodajanje uporabniske zgodbe`;
+
+        pageOptions.layoutOptions.pageTitle = 'Dodajanje uporabniöke zgodbe';
+
+        pageOptions.layoutOptions.navBar.breadcrumbs = [
+            {
+                title: 'Projekti',
+                href: '/projects'
+            },
+            {
+                title: projectData.name,
+                href: `/projects/${projectId}`
+            },
+            {
+                title: 'Dodaj uporabnisko zgodbo',
+                href: `/projects${projectId}/addUserStory`
+            }
+        ];
+
+        //pageOptions.usersSelectObjects = usersSelectObjects;
+        pageOptions.projectData = projectData;
+
+        res.render('./projects/projectAddUserStory', pageOptions);
+    },
+
     validate(method) {
         switch (method) {
             case 'createProject': {
@@ -355,7 +395,7 @@ module.exports = {
                     body('name').trim().isLength({
                         min: 1,
                         max: 64
-                    }).not().isEmpty().withMessage('Ime projekta ne sme biti prazno in mora biti manj≈°e od 64 znakov'),
+                    }).not().isEmpty().withMessage('Ime projekta ne sme biti prazno in mora biti manjöe od 64 znakov'),
                     body('productLeader').not().isEmpty().withMessage('Nastavite produktnega vodjo'),
                     body('scrumMaster').not().isEmpty().withMessage('Nastavite vodjo metodologije'),
                     body('developers').not().isEmpty().withMessage('Nastavite razvijalce')
@@ -367,7 +407,7 @@ module.exports = {
                     body('name').trim().isLength({
                         min: 1,
                         max: 64
-                    }).not().isEmpty().withMessage('Ime projekta ne sme biti prazno in mora biti manj≈°e od 64 znakov'),
+                    }).not().isEmpty().withMessage('Ime projekta ne sme biti prazno in mora biti manjöe od 64 znakov'),
                     body('productLeader').not().isEmpty().withMessage('Nastavite produktnega vodjo'),
                     body('scrumMaster').not().isEmpty().withMessage('Nastavite vodjo metodologije'),
                     body('developers').not().isEmpty().withMessage('Nastavite razvijalce')

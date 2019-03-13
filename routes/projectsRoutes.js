@@ -43,4 +43,11 @@ router.get('/:projectId/sprints/create', systemAdminNotAuthorized, buildBasePage
 
 router.post('/:projectId/sprints/create', systemAdminNotAuthorized, buildBasePageOptions, sprintsController.validate('createSprint'), sprintsController.sprintCreatePost);
 
+/**
+ * Route for creating new user story
+ */
+
+router.get('/:projectId/stories/create', buildBasePageOptions, projectsController.addStoryGet);
+//router.get('/:projectId/stories/create', buildBasePageOptions, projectsController.addStoryPost);
+
 module.exports = router;
