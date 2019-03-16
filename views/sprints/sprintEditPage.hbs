@@ -22,7 +22,7 @@
                         <input id="startDate" name="startDate" type="date" class="validate" value="{{sprintData.startDate}}" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
                         <label for="startDate">Začetek sprinta <abbr title="Obvezno polje">*</abbr></label>
                         {{#if errors.startDate}}
-                            <span class="helper-text red-text">{{ errors.startDate }}</span>
+                            <span class="helper-text red-text">{{errors.startDate}}</span>
                         {{/if}}
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                         <input id="endDate" name="endDate" type="date" class="validate" value="{{sprintData.endDate}}" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
                         <label for="endDate">Konec sprinta <abbr title="Obvezno polje">*</abbr></label>
                         {{#if errors.endDate}}
-                            <span class="helper-text red-text">{{ errors.endDate }}</span>
+                            <span class="helper-text red-text">{{errors.endDate}}</span>
                         {{/if}}
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                         <input id="velocity" name="velocity" type="number" class="validate" value="{{sprintData.velocity}}" required>
                         <label for="velocity">Hitrost sprinta <abbr title="Obvezno polje">*</abbr></label>
                         {{#if errors.velocity}}
-                            <span class="helper-text red-text">{{ errors.velocity }}</span>
+                            <span class="helper-text red-text">{{errors.velocity}}</span>
                         {{/if}}
                     </div>
                 </div>

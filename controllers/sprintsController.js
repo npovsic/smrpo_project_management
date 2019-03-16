@@ -5,26 +5,26 @@ const formatDate = require('../lib/formatDate');
 const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
-
 module.exports = {
-	sprintCreateGet: async function (req, res, next) {
-		const pageOptions = req.pageOptions;
+    sprintCreateGet: async function (req, res, next) {
+        const pageOptions = req.pageOptions;
         const projectId = req.params.projectId;
 
-        //add two weeks to the current date
-        var endDate = new Date();
+        // Add two weeks to the current date
+        const endDate = new Date();
+
         endDate.setDate(endDate.getDate() + 14);
-        console.log(endDate);
 
         const sprintData = {
             startDate: formatDate(new Date()),
             endDate: formatDate(new Date(endDate))
         };
+
         pageOptions.sprintData = sprintData;
 
         pageOptions.layoutOptions.headTitle = 'Ustvarjanje novega sprinta';
         pageOptions.layoutOptions.pageTitle = 'Ustvarjanje novega sprinta';
-        
+
         pageOptions.layoutOptions.navBar.breadcrumbs = [
             {
                 title: 'Projekt',
@@ -37,7 +37,7 @@ module.exports = {
         ];
 
         res.render('./sprints/sprintEditPage', pageOptions);
-	},
+    },
 
     sprintCreatePost: async function (req, res, next) {
         const postData = req.body;
@@ -52,10 +52,9 @@ module.exports = {
             _createdAt: new Date()
         };
 
-            
         const pageOptions = req.pageOptions;
         pageOptions.sprintData = sprintData;
-        
+
         pageOptions.layoutOptions.headTitle = 'Ustvarjanje novega sprinta';
         pageOptions.layoutOptions.pageTitle = 'Ustvarjanje novega sprinta';
         pageOptions.layoutOptions.navBar.breadcrumbs = [
@@ -71,7 +70,9 @@ module.exports = {
 
         //form validation using express-validate
         pageOptions.errors = {};
+        
         const errorValidation = validationResult(req);
+        
         if (!errorValidation.isEmpty()) {
             errorValidation.array().forEach(function (ele) {
                 pageOptions.errors[ele.param] = ele.msg;
@@ -100,23 +101,27 @@ module.exports = {
                     body('startDate').exists().withMessage('Začetek sprinta ne sme biti prazen oziroma ne določen'),
                     body('endDate').exists().withMessage('Začetek sprinta ne sme biti prazen oziroma ne določen'),
                     body('startDate').custom((startDate, { req }) => {
-                        if(formatDate(startDate.getTime()) > formatDate(req.body.endDate.getTime())) {
+                        if (formatDate(startDate.getTime()) > formatDate(req.body.endDate.getTime())) {
                             return Promise.reject("Konec sprinta ne more biti pred začetkom sprinta");
-                        } else if(formatDate(startDate.getTime()) < formatDate(new Date())){
+                        } else if (formatDate(startDate.getTime()) < formatDate(new Date())) {
                             return Promise.reject("Začetek sprinta ne more biti v preteklosti");
-                        } 
-                        
-                        return sprintsModule.checkIfBetween({ "projectId": req.params.projectId,  "startDate": formatDate(startDate), "endDate": formatDate(req.body.endDate)}).then(sprints => {
-                            if(sprints.length != 0) {
+                        }
+
+                        return sprintsModule.checkIfBetween({
+                            "projectId": req.params.projectId,
+                            "startDate": formatDate(startDate),
+                            "endDate": formatDate(req.body.endDate)
+                        }).then(sprints => {
+                            if (sprints.length !== 0) {
                                 return Promise.reject('Izvajanje sprinata se prekriva z drugim že ustvarjenim v tem projektu');
                             }
                         });
                     }),
                     body('velocity').exists().withMessage('Hitrost sprinta mora biti definirana'),
-                    body('velocity').custom(value  => {
-                        if(parseInt(value) <= 0 ){
+                    body('velocity').custom(value => {
+                        if (parseInt(value) <= 0) {
                             return Promise.reject('Hitrost sprinta mora biti pozitivno število večje od 0');
-                        } else if(parseFloat(value) % 1 != 0) {
+                        } else if (parseFloat(value) % 1 !== 0) {
                             return Promise.reject('Hitrost sprinta mora biti definirana z celimi števili');
                         }
                         return true;
