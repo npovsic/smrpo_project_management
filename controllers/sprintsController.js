@@ -102,15 +102,15 @@ module.exports = {
                     body('endDate').exists().withMessage('Začetek sprinta ne sme biti prazen oziroma ne določen'),
                     body('startDate').custom((startDate, { req }) => {
                         if (formatDate(startDate.getTime()) > formatDate(req.body.endDate.getTime())) {
-                            return Promise.reject("Konec sprinta ne more biti pred začetkom sprinta");
-                        } else if (formatDate(startDate.getTime()) < formatDate(new Date())) {
-                            return Promise.reject("Začetek sprinta ne more biti v preteklosti");
+                            return Promise.reject('Začetek sprinta ne more biti v preteklosti');
+                        } else if (formatDate(startDate.getTime()) < formatDate(new Date())) {                            
+                            return Promise.reject('Konec sprinta ne more biti pred začetkom sprinta');
                         }
 
                         return sprintsModule.checkIfBetween({
-                            "projectId": req.params.projectId,
-                            "startDate": formatDate(startDate),
-                            "endDate": formatDate(req.body.endDate)
+                            projectId: req.params.projectId,
+                            startDate: formatDate(startDate),
+                            endDate: formatDate(req.body.endDate)
                         }).then(sprints => {
                             if (sprints.length !== 0) {
                                 return Promise.reject('Izvajanje sprinata se prekriva z drugim že ustvarjenim v tem projektu');
