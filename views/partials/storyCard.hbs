@@ -26,21 +26,14 @@
             </p>
         </div>
         
-        <div class="row suppress-bottom-margin">
-            <p>
-                <span class="grey-text">Status: </span>
+        {{#if story.rejectionReason}}
+            <div class="row suppress-bottom-margin">
+                <p>
+                    <span class="grey-text">Zgodba je bila zavrnjena zaradi: </span>
 
-                {{#if story.finished}}
-                    {{#if story.rejectionReason}}
-                        Zgodba je bila zavrnjena zaradi: <i>{{convertLineBreaks story.rejectionReason}}</i>
-                    {{else}}
-                        Zgodba je zaključena
-                    {{/if}}
-                {{else}}
-                    Zgodba še ni zaključena
-                {{/if}}
-            </p>
-            
-        </div>
+                    <i>{{convertLineBreaks story.rejectionReason}}</i>
+                </p>
+            </div>
+        {{/if}}
     </div>
 </div>
