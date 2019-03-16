@@ -1,4 +1,6 @@
 const Sprint = require('./model/Sprint');
+const Project = require('../projects/model/Project');
+
 
 module.exports = {
     findAllForProject: async function (projectId) {
@@ -11,22 +13,59 @@ module.exports = {
         return await Sprint.findOne(...arguments).exec();
     },
 
-    findAllActiveForUser: async function (userId) {
-        //find all the sprints where this userId is in developers
+    checkIfBetween: async function (sprintData) {
         const sprints = await Sprint.find({
-            scrumMaster : userId
+            $and: [
+                {projectId : sprintData.projectId},
+                {$or : [
+                    {$and : [
+                        {startDate: {$gte: new Date(sprintData.startDate)}},
+                        {startDate: {$lte: new Date(sprintData.endDate)}}
+                    ]},
+                    {$and : [
+                       {endDate: {$gte: new Date(sprintData.startDate)}},
+                       {endDate: {$lte: new Date(sprintData.endDate)}}
+                    ]}
+                ]}
+            ]
         }).exec();
 
         return sprints;
     },
 
-    /*checkIfBetween: async function (projectId, startDate, endDate) {
-        const sprints = await Sprint.find({
-                {project : projectId}
-        });
+    findActiveSprintFromProject: async function (projectId) {
+        const currentDate = new Date();
+        const activeSprint = await Sprint.find({
+            $and: [
+                {projectId: projectId},
+                {$and: [
+                    {startDate: {$lte: new Date(currentDate)}},
+                    {endDate: {$gte: new Date(currentDate)}}
+                ]}
+            ]
+        }).exec();
 
-        return sprints;
-    },*/
+        return activeSprint;
+    },
+
+    findActiveSprintsFromAllProjects: async function (projects) {
+        return {};
+    },
+
+    findNotActiveSprintsFromProject: async function(projectId) {
+        const currentDate = new Date();
+        const inactiveSprints = await Sprint.find({
+            $and: [
+                {projectId: projectId},
+                {$or: [
+                    {startDate: {$gt: new Date(currentDate)}},
+                    {endDate: {$lt: new Date(currentDate)}}
+                ]}
+            ]
+        }).sort({endDate: -1}).exec();
+
+        return inactiveSprints;
+    },
 
     insert: async function (storyData) {
         return await new Sprint(storyData).save();
