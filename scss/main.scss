@@ -180,3 +180,13 @@ abbr[title] {
 	right: 0;
 	width: 15%;
 }
+
+.background {
+	background-image: url("/images/background.svg");
+	background-size: cover;
+	background-position: top;
+}
+
+a.card-title {
+	color: $primary-color;
+}
