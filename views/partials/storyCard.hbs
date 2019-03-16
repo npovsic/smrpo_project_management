@@ -1,12 +1,46 @@
 <div class="card">
     <div class="card-content">
-        <h5>#{{story.ordinal}}: {{story.title}}</h5>
-        <p><b>Prioriteta:</b> {{getPriorityName story.priority}}</p>
-        <p><b>Poslovna vrednost:</b> {{story.businessValue}}</p>
-        <p>{{convertLineBreaks story.description}}</p>
-        <p><i>{{convertLineBreaks story.acceptanceTests}}</i></p>
-        {{#unless story.finished}}
-            <p><b><i>{{convertLineBreaks story.rejectionReason}}</i></b></p>
-        {{/unless}}
+        <div class="row">
+            <h5>#{{story.ordinal}}: {{story.title}}</h5>
+        </div>
+        
+        <div class="row">
+            <p><span class="grey-text">Prioriteta: </span>{{getPriorityName story.priority}}</p>
+        </div>
+        
+        <div class="row">
+            <p><span class="grey-text">Poslovna vrednost: </span>{{story.businessValue}}</p>
+        </div>
+        
+        <div class="row">
+            <p><span class="grey-text">Opis: </span>{{convertLineBreaks story.description}}</p>
+        </div>
+        
+        <div class="row">
+            <p><span class="grey-text">Sprejemni testi: </span>
+                {{#if story.acceptanceTests}}
+                    <i>{{convertLineBreaks story.acceptanceTests}}</i>
+                {{else}}
+                    /
+                {{/if}}
+            </p>
+        </div>
+        
+        <div class="row suppress-bottom-margin">
+            <p>
+                <span class="grey-text">Status: </span>
+
+                {{#if story.finished}}
+                    {{#if story.rejectionReason}}
+                        Zgodba je bila zavrnjena zaradi: <i>{{convertLineBreaks story.rejectionReason}}</i>
+                    {{else}}
+                        Zgodba je zaključena
+                    {{/if}}
+                {{else}}
+                    Zgodba še ni zaključena
+                {{/if}}
+            </p>
+            
+        </div>
     </div>
 </div>
