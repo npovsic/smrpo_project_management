@@ -90,9 +90,9 @@
                 </div>
             
                 <div id="unrealizedStories">
-                    {{#if activeSprint}}
-                        <p>Dodeljene v aktivni Sprint</p>
+                    <p>Dodeljene v aktivni Sprint:</p>
 
+                    {{#if activeSprint}}
                         {{#each productBacklog.storiesInActiveSprint}}
                             {{> storyCard story=this}}
                         {{else}}
@@ -100,6 +100,10 @@
                                 <p class="center grey-text">Aktivni sprint nima nobene dodeljene zgodbe.</p>
                             </div>
                         {{/each}}
+                    {{else}}
+                        <div class="row">
+                            <p class="center grey-text">Trenutno ni aktivnega Sprinta.</p>
+                        </div>
                     {{/if}}
                     
                     <p class="card-subtitle">Nedodeljene:</p>
