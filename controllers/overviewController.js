@@ -1,5 +1,6 @@
 const projectModule = require('../api/projects/methods');
 const usersModule = require('../api/users/methods');
+const sprintsModule = require('../api/sprints/methods');
 
 const getUserFromSession = require('../lib/getUserFromSession');
 
@@ -37,6 +38,8 @@ module.exports = {
             const currentUserId = req.session.user._id;
             
             const projects = await projectModule.findAllForUser(currentUserId);
+            //this has to be done on overview page
+            const sprints = await sprintsModule.findActiveSprintsFromAllProjects(projects);
             
             pageOptions.projects = projects.map((project) => {
                 project.roles = [];
@@ -55,6 +58,8 @@ module.exports = {
                 
                 return project;
             });
+
+            pageOptions.sprints = sprints;
 
 
             res.render('./dashboard/userDashboard', pageOptions);

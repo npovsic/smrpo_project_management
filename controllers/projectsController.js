@@ -1,6 +1,7 @@
 const projectModule = require('../api/projects/methods');
 const usersModule = require('../api/users/methods');
 const storyModule = require('../api/stories/methods');
+const sprintModule = require('../api/sprints/methods');
 
 const { body, validationResult } = require('express-validator/check');
 
@@ -170,6 +171,9 @@ module.exports = {
 
         const projectData = await projectModule.findOne({ _id: projectId });
 
+        const activeSprint = await sprintModule.findActiveSprintFromProject(projectId);
+        const inactiveSprints = await sprintModule.findNotActiveSprintsFromProject(projectId);
+
         if (projectData.productLeader) {
             projectData.productLeader = users.find((user) => user._id.equals(projectData.productLeader));
         }
@@ -204,6 +208,8 @@ module.exports = {
         pageOptions.userCanAddSprint = (projectData.scrumMaster) ? projectData.scrumMaster._id.equals(currentUser._id) : false;
 
         pageOptions.projectData = projectData;
+        pageOptions.activeSprint = activeSprint;
+        pageOptions.inactiveSprints = inactiveSprints;
 
         pageOptions.productBacklog = {
             storiesInActiveSprint: await storyModule.find({
@@ -260,7 +266,7 @@ module.exports = {
             },
             {
                 title: 'Uredi',
-                href: `/projects${projectId}/edit`
+                href: `/projects/${projectId}/edit`
             }
         ];
 

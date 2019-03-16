@@ -70,7 +70,6 @@ const setupRoutes = function () {
     app.use('/', require('./routes/indexRoutes'));
     app.use('/users', require('./routes/usersRoutes'));
     app.use('/projects', require('./routes/projectsRoutes'));
-    app.use('/projects/:projectId/sprints', require('./routes/sprintsRoutes'));
 };
 
 const setupErrorHandler = function () {

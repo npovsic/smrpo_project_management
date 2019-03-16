@@ -150,15 +150,75 @@
             </div>
 
             <div id="activeSprint">
-                <div class="row">
-                    <p class="center grey-text">Trenutno ni aktivnega Sprinta.</p>
-                </div>
+                {{#each activeSprint}}
+                    <div class="row suppress-bottom-margin">
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <a href="" class="card-title">Aktiven sprint na projektu</a>
+
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p><span class="grey-text">Začetek sprinta: </span>{{this.startDate}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p><span class="grey-text">Konec sprinta: </span>{{this.endDate}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p><span class="grey-text">Hitrost sprinta: </span>{{this.velocity}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="row">
+                        <p class="center grey-text">Trenutno ni aktivnega Sprinta.</p>
+                    </div>
+                {{/each}}
             </div>
 
             <div id="inactiveSprints">
-                <div class="row">
-                    <p class="center grey-text">Ni neaktivnih Sprintov.</p>
-                </div>
+                {{#each inactiveSprints}}
+                    <div class="row suppress-bottom-margin">
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <a href="" class="card-title">Neaktiven sprint</a>
+
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p><span class="grey-text">Začetek sprinta: </span>{{this.startDate}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p><span class="grey-text">Konec sprinta: </span>{{this.endDate}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p><span class="grey-text">Hitrost sprinta: </span>{{this.velocity}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="row">
+                        <p class="center grey-text">Ni neaktivnih Sprintov.</p>
+                    </div>
+                {{/each}}
             </div>
 
             {{#if userCanAddSprint}}

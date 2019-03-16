@@ -2,10 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 const projectsController = require('../controllers/projectsController');
+const sprintsController = require('../controllers/sprintsController');
 
 const buildBasePageOptions = require('../middlewares/buildBasePageOptions');
 
 const systemUserNotAuthorized = require('../middlewares/systemUserNotAuthorized');
+const systemAdminNotAuthorized = require('../middlewares/systemAdminNotAuthorized');
 
 /**
  * Root route to display all the projects
@@ -32,5 +34,13 @@ router.get('/:projectId', buildBasePageOptions, projectsController.projectOvervi
 router.get('/:projectId/edit', systemUserNotAuthorized, buildBasePageOptions, projectsController.projectEditGet);
 
 router.post('/:projectId/edit', systemUserNotAuthorized, buildBasePageOptions, projectsController.validate('updateProject'), projectsController.projectEditPost);
+
+
+/**
+ * Route for creating a new sprint
+ */
+router.get('/:projectId/sprints/create', systemAdminNotAuthorized, buildBasePageOptions, sprintsController.sprintCreateGet);
+
+router.post('/:projectId/sprints/create', systemAdminNotAuthorized, buildBasePageOptions, sprintsController.validate('createSprint'), sprintsController.sprintCreatePost);
 
 module.exports = router;
