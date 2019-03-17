@@ -21,6 +21,7 @@ module.exports = {
         };
 
         pageOptions.sprintData = sprintData;
+        pageOptions.existingSprints = await sprintsModule.findAllForProject(projectId);
 
         pageOptions.layoutOptions.headTitle = 'Ustvarjanje novega sprinta';
         pageOptions.layoutOptions.pageTitle = 'Ustvarjanje novega sprinta';
@@ -56,6 +57,7 @@ module.exports = {
 
         const pageOptions = req.pageOptions;
         pageOptions.sprintData = sprintData;
+        pageOptions.existingSprints = await sprintsModule.findAllForProject(projectId);
 
         pageOptions.layoutOptions.headTitle = 'Ustvarjanje novega sprinta';
         pageOptions.layoutOptions.pageTitle = 'Ustvarjanje novega sprinta';

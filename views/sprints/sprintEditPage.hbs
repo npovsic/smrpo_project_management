@@ -40,12 +40,28 @@
                 <div class="row suppress-bottom-margin">
                     <div class="input-field col s12">
                         <input id="velocity" name="velocity" type="number" class="validate" value="{{sprintData.velocity}}" required>
-                        <label for="velocity">Hitrost sprinta <abbr title="Obvezno polje">*</abbr></label>
+                        <label for="velocity">Hitrost sprinta v točkah <abbr title="Obvezno polje">*</abbr></label>
                         {{#if errors.velocity}}
                             <span class="helper-text red-text">{{errors.velocity}}</span>
                         {{/if}}
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div id="sprint-edit-basic-information" class="card scrollspy">
+            <div class="card-content">
+                <p class="card-title">Obstoječi sprinti</p>
+                {{#if existingSprints}}
+                    <table>
+                        <tr><th>Začetek</th><th>Konec</th></tr>
+                        {{#each existingSprints}}
+                            <tr><td>{{formatDate this.startDate}}</td><td>{{formatDate this.endDate}}</td></tr>
+                        {{/each}}
+                    </table>
+                {{else}}
+                    <p class="center grey-text">Ni definiranih sprintov.</p>
+                {{/if}}
             </div>
         </div>
     </form>

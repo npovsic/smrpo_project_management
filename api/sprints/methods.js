@@ -1,12 +1,11 @@
 const Sprint = require('./model/Sprint');
-const Project = require('../projects/model/Project');
-
 
 module.exports = {
+    /**
+     * Gets all sprints for a project, sorted by ascending start date.
+     */
     findAllForProject: async function (projectId) {
-        const project = await Project.find({ _id: projectId }).exec();
-
-        return project.stories;
+        return await Sprint.find({ projectId: projectId }).sort({ startDate: 1 }).exec();
     },
 
     findOne: async function () {

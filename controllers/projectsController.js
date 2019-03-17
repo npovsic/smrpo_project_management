@@ -350,18 +350,7 @@ module.exports = {
     
     validate(method) {
         switch (method) {
-            case 'createProject': {
-                return [
-                    body('name').trim().isLength({
-                        min: 1,
-                        max: 64
-                    }).not().isEmpty().withMessage('Ime projekta ne sme biti prazno in mora biti krajše od 64 znakov.'),
-                    body('productLeader').not().isEmpty().withMessage('Izberite produktnega vodjo.'),
-                    body('scrumMaster').not().isEmpty().withMessage('Izberite vodjo metodologije.'),
-                    body('developers').not().isEmpty().withMessage('Izberite razvijalce.')
-                ];
-            }
-
+            case 'createProject':
             case 'updateProject': {
                 return [
                     body('name').trim().isLength({
