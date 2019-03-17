@@ -36,8 +36,7 @@ module.exports = {
             const currentUserId = req.session.user._id;
             
             const projects = await projectModule.findAllForUser(currentUserId);
-            //this has to be done on overview page
-            const sprints = await sprintsModule.findActiveSprintsFromAllProjects(projects);
+            const sprints = await sprintsModule.findActiveSprintsFromUsersProjects(projects);
             
             pageOptions.projects = projects.map((project) => {
                 project.roles = [];

@@ -12,7 +12,31 @@
                     <div class="col s12">
                         <div class="card">
                             <div class="card-content">
-                                
+                                <a href="" class="card-title">Aktiven sprint</a>
+
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p><span class="grey-text"><b>Projekt: </b></span>{{this.project.name}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p><span class="grey-text"><b>Začetek sprinta: </b></span>{{formatDate this.sprint.startDate "D. MMMM YYYY"}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p><span class="grey-text"><b>Konec sprinta: </b></span>{{formatDate this.sprint.endDate "D. MMMM YYYY"}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p><span class="grey-text"><b>Hitrost sprinta: </b></span>{{this.sprint.velocity}}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -38,11 +62,11 @@
 
                                 <div class="row">
                                     <div class="col s12">
-                                        <p><span class="grey-text">Opis: </span>{{this.description}}</p>
+                                        <p><span class="grey-text"><b>Opis: </b></span>{{this.description}}</p>
                                     </div>
                                 </div>
 
-                                <p class="users-label grey-text">Vaše vloge v projektu:</p>
+                                <p class="users-label grey-text"><b>Vaše vloge v projektu:</b></p>
 
                                 {{#each this.roles}}
                                     <div class="chip">

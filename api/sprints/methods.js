@@ -56,8 +56,19 @@ module.exports = {
         return activeSprint;
     },
 
-    findActiveSprintsFromAllProjects: async function (projects) {
-        return {};
+    findActiveSprintsFromUsersProjects: async function (projects) {
+        const activeSprints = [];
+        projects.forEach(async function(projectData) {
+            const sprint = await module.exports.findActiveSprintFromProject(projectData._id);
+            sprint.project = projectData;
+
+            if(sprint[0]){
+                console.log("got here");
+                activeSprints.push({"sprint": sprint[0], "project": projectData});
+            }
+        });
+
+        return activeSprints;
     },
 
     findNotActiveSprintsFromProject: async function (projectId) {
