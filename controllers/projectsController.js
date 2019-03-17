@@ -368,18 +368,18 @@ module.exports = {
         res.render('./projects/projectAddUserStory', pageOptions);
     },
 
-    //addStoryPost: async function (req, res, next) {
-    //    const projectId = req.params.projectId;
+    addStoryPost: async function (req, res, next) {
+        const projectId = req.params.projectId;
 
-    //    const postData = req.body;
+        const postData = req.body;
 
-    //    const storyData = {
-    //        title: postData.title,
-    //        description: postData.description,
-    //        acceptanceTests = postData.acceptanceTests,
-    //        priority = postData.priority,
-    //        businessValue = postData.businessValue
-    //    };
+        const storyData = {
+            title: postData.title,
+            description: postData.description,
+            acceptanceTests: postData.acceptanceTests,
+            priority: postData.priority,
+            businessValue: postData.businessValue
+        };
 
     //    projectModule.update(projectId, projectData)
     //        .then(function (result) {
@@ -418,7 +418,7 @@ module.exports = {
     //            //pageOptions.usersSelectObjects = usersSelectObjects;
 
     //            projectData._id = projectId;
-    //            pageOptions.projectData = projectData;
+    //            pageOptions.storyData = storyData;
 
     //            //if (err && err.errors) {
     //            //    pageoptions.errors = {};
@@ -435,9 +435,9 @@ module.exports = {
     //            //    }
     //            //}
 
-    //            res.render('./projects/projectEditPage', pageOptions);
+    //            res.render('./projects/projectAddUserStory', pageOptions);
     //        });
-    //},
+    },
 
     validate: function (method) {
         switch (method) {
