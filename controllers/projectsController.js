@@ -355,7 +355,7 @@ module.exports = {
 
         //const users = await usersModule.findAllUsers();
 
-        const projectData = await projectModule.findOne({ _id: projectId });
+        const storyData = await projectModule.findOne({ _id: projectId });
 
         //const usersSelectObjects = {
         //    productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
@@ -363,9 +363,13 @@ module.exports = {
         //    developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
         //};
 
+        //const storySelectObjects = {
+        //    priority: 
+        //};
+
         pageOptions.layoutOptions.headTitle = `Dodajanje uporabniske zgodbe`;
 
-        pageOptions.layoutOptions.pageTitle = 'Dodajanje uporabniške zgodbe';
+        pageOptions.layoutOptions.pageTitle = 'Dodajanje uporabniske zgodbe';
 
         pageOptions.layoutOptions.navBar.breadcrumbs = [
             {
@@ -373,17 +377,17 @@ module.exports = {
                 href: '/projects'
             },
             {
-                title: projectData.name,
+                title: storyData.name,
                 href: `/projects/${projectId}`
             },
             {
-                title: 'Dodaj uporabnisko zgodbo',
-                href: `/projects${projectId}/addUserStory`
+                title: 'Dodaj uporabniško zgodbo',
+                href: `/projects/${projectId}/addUserStory`
             }
         ];
 
         //pageOptions.usersSelectObjects = usersSelectObjects;
-        pageOptions.projectData = projectData;
+        pageOptions.storyData = storyData;
 
         res.render('./projects/projectAddUserStory', pageOptions);
     },
