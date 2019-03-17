@@ -35,6 +35,8 @@ module.exports = {
                 href: `/projects/${projectId}/sprints/create`
             }
         ];
+        
+        pageOptions.projectId = projectId;
 
         res.render('./sprints/sprintEditPage', pageOptions);
     },
@@ -74,8 +76,8 @@ module.exports = {
         const errorValidation = validationResult(req);
         
         if (!errorValidation.isEmpty()) {
-            errorValidation.array().forEach(function (ele) {
-                pageOptions.errors[ele.param] = ele.msg;
+            errorValidation.array().forEach(function (error) {
+                pageOptions.errors[error.param] = error.msg;
             });
 
             res.render('./sprints/sprintEditPage', pageOptions);

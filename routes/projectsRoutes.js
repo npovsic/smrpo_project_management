@@ -3,6 +3,7 @@ const router = express.Router();
 
 const projectsController = require('../controllers/projectsController');
 const sprintsController = require('../controllers/sprintsController');
+const userStoriesController = require('../controllers/userStoriesController');
 
 const buildBasePageOptions = require('../middlewares/buildBasePageOptions');
 
@@ -16,6 +17,7 @@ router.get('/', function (req, res, next) {
     res.redirect('/');
 });
 
+
 /**
  * Route for creating a new project
  */
@@ -23,10 +25,12 @@ router.get('/create', systemUserNotAuthorized, buildBasePageOptions, projectsCon
 
 router.post('/create', systemUserNotAuthorized, buildBasePageOptions, projectsController.validate('createProject'), projectsController.projectCreatePost);
 
+
 /**
  * Route for project overview
  */
 router.get('/:projectId', buildBasePageOptions, projectsController.projectOverview);
+
 
 /**
  * Route for editing an existing project
@@ -43,11 +47,13 @@ router.get('/:projectId/sprints/create', systemAdminNotAuthorized, buildBasePage
 
 router.post('/:projectId/sprints/create', systemAdminNotAuthorized, buildBasePageOptions, sprintsController.validate('createSprint'), sprintsController.sprintCreatePost);
 
+
 /**
  * Route for creating new user story
  */
+router.get('/:projectId/stories/create', buildBasePageOptions, userStoriesController.addStoryGet);
 
-router.get('/:projectId/stories/create', buildBasePageOptions, projectsController.addStoryGet);
-//router.get('/:projectId/stories/create', buildBasePageOptions, projectsController.addStoryPost);
+router.post('/:projectId/stories/create', buildBasePageOptions, userStoriesController.validate('createUserStory'), userStoriesController.addStoryPost);
+
 
 module.exports = router;

@@ -1,0 +1,88 @@
+<div class="container">
+    <form method="post">
+        <div class="row page-title-wrapper">
+            <a href="/projects/{{projectId}}" class="btn-flat back-button left">
+                <i class="material-icons left back-icon">arrow_back</i>
+            </a>
+
+            <h5 class="page-title left">Dodajanje uporabniške zgodbe</h5>
+
+            <button class="waves-effect waves-light btn theme-color right" type="submit">
+                <i class="material-icons left">save</i>
+                Shrani
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <p class="card-title">Nova uporabniška zgodba</p>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <input id="title" name="title" value="{{storyData.title}}" type="text" class="validate" required>
+                        <label for="title">Naslov uporabniške zgodbe <abbr title="Obvezno polje">*</abbr></label>
+                        
+                        {{#if errors.title}}
+                            <span class="helper-text red-text">{{errors.title}}</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <input id="description" name="description" value="{{storyData.description}}" type="text" class="validate" required>
+                        <label for="description">Opis <abbr title="Obvezno polje">*</abbr></label>
+                        
+                        {{#if errors.description}}
+                            <span class="helper-text red-text">{{errors.description}}</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <textarea id="acceptanceTests" name="acceptanceTests" class="materialize-textarea">{{storyData.acceptanceTests}}</textarea>
+                        <label for="acceptanceTests">Sprejemni testi</label>
+                        
+                        {{#if errors.acceptanceTests}}
+                            <span class="helper-text red-text">{{errors.acceptanceTests}}</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <select id="priority" name="priority">
+                            <option value="" disabled {{#unless this.priority}}selected{{/unless}}>Določite prioriteto</option>
+                            {{#each prioritySelectObjects}}
+                                <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
+                            {{/each}}
+                        </select>
+                        <label for="priority">Prioriteta <abbr title="Obvezno polje">*</abbr></label>
+
+                        {{#if errors.priority}}
+                            <span class="helper-text red-text">{{errors.priority}}</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="col s12">
+                        <label for="businessValue">Poslovna vrednost <abbr title="Obvezno polje">*</abbr></label>
+                        <p class="range-field">
+                            <input type="range" id="businessValue" name="businessValue" class="suppress-bottom-margin" value="{{#if storyData.businessValue}}{{storyData.businessValue}}{{else}}0{{/if}}" min="0" max="10" />
+                        </p>
+
+                        {{#if errors.businessValue}}
+                            <div class="input-field row">
+                                <div class="col s12">
+                                    <span class="helper-text red-text">{{errors.businessValue}}</span>
+                                </div>
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

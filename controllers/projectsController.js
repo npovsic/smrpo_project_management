@@ -213,17 +213,17 @@ module.exports = {
 
         pageOptions.productBacklog = {
             storiesInActiveSprint: await storyModule.find({
-                projectId: projectData._id,
-                sprintId: { $ne: null },
+                project: projectData._id,
+                sprint: { $ne: null },
                 finished: false
             }),
             storiesWithoutSprint: await storyModule.find({
-                projectId: projectData._id,
-                sprintId: null,
+                project: projectData._id,
+                sprint: null,
                 finished: false
             }),
             storiesFinished: await storyModule.find({
-                projectId: projectData._id,
+                project: projectData._id,
                 finished: true
             })
         };
@@ -347,64 +347,6 @@ module.exports = {
                 });
         }
     },
-
-    addStoryGet: async function (req, res, next) {
-        const pageOptions = req.pageOptions;
-
-        const projectId = req.params.projectId;
-
-        //const users = await usersModule.findAllUsers();
-
-        const storyData = await projectModule.findOne({ _id: projectId });
-
-        //const usersSelectObjects = {
-        //    productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
-        //    scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
-        //    developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
-        //};
-
-        //const storySelectObjects = {
-        //    priority: 
-        //};
-
-        pageOptions.layoutOptions.headTitle = `Dodajanje uporabniske zgodbe`;
-
-        pageOptions.layoutOptions.pageTitle = 'Dodajanje uporabniske zgodbe';
-
-        pageOptions.layoutOptions.navBar.breadcrumbs = [
-            {
-                title: 'Projekti',
-                href: '/projects'
-            },
-            {
-                title: storyData.name,
-                href: `/projects/${projectId}`
-            },
-            {
-                title: 'Dodaj uporabniško zgodbo',
-                href: `/projects/${projectId}/addUserStory`
-            }
-        ];
-
-        //pageOptions.usersSelectObjects = usersSelectObjects;
-        pageOptions.storyData = storyData;
-
-        res.render('./projects/projectAddUserStory', pageOptions);
-    },
-
-	addStoryPost: async function (req, res, next) {
-	        const projectId = req.params.projectId;
-
-	        const postData = req.body;
-
-	        const storyData = {
-	            title: postData.title,
-	            description: postData.description,
-	            acceptanceTests: postData.acceptanceTests,
-	            priority: postData.priority,
-	            businessValue: postData.businessValue
-	        };
-	},
     
     validate(method) {
         switch (method) {

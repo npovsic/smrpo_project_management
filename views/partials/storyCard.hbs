@@ -17,13 +17,12 @@
         </div>
         
         <div class="row">
-            <p><span class="grey-text">Sprejemni testi: </span>
-                {{#if story.acceptanceTests}}
+            <p><span class="grey-text">Sprejemni testi: </span>{{#unless story.acceptanceTests}}/{{/unless}}</p>
+            {{#if story.acceptanceTests}}
+                <p class="col s12">
                     <i>{{convertLineBreaks story.acceptanceTests}}</i>
-                {{else}}
-                    /
-                {{/if}}
-            </p>
+                </p>
+            {{/if}}
         </div>
         
         {{#if story.rejectionReason}}
