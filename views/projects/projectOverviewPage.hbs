@@ -13,31 +13,31 @@
 
             <div class="row">
                 <div class="col s12">
-                    <p><span class="grey-text"><b>Ime: </b></span>{{projectData.name}}</p>
+                    <p><span class="grey-text">Ime: </span>{{projectData.name}}</p>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col s12">
-                    <p><span class="grey-text"><b>Opis: </b></span>{{projectData.description}}</p>
+                    <p><span class="grey-text">Opis: </span>{{projectData.description}}</p>
                 </div>
             </div>
             
             <div class="row">
                 <div class="col s12">
-                    <p><span class="grey-text"><b>Ustvarjeno: </b></span>{{formatDate projectData._createdAt}}</p>
+                    <p><span class="grey-text">Ustvarjeno: </span>{{formatDate projectData._createdAt}}</p>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col s12">
-                    <p><span class="grey-text"><b>Nazadnje posodobljeno: </b></span>{{formatDate projectData._lastUpdatedAt}}</p>
+                    <p><span class="grey-text">Nazadnje posodobljeno: </span>{{formatDate projectData._lastUpdatedAt}}</p>
                 </div>
             </div>
 
             <div class="row suppress-bottom-margin">
                 <div class="col s12">
-                    <p class="users-label grey-text"><b>Produktni vodja:</b></p>
+                    <p class="users-label grey-text">Produktni vodja:</p>
 
                     <div class="chip">
                         {{projectData.productLeader.firstName}}{{#if projectData.productLeader.lastName}} {{projectData.productLeader.lastName}}{{/if}}
@@ -47,7 +47,7 @@
 
             <div class="row suppress-bottom-margin">
                 <div class="col s12">
-                    <p class="users-label grey-text"><b>Vodja metodologije:</b></p>
+                    <p class="users-label grey-text">Vodja metodologije:</p>
 
                     <div class="chip">
                         {{projectData.scrumMaster.firstName}}{{#if projectData.scrumMaster.lastName}} {{projectData.scrumMaster.lastName}}{{/if}}
@@ -57,7 +57,7 @@
 
             <div class="row">
                 <div class="col s12">
-                    <p class="users-label grey-text"><b>Razvijalci:</b></p>
+                    <p class="users-label grey-text">Razvijalci:</p>
 
                     {{#each projectData.developers}}
                         <div class="chip">
@@ -163,19 +163,19 @@
 
                                     <div class="row">
                                         <div class="col s12">
-                                            <p><span class="grey-text"><b>Začetek sprinta: </b></span>{{formatDate this.startDate "D. MMMM YYYY"}}</p>
+                                            <p><span class="grey-text">Začetek sprinta: </span>{{formatDate this.startDate "D. MMMM YYYY"}}</p>
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col s12">
-                                            <p><span class="grey-text"><b>Konec sprinta: </b></span>{{formatDate this.endDate "D. MMMM YYYY"}}</p>
+                                            <p><span class="grey-text">Konec sprinta: </span>{{formatDate this.endDate "D. MMMM YYYY"}}</p>
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col s12">
-                                            <p><span class="grey-text"><b>Hitrost sprinta: </b></span>{{this.velocity}}</p>
+                                            <p><span class="grey-text">Hitrost sprinta: </span>{{this.velocity}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -199,19 +199,19 @@
 
                                     <div class="row">
                                         <div class="col s12">
-                                            <p><span class="grey-text"><b>Začetek sprinta: </b></span>{{formatDate this.startDate "D. MMMM YYYY"}}</p>
+                                            <p><span class="grey-text">Začetek sprinta: </span>{{formatDate this.startDate "D. MMMM YYYY"}}</p>
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col s12">
-                                            <p><span class="grey-text"><b>Konec sprinta: </b></span>{{formatDate this.endDate "D. MMMM YYYY"}}</p>
+                                            <p><span class="grey-text">Konec sprinta: </span>{{formatDate this.endDate "D. MMMM YYYY"}}</p>
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col s12">
-                                            <p><span class="grey-text"><b>Hitrost sprinta: </b></span>{{this.velocity}}</p>
+                                            <p><span class="grey-text">Hitrost sprinta: </span>{{this.velocity}}</p>
                                         </div>
                                     </div>
                                 </div>

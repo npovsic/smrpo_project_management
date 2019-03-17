@@ -20,7 +20,11 @@
                     <a class="dropdown-trigger" href="#!" data-target="navbarDropdown">
                         <i class="material-icons left">account_circle</i>
                         
-                        {{currentUser.firstName}} {{currentUser.lastName}}
+                        <p class="navbar-name-wrapper">
+                            <span class="navbar-name-wrapper__name">{{currentUser.firstName}} {{currentUser.lastName}}</span>
+
+                            <span class="navbar-name-wrapper__role">{{getUserRoleName currentUser.role}}</span>
+                        </p>
                         
                         <i class="material-icons right">arrow_drop_down</i>
                     </a>

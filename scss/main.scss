@@ -190,3 +190,24 @@ abbr[title] {
 a.card-title {
 	color: $primary-color;
 }
+
+.dropdown-trigger {
+	display: flex;
+}
+
+.navbar-name-wrapper {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.navbar-name-wrapper__name {
+	line-height: 18px;	
+}
+
+.navbar-name-wrapper__role {
+	line-height: 18px;
+	font-size: 12px;
+	color: #aaa;
+}
