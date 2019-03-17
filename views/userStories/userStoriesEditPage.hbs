@@ -30,7 +30,7 @@
 
                 <div class="row suppress-bottom-margin">
                     <div class="input-field col s12">
-                        <input id="description" name="description" value="{{storyData.description}}" type="text" class="validate" required>
+                        <textarea id="description" name="description" class="materialize-textarea" required>{{storyData.description}}</textarea>
                         <label for="description">Opis <abbr title="Obvezno polje">*</abbr></label>
                         
                         {{#if errors.description}}
