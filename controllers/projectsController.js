@@ -355,10 +355,10 @@ module.exports = {
                     body('name').trim().isLength({
                         min: 1,
                         max: 64
-                    }).not().isEmpty().withMessage('Ime projekta ne sme biti prazno in mora biti manjöe od 64 znakov'),
-                    body('productLeader').not().isEmpty().withMessage('Nastavite produktnega vodjo'),
-                    body('scrumMaster').not().isEmpty().withMessage('Nastavite vodjo metodologije'),
-                    body('developers').not().isEmpty().withMessage('Nastavite razvijalce')
+                    }).not().isEmpty().withMessage('Ime projekta ne sme biti prazno in mora biti kraj≈°e od 64 znakov.'),
+                    body('productLeader').not().isEmpty().withMessage('Izberite produktnega vodjo.'),
+                    body('scrumMaster').not().isEmpty().withMessage('Izberite vodjo metodologije.'),
+                    body('developers').not().isEmpty().withMessage('Izberite razvijalce.')
                 ];
             }
 
@@ -367,10 +367,10 @@ module.exports = {
                     body('name').trim().isLength({
                         min: 1,
                         max: 64
-                    }).not().isEmpty().withMessage('Ime projekta ne sme biti prazno in mora biti manjöe od 64 znakov'),
-                    body('productLeader').not().isEmpty().withMessage('Nastavite produktnega vodjo'),
-                    body('scrumMaster').not().isEmpty().withMessage('Nastavite vodjo metodologije'),
-                    body('developers').not().isEmpty().withMessage('Nastavite razvijalce')
+                    }).not().isEmpty().withMessage('Ime projekta ne sme biti prazno in mora biti kraj≈°e od 64 znakov.'),
+                    body('productLeader').not().isEmpty().withMessage('Izberite produktnega vodjo.'),
+                    body('scrumMaster').not().isEmpty().withMessage('Izberite vodjo metodologije.'),
+                    body('developers').not().isEmpty().withMessage('Izberite razvijalce.')
                 ];
             }
         }

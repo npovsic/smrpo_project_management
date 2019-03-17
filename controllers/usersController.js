@@ -141,35 +141,35 @@ module.exports = {
                     body('firstName').trim().isLength({
                         min: 1,
                         max: 64
-                    }).not().isEmpty().withMessage('Ime ne sme biti prazno in mora biti manjše od 64 znakov'),
+                    }).not().isEmpty().withMessage('Ime ne sme biti prazno in mora biti krajše od 64 znakov.'),
                     body('lastName').trim().isLength({
                         min: 0,
                         max: 64
-                    }).withMessage('Priimek je lahko prazen oziroma mora vsebovati manj kot 64 znakov'),
-                    body('email').exists().isEmail().withMessage('Email naslov ni regularen, uporabite drug email naslov'),
+                    }).withMessage('Priimek mora biti krajši od 64 znakov.'),
+                    body('email').exists().isEmail().withMessage('Naslov elektronske pošte ni pravilne oblike.'),
                     body('email').custom(value => {
                         return usersModule.findOne({ 'email': value }).then(user => {
                             if (user) {
-                                return Promise.reject('Email naslov je že v uporabi, prosimo uporabite drugega');
+                                return Promise.reject('Naslov je že v uporabi. Prosimo, uporabite drugega.');
                             }
                         });
                     }),
                     body('username').trim().isLength({
                         min: 1,
                         max: 64
-                    }).not().isEmpty().withMessage('Uporabniško ne sme biti prazno in mora biti manjše od 64 znakov'),
+                    }).not().isEmpty().withMessage('Uporabniško ime ne sme biti prazno in mora biti krajše od 64 znakov.'),
                     body('username').custom(value => {
                         return usersModule.findOne({ 'username': value }).then(user => {
                             if (user) {
-                                return Promise.reject('Uporabniško ime je že v uporabi, prosimo izberite drugega');
+                                return Promise.reject('Uporabniško ime je že v uporabi. Prosimo, izberite drugega.');
                             }
                         })
                     }),
                     body('password').isLength({
                         min: 4,
                         max: 64
-                    }).withMessage('Geslo mora vsebovati med 4 in 64 znaki'),
-                    body('role').isIn(userRoles.values).withMessage('Sistemska pravica se ne ujema z možnimi izbirami')
+                    }).withMessage('Geslo mora imeti od 4 do 64 znakov.'),
+                    body('role').isIn(userRoles.values).withMessage('Sistemska pravica mora biti ena od ponujenih.')
                 ];
             }
         }

@@ -100,13 +100,13 @@ module.exports = {
                 return [
                     sanitizeBody('startDate').toDate(),
                     sanitizeBody('endDate').toDate(),
-                    body('startDate').exists().withMessage('Začetek sprinta ne sme biti prazen oziroma ne določen'),
-                    body('endDate').exists().withMessage('Začetek sprinta ne sme biti prazen oziroma ne določen'),
+                    body('startDate').exists().withMessage('Začetek sprinta ne sme biti prazen oz. nedoločen.'),
+                    body('endDate').exists().withMessage('Konec sprinta ne sme biti prazen oz. nedoločen.'),
                     body('startDate').custom((startDate, { req }) => {
                         if (formatDate(startDate.getTime()) > formatDate(req.body.endDate.getTime())) {
-                            return Promise.reject('Začetek sprinta ne more biti v preteklosti');
+                            return Promise.reject('Začetek sprinta ne more biti v preteklosti.');
                         } else if (formatDate(startDate.getTime()) < formatDate(new Date())) {                            
-                            return Promise.reject('Konec sprinta ne more biti pred začetkom sprinta');
+                            return Promise.reject('Konec sprinta ne more biti pred začetkom sprinta.');
                         }
 
                         return sprintsModule.checkIfBetween({
@@ -115,16 +115,16 @@ module.exports = {
                             endDate: formatDate(req.body.endDate)
                         }).then(sprints => {
                             if (sprints.length !== 0) {
-                                return Promise.reject('Izvajanje sprinata se prekriva z drugim že ustvarjenim v tem projektu');
+                                return Promise.reject('Sprint se prekriva z že obstoječim v tem projektu.');
                             }
                         });
                     }),
-                    body('velocity').exists().withMessage('Hitrost sprinta mora biti definirana'),
+                    body('velocity').exists().withMessage('Hitrost sprinta mora biti določena.'),
                     body('velocity').custom(value => {
                         if (parseInt(value) <= 0) {
-                            return Promise.reject('Hitrost sprinta mora biti pozitivno število večje od 0');
+                            return Promise.reject('Hitrost sprinta mora biti pozitivno celo število, večje od 0.');
                         } else if (parseFloat(value) % 1 !== 0) {
-                            return Promise.reject('Hitrost sprinta mora biti definirana z celimi števili');
+                            return Promise.reject('Hitrost sprinta mora biti celo število.');
                         }
                         return true;
                     })

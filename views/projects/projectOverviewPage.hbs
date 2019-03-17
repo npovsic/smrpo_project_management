@@ -90,7 +90,7 @@
                 </div>
             
                 <div id="unrealizedStories">
-                    <p class="card-subtitle">Dodeljene v aktivni Sprint:</p>
+                    <p class="card-subtitle">Dodeljene v aktivni sprint:</p>
 
                     {{#if activeSprint}}
                         {{#each productBacklog.storiesInActiveSprint}}
@@ -102,7 +102,7 @@
                         {{/each}}
                     {{else}}
                         <div class="row">
-                            <p class="center grey-text">Trenutno ni aktivnega Sprinta.</p>
+                            <p class="center grey-text">Trenutno ni aktivnega sprinta.</p>
                         </div>
                     {{/if}}
                     
@@ -122,7 +122,7 @@
                         {{> storyCard story=this}}
                     {{else}}
                         <div class="row">
-                            <p class="center grey-text">Nobena zgodba še ni bila zaključena.</p>
+                            <p class="center grey-text">Nobena zgodba še ni bila realizirana.</p>
                         </div>
                     {{/each}}
                 </div>
@@ -148,7 +148,7 @@
 
             <div class="row span-full-card-width">
                 <ul class="tabs tabs-fixed-width tabs-with-border">
-                    <li class="tab"><a href="#activeSprint">Aktiven Sprint</a></li>
+                    <li class="tab"><a href="#activeSprint">Aktiven sprint</a></li>
                     <li class="tab"><a href="#inactiveSprints">Neaktivni sprinti</a></li>
                 </ul>
             </div>
@@ -184,7 +184,7 @@
                     </div>
                 {{else}}
                     <div class="row">
-                        <p class="center grey-text">Trenutno ni aktivnega Sprinta.</p>
+                        <p class="center grey-text">Trenutno ni aktivnega sprinta.</p>
                     </div>
                 {{/each}}
             </div>
@@ -220,7 +220,7 @@
                     </div>
                 {{else}}
                     <div class="row">
-                        <p class="center grey-text">Ni neaktivnih Sprintov.</p>
+                        <p class="center grey-text">Ni neaktivnih sprintov.</p>
                     </div>
                 {{/each}}
             </div>

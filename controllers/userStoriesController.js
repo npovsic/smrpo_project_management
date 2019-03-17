@@ -24,9 +24,9 @@ module.exports = {
         
         pageOptions.prioritySelectObjects = prioritySelectObjects;
 
-        pageOptions.layoutOptions.headTitle = `Dodajanje uporabniske zgodbe`;
+        pageOptions.layoutOptions.headTitle = `Dodajanje uporabniške zgodbe`;
 
-        pageOptions.layoutOptions.pageTitle = 'Dodajanje uporabniske zgodbe';
+        pageOptions.layoutOptions.pageTitle = 'Dodajanje uporabniške zgodbe';
 
         pageOptions.layoutOptions.navBar.breadcrumbs = [
             {
@@ -81,9 +81,9 @@ module.exports = {
 
         pageOptions.prioritySelectObjects = prioritySelectObjects;
 
-        pageOptions.layoutOptions.headTitle = `Dodajanje uporabniske zgodbe`;
+        pageOptions.layoutOptions.headTitle = `Dodajanje uporabniške zgodbe`;
 
-        pageOptions.layoutOptions.pageTitle = 'Dodajanje uporabniske zgodbe';
+        pageOptions.layoutOptions.pageTitle = 'Dodajanje uporabniške zgodbe';
 
         pageOptions.layoutOptions.navBar.breadcrumbs = [
             {
@@ -132,21 +132,21 @@ module.exports = {
         switch (method) {
             case 'createUserStory': {
                 return [
-                    body('title').trim().not().isEmpty().withMessage('Naslov uporabniške zgodbe ne sme biti prazen'),
+                    body('title').trim().not().isEmpty().withMessage('Naslov uporabniške zgodbe ne sme biti prazen.'),
 
                     body('title').custom(value => {
                         return storyModule.findOne({ title: value }).then(user => {
                             if (user) {
-                                return Promise.reject('Uporabniška zgodba s tem naslovom že obstaja');
+                                return Promise.reject('Uporabniška zgodba s tem naslovom že obstaja.');
                             }
                         })
                     }),
                     
-                    body('description').trim().not().isEmpty().withMessage('Opis uporabniške zgodbe ne sme biti prazen'),
+                    body('description').trim().not().isEmpty().withMessage('Opis uporabniške zgodbe ne sme biti prazen.'),
                     
                     body('priority').trim()
-                        .isIn(priorities.values).withMessage('Izbrana prioriteta ni med ustreznimi možnostmi')
-                        .not().isEmpty().withMessage('Določite prioriteto'),
+                        .isIn(priorities.values).withMessage('Izbrana prioriteta ni med ponujenimi možnostmi.')
+                        .not().isEmpty().withMessage('Določite prioriteto.'),
                     
                     body('businessValue').custom(value => {
                         console.log('businessValue', value);
@@ -154,10 +154,10 @@ module.exports = {
                         const parsedValue = parseInt(value);
                         
                         return !isNaN(parsedValue);
-                    }).withMessage('Vrednost mora biti število')
+                    }).withMessage('Poslovna vrednost mora biti število.')
                         .custom(value => {
                             return !(value >= 0 && value >= 10);
-                        }).withMessage('Vrednost mora biti med 0 in 10')
+                        }).withMessage('Poslovna vrednost mora biti med 0 in 10.')
                 ];
             }
         }
