@@ -392,6 +392,20 @@ module.exports = {
         res.render('./projects/projectAddUserStory', pageOptions);
     },
 
+	addStoryPost: async function (req, res, next) {
+	        const projectId = req.params.projectId;
+
+	        const postData = req.body;
+
+	        const storyData = {
+	            title: postData.title,
+	            description: postData.description,
+	            acceptanceTests: postData.acceptanceTests,
+	            priority: postData.priority,
+	            businessValue: postData.businessValue
+	        };
+	},
+    
     validate(method) {
         switch (method) {
             case 'createProject': {
