@@ -1,5 +1,6 @@
 const projectModule = require('../api/projects/methods');
 const usersModule = require('../api/users/methods');
+//const { body, validationResult } = require('express-validator/check');
 
 const { check, validationResult } = require('express-validator/check');
 
@@ -330,7 +331,7 @@ module.exports = {
 
         //const users = await usersModule.findAllUsers();
 
-        const projectData = await projectModule.findOne({ _id: projectId });
+        const storyData = await projectModule.findOne({ _id: projectId });
 
         //const usersSelectObjects = {
         //    productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
@@ -338,9 +339,13 @@ module.exports = {
         //    developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
         //};
 
+        //const storySelectObjects = {
+        //    priority: 
+        //};
+
         pageOptions.layoutOptions.headTitle = `Dodajanje uporabniske zgodbe`;
 
-        pageOptions.layoutOptions.pageTitle = 'Dodajanje uporabniške zgodbe';
+        pageOptions.layoutOptions.pageTitle = 'Dodajanje uporabniske zgodbe';
 
         pageOptions.layoutOptions.navBar.breadcrumbs = [
             {
@@ -348,33 +353,32 @@ module.exports = {
                 href: '/projects'
             },
             {
-                title: projectData.name,
+                title: storyData.name,
                 href: `/projects/${projectId}`
             },
             {
-                title: 'Dodaj uporabnisko zgodbo',
-                href: `/projects${projectId}/addUserStory`
+                title: 'Dodaj uporabniško zgodbo',
+                href: `/projects/${projectId}/addUserStory`
             }
         ];
 
         //pageOptions.usersSelectObjects = usersSelectObjects;
-        pageOptions.projectData = projectData;
+        pageOptions.storyData = storyData;
 
         res.render('./projects/projectAddUserStory', pageOptions);
     },
 
-    //projectEditPost: async function (req, res, next) {
+    //addStoryPost: async function (req, res, next) {
     //    const projectId = req.params.projectId;
 
     //    const postData = req.body;
 
-    //    const projectData = {
-    //        name: postData.name,
+    //    const storyData = {
+    //        title: postData.title,
     //        description: postData.description,
-    //        productLeader: postData.productLeader,
-    //        scrumMaster: postData.scrumMaster,
-    //        developers: postData.developers,
-    //        _lastUpdatedAt: new Date()
+    //        acceptanceTests = postData.acceptanceTests,
+    //        priority = postData.priority,
+    //        businessValue = postData.businessValue
     //    };
 
     //    projectModule.update(projectId, projectData)
@@ -384,17 +388,17 @@ module.exports = {
     //        .catch(async function (err) {
     //            const pageOptions = req.pageOptions;
 
-    //            const users = await usersModule.findAllUsers();
+    //            //const users = await usersModule.findAllUsers();
 
-    //            const usersSelectObjects = {
-    //                productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
-    //                scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
-    //                developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
-    //            };
+    //            //const usersSelectObjects = {
+    //            //    productLeader: users.map(user => mapUserToSelectObject(user, projectData.productLeader)),
+    //            //    scrumMaster: users.map(user => mapUserToSelectObject(user, projectData.scrumMaster)),
+    //            //    developers: users.map(user => mapUserToSelectObject(user, projectData.developers))
+    //            //};
 
-    //            pageOptions.layoutOptions.headTitle = `${projectData.name} - Uredi`;
+    //            pageOptions.layoutOptions.headTitle = `Dodajanje uporabniške zgodbe`;
 
-    //            pageOptions.layoutOptions.pageTitle = 'Urejanje projekta';
+    //            pageOptions.layoutOptions.pageTitle = 'Dodajanje uporabniške zgodbe';
 
     //            pageOptions.layoutOptions.navBar.breadcrumbs = [
     //                {
@@ -406,32 +410,50 @@ module.exports = {
     //                    href: `/projects/${projectId}`
     //                },
     //                {
-    //                    title: 'Uredi',
-    //                    href: `/projects${projectId}/edit`
+    //                    title: 'Dodaj uporabniško zgodbo',
+    //                    href: `/projects/${projectId}/addUserStory`
     //                }
     //            ];
 
-    //            pageOptions.usersSelectObjects = usersSelectObjects;
+    //            //pageOptions.usersSelectObjects = usersSelectObjects;
 
     //            projectData._id = projectId;
     //            pageOptions.projectData = projectData;
 
-    //            if (err && err.errors) {
-    //                pageOptions.errors = {};
+    //            //if (err && err.errors) {
+    //            //    pageoptions.errors = {};
 
-    //                for (const property in err.errors) {
-    //                    if (err.errors.hasOwnProperty(property)) {
-    //                        const error = err.errors[property];
+    //            //    for (const property in err.errors) {
+    //            //        if (err.errors.hasownproperty(property)) {
+    //            //            const error = err.errors[property];
 
-    //                        pageOptions.errors[property] = {
-    //                            propertyName: error.path,
-    //                            errorType: error.kind
-    //                        };
-    //                    }
-    //                }
-    //            }
+    //            //            pageoptions.errors[property] = {
+    //            //                propertyname: error.path,
+    //            //                errortype: error.kind
+    //            //            };
+    //            //        }
+    //            //    }
+    //            //}
 
     //            res.render('./projects/projectEditPage', pageOptions);
     //        });
-    //}
+    //},
+
+    validate: function (method) {
+        switch (method) {
+            case 'createStory': {
+                return [
+                    body('title').trim().isLength({
+                        min: 1,
+                        max: 64
+                    }).not().isEmpty().withMessage('Ime uporabniške zgodbe ne sme biti prazno in mora biti krajše od 64 znakov'),
+                    body('description').trim().isLength({
+                        min: 1,
+                        max: 64
+                    }).not.isEmpty.withMessage('Opis ne sme biti prazen in mora biti krajši od 64 znakov.'),
+                    body('acceptanceTests').trim().isEmpty.withMessage('Dodati morate sprejemne teste.')
+                ];
+            }
+        }
+    }
 };
