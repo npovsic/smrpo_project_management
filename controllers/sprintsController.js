@@ -124,7 +124,7 @@ module.exports = {
                     
                     body('startDate').custom((startDate, { req }) => {
                         if (formatDate(startDate.getTime()) > formatDate(req.body.endDate.getTime())) {
-                            return Promise.reject('Začetek sprinta ne more biti v preteklosti.');
+                            return Promise.reject('Konec sprinta mora biti kasneje kot začetek');
                         } else if (formatDate(startDate.getTime()) < formatDate(new Date())) {
                             return Promise.reject('Konec sprinta ne more biti pred začetkom sprinta.');
                         }

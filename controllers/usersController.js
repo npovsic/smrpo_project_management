@@ -42,7 +42,7 @@ module.exports = {
         const userData = {
             firstName: postData.firstName,
             lastName: postData.lastName,
-            email: postData.email,
+            email: postData.email.toLowerCase(),
             username: postData.username,
             password: postData.password,
             role: (postData.role) ? postData.role.toLowerCase() : '',
@@ -151,7 +151,7 @@ module.exports = {
                     body('email').exists().isEmail().withMessage('Naslov elektronske pošte ni pravilne oblike.'),
                     
                     body('email').custom(value => {
-                        return usersModule.findOne({ 'email': value }).then(user => {
+                        return usersModule.findOne({ 'email': value.toLowerCase() }).then(user => {
                             if (user) {
                                 return Promise.reject('Naslov je že v uporabi. Prosimo, uporabite drugega.');
                             }
@@ -164,9 +164,11 @@ module.exports = {
                     }).not().isEmpty().withMessage('Uporabniško ime ne sme biti prazno in mora biti krajše od 64 znakov.'),
                     
                     body('username').custom(value => {
-                        return usersModule.findOne({ 'username': value }).then(user => {
-                            if (user) {
-                                return Promise.reject('Uporabniško ime je že v uporabi. Prosimo, izberite drugega.');
+                        return usersModule.findAll().then(users => {
+                            for(var i = 0; i < users.length; i++){
+                                if(users[i].username.toLowerCase() === value.toLowerCase()) {
+                                    return Promise.reject('Uporabniško ime je že v uporabi. Prosimo, izberite drugega.');  
+                                }
                             }
                         })
                     }),
