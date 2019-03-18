@@ -140,13 +140,13 @@ module.exports = {
                         });
                     }),
 
-                    body('expectedVelocity').exists().withMessage('Hitrost sprinta mora biti definirana'),
+                    body('expectedVelocity').exists().withMessage('Hitrost sprinta mora biti definirana.'),
                     
                     body('expectedVelocity').custom(value => {
                         if (parseInt(value) <= 0) {
-                            return Promise.reject('Hitrost sprinta mora biti pozitivno število večje od 0');
+                            return Promise.reject('Pričakovana hitrost sprinta mora biti pozitivno število, večje od 0.');
                         } else if (parseFloat(value) % 1 !== 0) {
-                            return Promise.reject('Hitrost sprinta mora biti definirana z celimi števili');
+                            return Promise.reject('Pričakovana hitrost sprinta mora biti celo število.');
                         }
                         return true;
                     })

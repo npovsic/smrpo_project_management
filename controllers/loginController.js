@@ -47,7 +47,7 @@ module.exports = {
             pageOptions.layoutOptions.backgroundClass = 'background';
             
             pageOptions.errors = {
-                login: 'Napačno uporaniško ime ali geslo.'    
+                login: 'Napačno uporabniško ime ali geslo.'    
             };
             
             res.render('./login/login', pageOptions);
