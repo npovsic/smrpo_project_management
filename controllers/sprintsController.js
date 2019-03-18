@@ -120,15 +120,6 @@ module.exports = {
                                 return Promise.reject('Sprint se prekriva z že obstoječim v tem projektu.');
                             }
                         });
-                    }),
-                    body('velocity').exists().withMessage('Hitrost sprinta mora biti določena.'),
-                    body('velocity').custom(value => {
-                        if (parseInt(value) <= 0) {
-                            return Promise.reject('Hitrost sprinta mora biti pozitivno celo število, večje od 0.');
-                        } else if (parseFloat(value) % 1 !== 0) {
-                            return Promise.reject('Hitrost sprinta mora biti celo število.');
-                        }
-                        return true;
                     })
                 ];
             }

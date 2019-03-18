@@ -6,7 +6,8 @@ const ProjectSchema = new Schema({
     id: ObjectId,
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     description: String,
     productLeader: { type: Schema.Types.ObjectId, ref: 'User', required: true },

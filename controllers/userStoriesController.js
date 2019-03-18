@@ -135,9 +135,9 @@ module.exports = {
                     body('title').trim().not().isEmpty().withMessage('Naslov uporabniške zgodbe ne sme biti prazen.'),
 
                     body('title').custom(value => {
-                        return storyModule.findOne({ title: value }).then(user => {
-                            if (user) {
-                                return Promise.reject('Uporabniška zgodba s tem naslovom že obstaja.');
+                        return storyModule.findOne({ title: value }).then(story => {
+                            if (story) {
+                                return Promise.reject('Uporabniška zgodba s tem naslovom že obstaja');
                             }
                         })
                     }),
