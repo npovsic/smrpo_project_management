@@ -142,11 +142,14 @@ module.exports = {
                         min: 1,
                         max: 64
                     }).not().isEmpty().withMessage('Ime ne sme biti prazno in mora biti krajše od 64 znakov.'),
+                    
                     body('lastName').trim().isLength({
                         min: 0,
                         max: 64
                     }).withMessage('Priimek mora biti krajši od 64 znakov.'),
+                    
                     body('email').exists().isEmail().withMessage('Naslov elektronske pošte ni pravilne oblike.'),
+                    
                     body('email').custom(value => {
                         return usersModule.findOne({ 'email': value }).then(user => {
                             if (user) {
@@ -154,10 +157,12 @@ module.exports = {
                             }
                         });
                     }),
+                    
                     body('username').trim().isLength({
                         min: 1,
                         max: 64
                     }).not().isEmpty().withMessage('Uporabniško ime ne sme biti prazno in mora biti krajše od 64 znakov.'),
+                    
                     body('username').custom(value => {
                         return usersModule.findOne({ 'username': value }).then(user => {
                             if (user) {
@@ -165,10 +170,12 @@ module.exports = {
                             }
                         })
                     }),
+                    
                     body('password').isLength({
                         min: 4,
                         max: 64
                     }).withMessage('Geslo mora imeti od 4 do 64 znakov.'),
+                    
                     body('role').isIn(userRoles.values).withMessage('Sistemska pravica mora biti ena od ponujenih.')
                 ];
             }

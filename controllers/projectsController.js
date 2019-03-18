@@ -202,9 +202,15 @@ module.exports = {
         ];
 
         const currentUser = pageOptions.currentUser;
+        
+        if (pageOptions.isUserSystemAdmin) {
+            pageOptions.userCanEditProject = true;
+        } else if (projectData.scrumMaster) {
+            pageOptions.userCanEditProject = projectData.scrumMaster._id.equals(currentUser._id);
+        }
 
-        pageOptions.userCanEditProject = pageOptions.isUserSystemAdmin;
         pageOptions.userCanAddUserStories = (projectData.productLeader || projectData.scrumMaster) ? (projectData.productLeader._id.equals(currentUser._id) || projectData.scrumMaster._id.equals(currentUser._id)) : false;
+        
         pageOptions.userCanAddSprint = (projectData.scrumMaster) ? projectData.scrumMaster._id.equals(currentUser._id) : false;
 
         pageOptions.projectData = projectData;
@@ -380,17 +386,43 @@ module.exports = {
                         max: 64
                     }).not().isEmpty().withMessage('Ime projekta ne sme biti prazno in mora biti krajše od 64 znakov.'),
 
-                    body('name').custom(value => {
-                        return projectModule.findOne({ 'name': value }).then(project => {
+                    body('name').custom((value, { req }) => {
+                        return projectModule.findOne({ _id: { $ne: req.params.projectId }, name: value }).then(project => {
                             if (project) {
                                 return Promise.reject('Projekt s tem imenom že obstaja');
                             }
                         })
                     }),
                     
-                    body('productLeader').not().isEmpty().withMessage('Izberite produktnega vodjo.'),
+                    body('productLeader').not().isEmpty().withMessage('Izberite produktnega vodjo.')
+                        .custom((value, { req }) => {
+                            return projectModule.findOne({ _id: req.params.projectId }).then(project => {
+                                if (project) {
+                                    if (!project.productLeader.equals(value)) {
+                                        if (req.session.user.role !== 'system_admin') {
+                                            return Promise.reject('Samo administrator sistema lahko ureja produktne vodje');
+                                        } else {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            })
+                        }),
                     
-                    body('scrumMaster').not().isEmpty().withMessage('Izberite vodjo metodologije.'),
+                    body('scrumMaster').not().isEmpty().withMessage('Izberite vodjo metodologije.')
+                        .custom((value, { req }) => {
+                            return projectModule.findOne({ _id: req.params.projectId }).then(project => {
+                                if (project) {
+                                    if (!project.scrumMaster.equals(value)) {
+                                        if (req.session.user.role !== 'system_admin') {
+                                            return Promise.reject('Samo administrator sistema lahko ureja vodje metodologije');
+                                        } else {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            })
+                        }),
                     
                     body('developers').not().isEmpty().withMessage('Izberite razvijalce.')
                 ];

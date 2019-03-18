@@ -45,5 +45,33 @@ module.exports = {
         projectInDatabase = Object.assign(projectInDatabase, projectData);
 
         return projectInDatabase.save();
+    },
+    
+    isUserInProject(projectId, userId) {
+        return Project.findOne({
+            _id: projectId,
+            $or: [
+                { productLeader: userId },
+                { scrumMaster: userId },
+                { developers: userId }
+            ]
+        }).exec();
+    },
+    
+    isUserProjectProductLeaderOrScrumMaster(projectId, userId) {
+        return Project.findOne({
+            _id: projectId,
+            $or: [
+                { productLeader: userId },
+                { scrumMaster: userId }
+            ]
+        }).exec();
+    },
+    
+    isUserProjectScrumMaster(projectId, userId) {
+        return Project.findOne({
+            _id: projectId,
+            scrumMaster: userId
+        }).exec();
     }
 };

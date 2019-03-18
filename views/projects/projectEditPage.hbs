@@ -42,7 +42,7 @@
                
                <div class="row">
                    <div class="input-field col s12">
-                       <select name="productLeader" id="productLeader">
+                       <select name="productLeader" id="productLeader" {{#unless isUserSystemAdmin}}disabled{{/unless}}>
                            <option value="" disabled selected>Izberite produktnega vodjo</option>
                            {{#each usersSelectObjects.productLeader}}
                                <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
@@ -58,8 +58,8 @@
 
                <div class="row">
                    <div class="input-field col s12">
-                       <select name="scrumMaster" id="scrumMaster">
-                           <option value="" disabled selected>Izberite skrbnika metodologije</option>
+                       <select name="scrumMaster" id="scrumMaster" {{#unless isUserSystemAdmin}}disabled{{/unless}}>
+                           <option value="" disabled selected>Izberite vodjo metodologije</option>
                            {{#each usersSelectObjects.scrumMaster}}
                                <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.title}}</option>
                            {{/each}}

@@ -1,5 +1,5 @@
-const usersModule = require('../api/users/methods');
 const sprintsModule = require('../api/sprints/methods');
+const projectModule = require('../api/projects/methods');
 const formatDate = require('../lib/formatDate');
 
 const { body, validationResult } = require('express-validator/check');
@@ -15,12 +15,15 @@ module.exports = {
 
         endDate.setDate(endDate.getDate() + 14);
 
+        const projectData = await projectModule.findOne({ _id: projectId });
+
         const sprintData = {
             startDate: formatDate(new Date()),
             endDate: formatDate(new Date(endDate))
         };
 
         pageOptions.sprintData = sprintData;
+
         pageOptions.existingSprints = await sprintsModule.findAllForProject(projectId);
 
         pageOptions.layoutOptions.headTitle = 'Ustvarjanje novega sprinta';
@@ -28,7 +31,11 @@ module.exports = {
 
         pageOptions.layoutOptions.navBar.breadcrumbs = [
             {
-                title: 'Projekt',
+                title: 'Projekti',
+                href: `/projects`
+            },
+            {
+                title: projectData.name,
                 href: `/projects/${projectId}`
             },
             {
@@ -36,7 +43,7 @@ module.exports = {
                 href: `/projects/${projectId}/sprints/create`
             }
         ];
-        
+
         pageOptions.projectId = projectId;
 
         res.render('./sprints/sprintEditPage', pageOptions);
@@ -55,28 +62,35 @@ module.exports = {
             _createdAt: new Date()
         };
 
+        const projectData = await projectModule.findOne({ _id: projectId });
+
         const pageOptions = req.pageOptions;
         pageOptions.sprintData = sprintData;
         pageOptions.existingSprints = await sprintsModule.findAllForProject(projectId);
 
         pageOptions.layoutOptions.headTitle = 'Ustvarjanje novega sprinta';
         pageOptions.layoutOptions.pageTitle = 'Ustvarjanje novega sprinta';
+
         pageOptions.layoutOptions.navBar.breadcrumbs = [
             {
-                title: 'Projekt',
+                title: 'Projekti',
+                href: `/projects`
+            },
+            {
+                title: projectData.name,
                 href: `/projects/${projectId}`
             },
             {
                 title: 'Ustvarjanje novega sprinta',
-                href: '/users/create'
+                href: `/projects/${projectId}/sprints/create`
             }
         ];
 
         //form validation using express-validate
         pageOptions.errors = {};
-        
+
         const errorValidation = validationResult(req);
-        
+
         if (!errorValidation.isEmpty()) {
             errorValidation.array().forEach(function (error) {
                 pageOptions.errors[error.param] = error.msg;
@@ -101,13 +115,17 @@ module.exports = {
             case 'createSprint': {
                 return [
                     sanitizeBody('startDate').toDate(),
+                    
                     sanitizeBody('endDate').toDate(),
+                    
                     body('startDate').exists().withMessage('Začetek sprinta ne sme biti prazen oz. nedoločen.'),
+                    
                     body('endDate').exists().withMessage('Konec sprinta ne sme biti prazen oz. nedoločen.'),
+                    
                     body('startDate').custom((startDate, { req }) => {
                         if (formatDate(startDate.getTime()) > formatDate(req.body.endDate.getTime())) {
                             return Promise.reject('Začetek sprinta ne more biti v preteklosti.');
-                        } else if (formatDate(startDate.getTime()) < formatDate(new Date())) {                            
+                        } else if (formatDate(startDate.getTime()) < formatDate(new Date())) {
                             return Promise.reject('Konec sprinta ne more biti pred začetkom sprinta.');
                         }
 
@@ -125,4 +143,4 @@ module.exports = {
             }
         }
     }
-}
+};

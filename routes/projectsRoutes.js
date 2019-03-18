@@ -10,6 +10,11 @@ const buildBasePageOptions = require('../middlewares/buildBasePageOptions');
 const systemUserNotAuthorized = require('../middlewares/systemUserNotAuthorized');
 const systemAdminNotAuthorized = require('../middlewares/systemAdminNotAuthorized');
 
+const canUserViewProject = require('../middlewares/canUserViewProject');
+const canUserEditProject = require('../middlewares/canUserEditProject');
+const canUserAddUserStoriesToProject = require('../middlewares/canUserAddUserStoriesToProject');
+const canUserAddSprintsToProject = require('../middlewares/canUserAddSprintsToProject');
+
 /**
  * Root route to display all the projects
  */
@@ -29,31 +34,31 @@ router.post('/create', systemUserNotAuthorized, buildBasePageOptions, projectsCo
 /**
  * Route for project overview
  */
-router.get('/:projectId', buildBasePageOptions, projectsController.projectOverview);
+router.get('/:projectId', canUserViewProject, buildBasePageOptions, projectsController.projectOverview);
 
 
 /**
  * Route for editing an existing project
  */
-router.get('/:projectId/edit', systemUserNotAuthorized, buildBasePageOptions, projectsController.projectEditGet);
+router.get('/:projectId/edit', canUserEditProject, buildBasePageOptions, projectsController.projectEditGet);
 
-router.post('/:projectId/edit', systemUserNotAuthorized, buildBasePageOptions, projectsController.validate('updateProject'), projectsController.projectEditPost);
+router.post('/:projectId/edit', canUserEditProject, buildBasePageOptions, projectsController.validate('updateProject'), projectsController.projectEditPost);
 
 
 /**
  * Route for creating a new sprint
  */
-router.get('/:projectId/sprints/create', systemAdminNotAuthorized, buildBasePageOptions, sprintsController.sprintCreateGet);
+router.get('/:projectId/sprints/create', systemAdminNotAuthorized, canUserAddSprintsToProject, buildBasePageOptions, sprintsController.sprintCreateGet);
 
-router.post('/:projectId/sprints/create', systemAdminNotAuthorized, buildBasePageOptions, sprintsController.validate('createSprint'), sprintsController.sprintCreatePost);
+router.post('/:projectId/sprints/create', systemAdminNotAuthorized, canUserAddSprintsToProject, buildBasePageOptions, sprintsController.validate('createSprint'), sprintsController.sprintCreatePost);
 
 
 /**
  * Route for creating new user story
  */
-router.get('/:projectId/stories/create', buildBasePageOptions, userStoriesController.addStoryGet);
+router.get('/:projectId/stories/create', systemAdminNotAuthorized, canUserAddUserStoriesToProject, buildBasePageOptions, userStoriesController.addStoryGet);
 
-router.post('/:projectId/stories/create', buildBasePageOptions, userStoriesController.validate('createUserStory'), userStoriesController.addStoryPost);
+router.post('/:projectId/stories/create', systemAdminNotAuthorized, canUserAddUserStoriesToProject, buildBasePageOptions, userStoriesController.validate('createUserStory'), userStoriesController.addStoryPost);
 
 
 module.exports = router;
