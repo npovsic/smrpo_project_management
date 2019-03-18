@@ -166,10 +166,30 @@ module.exports = {
         const pageOptions = req.pageOptions;
 
         const projectId = req.params.projectId;
+        
+        if (!projectId) {
+            next();
+            
+            return;
+        }
 
         const users = await usersModule.findAllUsers();
 
-        const projectData = await projectModule.findOne({ _id: projectId });
+        let projectData = null;
+        
+        try {
+            projectData = await projectModule.findOne({ _id: projectId });
+        } catch (ex) {
+            next();
+
+            return;
+        }
+        
+        if (!projectData) {
+            next();
+
+            return;
+        }
 
         const activeSprint = await sprintModule.findActiveSprintFromProject(projectId);
         const inactiveSprints = await sprintModule.findNotActiveSprintsFromProject(projectId);
