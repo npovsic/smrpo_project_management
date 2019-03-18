@@ -2,28 +2,38 @@
     <div class="row">
         <h1 class="center white-text">SMRPO</h1>
     </div>
-    
+
     <div class="row login-container">
         <div class="row card login-container__login-card">
-            <div class="col s12">
-                <form method="post" id="login-form">
-                    <div class="row suppress-bottom-margin">
-                        <div class="input-field col s12">
-                            <input id="username" name="username" type="text" class="validate" autofocus required>
-                            <label for="username">Uporabniško ime</label>
+            <div class="row suppress-bottom-margin">
+                <div class="col s12">
+                    <form method="post" id="login-form">
+                        <div class="row suppress-bottom-margin">
+                            <div class="input-field col s12">
+                                <input id="username" name="username" type="text" class="validate" autofocus required>
+                                <label for="username">Uporabniško ime</label>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="row suppress-bottom-margin">
-                        <div class="input-field col s12">
-                            <input id="password" name="password" type="password" class="validate" required>
-                            <label for="password">Geslo</label>
-                        </div>
-                    </div>
 
-                    <button id="login-button" class="waves-effect waves-light btn theme-color right" type="submit">Prijava</button>
-                </form>
+                        <div class="row suppress-bottom-margin">
+                            <div class="input-field col s12">
+                                <input id="password" name="password" type="password" class="validate" required>
+                                <label for="password">Geslo</label>
+                            </div>
+                        </div>
+
+                        <button id="login-button" class="waves-effect waves-light btn theme-color right" type="submit">
+                            Prijava
+                        </button>
+                    </form>
+                </div>
             </div>
+
+            {{#if errors.login}}
+                <div class="row suppress-bottom-margin card login-error-container">
+                    <p>{{errors.login}}</p>
+                </div>
+            {{/if}}
         </div>
     </div>
 </div>

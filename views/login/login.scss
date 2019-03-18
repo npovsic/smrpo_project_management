@@ -5,3 +5,22 @@
 .login-container__login-card {
 	padding: 16px;
 }
+
+.login-error-container {
+	position: absolute;
+	width: 100%;
+	top: 100%;
+	left: 0;
+
+	padding: 16px;
+
+	background-color: red;
+
+	border: 1px solid red;
+
+	color: #fff;
+
+	& > p {
+		margin: 0;
+	}
+}
