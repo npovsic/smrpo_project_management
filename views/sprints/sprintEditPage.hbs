@@ -38,6 +38,17 @@
                         {{/if}}
                     </div>
                 </div>
+
+                <div class="row suppress-bottom-margin">
+                    <div class="input-field col s12">
+                        <input id="expectedVelocity" name="expectedVelocity" type="number" class="validate"
+                               value="{{sprintData.expectedVelocity}}" required>
+                        <label for="expectedVelocity">Pričakovana hitrost sprinta <abbr title="Obvezno polje">*</abbr></label>
+                        {{#if errors.expectedVelocity}}
+                            <span class="helper-text red-text">{{errors.expectedVelocity}}</span>
+                        {{/if}}
+                    </div>
+                </div>
             </div>
         </div>
 

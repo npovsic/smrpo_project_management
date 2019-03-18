@@ -56,7 +56,7 @@ module.exports = {
         const sprintData = {
             startDate: formatDate(new Date(postData.startDate)),
             endDate: formatDate(new Date(postData.endDate)),
-            velocity: postData.velocity,
+            expectedVelocity: postData.expectedVelocity,
             projectId: projectId,
             _lastUpdatedAt: new Date(),
             _createdAt: new Date()
@@ -138,6 +138,17 @@ module.exports = {
                                 return Promise.reject('Sprint se prekriva z že obstoječim v tem projektu.');
                             }
                         });
+                    }),
+
+                    body('expectedVelocity').exists().withMessage('Hitrost sprinta mora biti definirana'),
+                    
+                    body('expectedVelocity').custom(value => {
+                        if (parseInt(value) <= 0) {
+                            return Promise.reject('Hitrost sprinta mora biti pozitivno število večje od 0');
+                        } else if (parseFloat(value) % 1 !== 0) {
+                            return Promise.reject('Hitrost sprinta mora biti definirana z celimi števili');
+                        }
+                        return true;
                     })
                 ];
             }
