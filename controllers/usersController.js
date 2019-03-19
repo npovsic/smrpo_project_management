@@ -44,7 +44,6 @@ module.exports = {
             lastName: postData.lastName,
             email: postData.email.toLowerCase(),
             username: postData.username,
-            password: postData.password,
             role: (postData.role) ? postData.role.toLowerCase() : '',
             _lastUpdatedAt: new Date(),
             _createdAt: new Date()
@@ -177,6 +176,14 @@ module.exports = {
                         min: 4,
                         max: 64
                     }).withMessage('Geslo mora imeti od 4 do 64 znakov.'),
+                    
+                    body('repeatPassword').custom((value, { req }) => {
+                        if (value !== req.body.password) {
+                            return Promise.reject('Gesli se ne ujemata.');
+                        }
+                        
+                        return true;
+                    }),
                     
                     body('role').isIn(userRoles.values).withMessage('Sistemska pravica mora biti ena od ponujenih.')
                 ];

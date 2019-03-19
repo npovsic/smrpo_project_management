@@ -56,23 +56,32 @@
                 </div>
 
                 <div class="row suppress-bottom-margin">
-                    <div class="input-field col s12">
-                        <input id="password" name="password" type="password" class="validate" value="{{userData.password}}"pattern=".{4,64}" required>
+                    <div class="input-field col s12 m6">
+                        <input id="password" name="password" type="password" class="validate" pattern=".{4,64}" required>
                         <label for="password">Geslo <abbr title="Obvezno polje">*</abbr></label>
                         {{#if errors.password}}
                             <span class="helper-text red-text">Geslo mora biti med 4 in 64 znaki</span>
+                        {{/if}}
+                    </div>
+                    
+                    <div class="input-field col s12 m6">
+                        <input id="repeatPassword" name="repeatPassword" type="password" class="validate" pattern=".{4,64}" required>
+                        <label for="repeatPassword">Ponovite geslo <abbr title="Obvezno polje">*</abbr></label>
+                        {{#if errors.repeatPassword}}
+                            <span class="helper-text red-text">Gesli se ne ujemata</span>
                         {{/if}}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-field col s12">
-                        <select name="role">
-                            <option value="" disabled selected>Sistemske pravice</option>
+                        <select id="role" name="role">
+                            <option value="" disabled selected>Določite sistemske pravice</option>
                             {{#each userRolesSelectObjects}}
                                 <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>
                             {{/each}}
                         </select>
+                        <label for="role">Sistemske pravice <abbr title="Obvezno polje">*</abbr></label>
                         {{#if errors.role}}
                             <span class="helper-text red-text">{{ errors.role }}</span>
                         {{/if}}

@@ -46,7 +46,7 @@ module.exports = {
                 }
                 
                 if (project.scrumMaster.equals(currentUserId)) {
-                    project.roles.push('Vodja metodologije');
+                    project.roles.push('Skrbnik metodologije');
                 }
                 
                 if (project.developers.find((developerId) => developerId.equals(currentUserId))) {
